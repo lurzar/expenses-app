@@ -19,26 +19,34 @@
     </div>
     {{-- Expenses items --}}
     <div class="grid grid-cols-5 gap-4 pb-6 items-end">
-        <div class="col-span-3">
-            <x-input-label for="expenses" :value="__('Expenses Items')" />
-            <x-text-input id="expenses" class="block mt-1 w-full" type="text" name="expenses" :value="old('expenses')" required autofocus />
-            <x-input-error :messages="$errors->get('expenses')" class="mt-2" />
-        </div>
-        <div>
-            <x-input-label for="amount" :value="__('Amount')" />
-            <x-text-input id="amount" class="block mt-1 w-full" type="text" name="amount" min="0.00" step="any" :value="old('amount')" required autofocus />
-            <x-input-error :messages="$errors->get('amount')" class="mt-2" />
-        </div>
-        {{-- Button remove item --}}
-        <div>
-            <x-expenses-form.item-remove-button>
-                {{ __('Remove Item') }}
-            </x-xpenses-form.item-remove-button>
-        </div>
+        @forelse ($expenses_items as $expenses_item)   
+            <div class="col-span-3">
+                <x-input-label for="expenses-{{ $expenses_item }}" :value="__('Expenses Items')" />
+                <x-text-input id="expenses-{{ $expenses_item }}" class="block mt-1 w-full" type="text" name="expenses.{{ $expenses_item }}" :value="old('expenses-'.$expenses_item)" required autofocus />
+                <x-input-error :messages="$errors->get('expenses-')" class="mt-2" />
+            </div>
+            <div>
+                <x-input-label for="amount-{{ $expenses_item }}" :value="__('Amount')" />
+                <x-text-input id="amount-{{ $expenses_item }}" class="block mt-1 w-full" type="text" name="amount.{{ $expenses_item }}" min="0.00" step="any" :value="old('amount-'.$expenses_item)" required autofocus />
+                <x-input-error :messages="$errors->get('amount-'.$expenses_item)" class="mt-2" />
+            </div>
+            @if ($expenses_item != 0)
+                {{-- Button remove item --}}
+                <div>
+                    <x-expenses-form.item-remove-button wire:click="removeExpensesItem({{ $expenses_item }})">
+                        {{ __('Remove Item') }}
+                    </x-xpenses-form.item-remove-button>
+                </div>
+            @endif
+        @empty
+            <div class="col-span-5 text-red-700 dark:text-red-500">
+                {{ __('Error occured while fetching expenses items field') }}
+            </div>
+        @endforelse
     </div>
     {{-- Button add item --}}
     <div class="pb-6">
-        <x-expenses-form.item-add-button>
+        <x-expenses-form.item-add-button wire:click="addExpensesItem({{ $expenses_items }})">
             {{ __('Add Item') }}
         </x-xpenses-form.item-add-button>
     </div>
