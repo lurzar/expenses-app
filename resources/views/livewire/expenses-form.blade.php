@@ -31,16 +31,16 @@
         </div>
         {{-- Button remove item --}}
         <div>
-            <x-primary-remove-item-button>
+            <x-remove-expenses-item-button>
                 {{ __('Remove Item') }}
-            </x-primary-remove-item-button>
+            </x-remove-expenses-item-button>
         </div>
     </div>
     {{-- Button add item --}}
     <div class="pb-6">
-        <x-primary-add-item-button>
+        <x-add-expenses-item-button>
             {{ __('Add Item') }}
-        </x-primary-add-item-button>
+        </x-add-expenses-item-button>
     </div>
     {{-- Button submit --}}
     <div class="pb-6 float-right">
