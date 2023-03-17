@@ -1,6 +1,15 @@
 <div>
+    <header class="mb-6">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            {{ __('Expenses Information') }}
+        </h2>
+
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            {{ __("Update your expense's information planning.") }}
+        </p>
+    </header>
     {{-- Salary --}}
-    <div class="grid grid-cols-3 gap-4 pb-6">
+    <div class="grid grid-cols-3 gap-4 mb-6">
         <div>
             <x-input-label for="salary" :value="__('Salary')" />
             <x-text-input id="salary" class="block mt-1 w-full" type="number" name="salary" min="0.00" step="any" :value="old('salary')" required autofocus />
@@ -18,9 +27,9 @@
         </div>
     </div>
     {{-- Expenses items --}}
-    <div class="grid grid-cols-5 gap-4 pb-6 items-end">
+    <div class="grid grid-cols-6 gap-4 mb-6 items-end">
         @forelse ($expenses_items as $expenses_item)   
-            <div class="col-span-3">
+            <div class="col-span-4">
                 <x-input-label for="expenses-{{ $expenses_item }}" :value="__('Expenses Items')" />
                 <x-text-input id="expenses-{{ $expenses_item }}" class="block mt-1 w-full" type="text" name="expenses.{{ $expenses_item }}" :value="old('expenses-'.$expenses_item)" required autofocus />
                 <x-input-error :messages="$errors->get('expenses-')" class="mt-2" />
@@ -45,13 +54,13 @@
         @endforelse
     </div>
     {{-- Button add item --}}
-    <div class="pb-6">
+    <div class="mb-6">
         <x-expenses-form.item-add-button wire:click="addExpensesItem({{ $expenses_items }})">
             {{ __('Add Item') }}
         </x-xpenses-form.item-add-button>
     </div>
     {{-- Button submit --}}
-    <div class="pb-6 float-right">
+    <div class="mb-6 float-right">
         <x-primary-button>
             {{ __('Submit') }}
         </x-primary-button>
