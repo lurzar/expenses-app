@@ -51,14 +51,14 @@
     <div class="grid grid-cols-6 gap-4 mb-6 items-end">
         @forelse ($commitments_items as $commitments_item)   
             <div class="col-span-4">
-                <x-input-label for="expenses-{{ $commitments_item }}" :value="__('Item')" />
-                <x-text-input id="expenses-{{ $commitments_item }}" class="block mt-1 w-full" type="text" name="expenses.{{ $commitments_item }}" :value="old('expenses-'.$commitments_item)" placeholder="e.g. Loans, Insurances" required autofocus />
-                <x-input-error :messages="$errors->get('expenses-'.$commitments_item)" class="mt-2" />
+                <x-input-label for="commitments-{{ $commitments_item }}" :value="__('Item')" />
+                <x-text-input id="commitments-{{ $commitments_item }}" class="block mt-1 w-full" type="text" name="commitments.{{ $commitments_item }}" :value="old('commitments-'.$commitments_item)" placeholder="e.g. Loans, Insurances" required autofocus />
+                <x-input-error :messages="$errors->get('commitments-'.$commitments_item)" class="mt-2" />
             </div>
             <div>
-                <x-input-label for="amount-{{ $commitments_item }}" :value="__('Amount (RM)')" />
-                <x-text-input id="amount-{{ $commitments_item }}" class="block mt-1 w-full" type="number" name="amount.{{ $commitments_item }}" min="0.00" step="any" :value="old('amount-'.$commitments_item)" placeholder="0.00" required autofocus />
-                <x-input-error :messages="$errors->get('amount-'.$commitments_item)" class="mt-2" />
+                <x-input-label for="commitments-amount-{{ $commitments_item }}" :value="__('Amount (RM)')" />
+                <x-text-input id="commitments-amount-{{ $commitments_item }}" class="block mt-1 w-full" type="number" name="commitments-amount.{{ $commitments_item }}" min="0.00" step="any" :value="old('commitments-amount-'.$commitments_item)" placeholder="0.00" required autofocus />
+                <x-input-error :messages="$errors->get('commitments-amount-'.$commitments_item)" class="mt-2" />
             </div>
             @if ($commitments_item != 0)
                 <div>
@@ -95,14 +95,14 @@
     <div class="grid grid-cols-6 gap-4 mb-6 items-end">
         @forelse ($others_items as $others_item)   
             <div class="col-span-4">
-                <x-input-label for="expenses-{{ $others_item }}" :value="__('Item')" />
-                <x-text-input id="expenses-{{ $others_item }}" class="block mt-1 w-full" type="text" name="expenses.{{ $others_item }}" :value="old('expenses-'.$others_item)" placeholder="e.g. Utilities, Groceries" required autofocus />
-                <x-input-error :messages="$errors->get('expenses-'.$others_item)" class="mt-2" />
+                <x-input-label for="others-{{ $others_item }}" :value="__('Item')" />
+                <x-text-input id="others-{{ $others_item }}" class="block mt-1 w-full" type="text" name="others.{{ $others_item }}" :value="old('others-'.$others_item)" placeholder="e.g. Utilities, Groceries" required autofocus />
+                <x-input-error :messages="$errors->get('others-'.$others_item)" class="mt-2" />
             </div>
             <div>
-                <x-input-label for="amount-{{ $others_item }}" :value="__('Amount (RM)')" />
-                <x-text-input id="amount-{{ $others_item }}" class="block mt-1 w-full" type="number" name="amount.{{ $others_item }}" min="0.00" step="any" :value="old('amount-'.$others_item)" placeholder="0.00" required autofocus />
-                <x-input-error :messages="$errors->get('amount-'.$others_item)" class="mt-2" />
+                <x-input-label for="others-amount-{{ $others_item }}" :value="__('Amount (RM)')" />
+                <x-text-input id="others-amount-{{ $others_item }}" class="block mt-1 w-full" type="number" name="others-amount.{{ $others_item }}" min="0.00" step="any" :value="old('others-amount-'.$others_item)" placeholder="0.00" required autofocus />
+                <x-input-error :messages="$errors->get('others-amount-'.$others_item)" class="mt-2" />
             </div>
             @if ($others_item != 0)
                 <div>
