@@ -7,11 +7,13 @@ use Livewire\Component;
 class ExpensesForm extends Component
 {
     public $months;
+    public $years;
     public $expenses_items;
 
     public function mount()
     {
         $this->months = get_months();
+        $this->years = get_years();
         $this->expenses_items = collect(0);
     }
 
