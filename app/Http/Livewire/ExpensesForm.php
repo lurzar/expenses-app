@@ -8,13 +8,25 @@ class ExpensesForm extends Component
 {
     public $months;
     public $years;
+    public $commitments_items;
     public $expenses_items;
 
     public function mount()
     {
         $this->months = get_months();
         $this->years = get_years();
+        $this->commitments_items = collect(0);
         $this->expenses_items = collect(0);
+    }
+
+    public function addCommitmentItem($data)
+    {
+        $this->commitments_items->push(array_pop($data) + 1);
+    }
+
+    public function removeCommitmentItem($data)
+    {
+        $this->commitments_items->forget($data);
     }
 
     public function addExpensesItem($data)

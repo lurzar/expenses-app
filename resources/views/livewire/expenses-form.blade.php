@@ -35,6 +35,50 @@
         </div>
     </div>
 
+    {{-- Commitment expenses information --}}
+    <header class="mb-6">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            {{ __('Commitment Expenses Information') }}
+        </h2>
+
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            {{ __("Provide your commitment expenses information with appropriate amount.") }}
+        </p>
+    </header>
+
+    <hr class="h-px my-6 w-80 bg-gray-200 border-0 dark:bg-gray-700">
+
+    <div class="grid grid-cols-6 gap-4 mb-6 items-end">
+        @forelse ($commitments_items as $commitments_item)   
+            <div class="col-span-4">
+                <x-input-label for="expenses-{{ $commitments_item }}" :value="__('Items')" />
+                <x-text-input id="expenses-{{ $commitments_item }}" class="block mt-1 w-full" type="text" name="expenses.{{ $commitments_item }}" :value="old('expenses-'.$commitments_item)" placeholder="e.g. Utilities, Groceries" required autofocus />
+                <x-input-error :messages="$errors->get('expenses-'.$commitments_item)" class="mt-2" />
+            </div>
+            <div>
+                <x-input-label for="amount-{{ $commitments_item }}" :value="__('Amount (RM)')" />
+                <x-text-input id="amount-{{ $commitments_item }}" class="block mt-1 w-full" type="number" name="amount.{{ $commitments_item }}" min="0.00" step="any" :value="old('amount-'.$commitments_item)" placeholder="0.00" required autofocus />
+                <x-input-error :messages="$errors->get('amount-'.$commitments_item)" class="mt-2" />
+            </div>
+            @if ($commitments_item != 0)
+                <div>
+                    <x-expenses-form.item-remove-button wire:click="removeCommitmentItem({{ $commitments_item }})">
+                        {{ __('Remove Item') }}
+                    </x-xpenses-form.item-remove-button>
+                </div>
+            @endif
+        @empty
+            <div class="col-span-5 text-red-700 dark:text-red-500">
+                {{ __('Error occured while fetching expenses items field') }}
+            </div>
+        @endforelse
+    </div>
+    <div class="mb-10">
+        <x-expenses-form.item-add-button wire:click="addCommitmentItem({{ $commitments_items }})">
+            {{ __('Add Item') }}
+        </x-xpenses-form.item-add-button>
+    </div>
+
     {{-- Other expenses information --}}
     <header class="mb-6">
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
