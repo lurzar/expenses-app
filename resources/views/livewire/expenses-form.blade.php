@@ -79,6 +79,19 @@
         </x-xpenses-form.item-add-button>
     </div>
 
+    {{-- Planning summary --}}
+    <header class="mb-6">
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            {{ __('Plannig Summary') }}
+        </h2>
+
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            {{ __("Summaries of your expenses planning.") }}
+        </p>
+    </header>
+
+    <hr class="h-px my-6 w-80 bg-gray-200 border-0 dark:bg-gray-700">
+
     {{-- Button submit --}}
     <div class="mb-6 float-right">
         <x-primary-button>
