@@ -6,10 +6,12 @@ use Livewire\Component;
 
 class ExpensesForm extends Component
 {
+    public $months;
     public $expenses_items;
 
     public function mount()
     {
+        $this->months = get_months();
         $this->expenses_items = collect(0);
     }
 

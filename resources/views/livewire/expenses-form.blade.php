@@ -17,7 +17,7 @@
         </div>
         <div>
             <x-input-label for="month" :value="__('Month')" />
-            <x-text-input id="month" class="block mt-1 w-full" type="text" name="month" :value="old('month')" required autofocus />
+            <x-expenses-form.select-month-input id="month" class="block mt-1 w-full" :months="$months" required autofocus/>
             <x-input-error :messages="$errors->get('month')" class="mt-2" />
         </div>
         <div>
