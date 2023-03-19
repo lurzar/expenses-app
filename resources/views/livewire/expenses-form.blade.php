@@ -1,13 +1,15 @@
 <div>
     <header class="mb-6">
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Expenses Information') }}
+            {{ __('Salary Information') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __("Update your expense's information planning.") }}
+            {{ __("Provide your salary's information and savings percentages.") }}
         </p>
     </header>
+
+    <hr class="h-px my-6 w-80 bg-gray-200 border-0 dark:bg-gray-700">
     {{-- Salary --}}
     <div class="grid grid-cols-3 gap-4 mb-6">
         <div>
