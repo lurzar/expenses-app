@@ -51,8 +51,8 @@
     <div class="grid grid-cols-6 gap-4 mb-6 items-end">
         @forelse ($commitments_items as $commitments_item)   
             <div class="col-span-4">
-                <x-input-label for="expenses-{{ $commitments_item }}" :value="__('Items')" />
-                <x-text-input id="expenses-{{ $commitments_item }}" class="block mt-1 w-full" type="text" name="expenses.{{ $commitments_item }}" :value="old('expenses-'.$commitments_item)" placeholder="e.g. Utilities, Groceries" required autofocus />
+                <x-input-label for="expenses-{{ $commitments_item }}" :value="__('Item')" />
+                <x-text-input id="expenses-{{ $commitments_item }}" class="block mt-1 w-full" type="text" name="expenses.{{ $commitments_item }}" :value="old('expenses-'.$commitments_item)" placeholder="e.g. Loans, Insurances" required autofocus />
                 <x-input-error :messages="$errors->get('expenses-'.$commitments_item)" class="mt-2" />
             </div>
             <div>
