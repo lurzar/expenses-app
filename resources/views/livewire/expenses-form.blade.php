@@ -61,7 +61,6 @@
                 <x-input-error :messages="$errors->get('amount-'.$expenses_item)" class="mt-2" />
             </div>
             @if ($expenses_item != 0)
-                {{-- Button remove item --}}
                 <div>
                     <x-expenses-form.item-remove-button wire:click="removeExpensesItem({{ $expenses_item }})">
                         {{ __('Remove Item') }}
@@ -74,12 +73,12 @@
             </div>
         @endforelse
     </div>
-    {{-- Button add item --}}
-    <div class="mb-6">
+    <div class="mb-10">
         <x-expenses-form.item-add-button wire:click="addExpensesItem({{ $expenses_items }})">
             {{ __('Add Item') }}
         </x-xpenses-form.item-add-button>
     </div>
+
     {{-- Button submit --}}
     <div class="mb-6 float-right">
         <x-primary-button>
