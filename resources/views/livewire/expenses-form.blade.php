@@ -1,4 +1,5 @@
 <div>
+    {{-- Salary information --}}
     <header class="mb-6">
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
             {{ __('Salary Information') }}
@@ -10,13 +11,8 @@
     </header>
 
     <hr class="h-px my-6 w-80 bg-gray-200 border-0 dark:bg-gray-700">
-    {{-- Salary --}}
-    <div class="grid grid-cols-3 gap-4 mb-6">
-        <div>
-            <x-input-label for="salary" :value="__('Salary (RM)')" />
-            <x-text-input id="salary" class="block mt-1 w-full" type="number" name="salary" min="0.00" step="any" :value="old('salary')" placeholder="0.00" required autofocus />
-            <x-input-error :messages="$errors->get('salary')" class="mt-2" />
-        </div>
+
+    <div class="grid grid-cols-2 gap-4 mb-10">
         <div>
             <x-input-label for="month" :value="__('Month')" />
             <x-expenses-form.select-month-year-input id="month" name="month" class="block mt-1 w-full" :type="'month'" :values="$months" required autofocus />
@@ -27,7 +23,18 @@
             <x-expenses-form.select-month-year-input id="month" name="year" class="block mt-1 w-full" :type="'year'" :values="$years" required autofocus />
             <x-input-error :messages="$errors->get('year')" class="mt-2" />
         </div>
+        <div>
+            <x-input-label for="salary" :value="__('Salary (RM)')" />
+            <x-text-input id="salary" class="block mt-1 w-full" type="number" name="salary" min="0.00" step="any" :value="old('salary')" placeholder="0.00" required autofocus />
+            <x-input-error :messages="$errors->get('salary')" class="mt-2" />
+        </div>
+        <div>
+            <x-input-label for="saving" :value="__('Saving (%)')" />
+            <x-text-input id="saving" class="block mt-1 w-full" type="number" name="saving" min="20" step="5" :value="old('saving')" value="20" required autofocus />
+            <x-input-error :messages="$errors->get('saving')" class="mt-2" />
+        </div>
     </div>
+
     {{-- Expenses items --}}
     <div class="grid grid-cols-6 gap-4 mb-6 items-end">
         @forelse ($expenses_items as $expenses_item)   
