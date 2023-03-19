@@ -17,12 +17,12 @@
         </div>
         <div>
             <x-input-label for="month" :value="__('Month')" />
-            <x-expenses-form.select-month-year-input id="month" name="month" class="block mt-1 w-full" :values="$months" :type="'month'" required autofocus/>
+            <x-expenses-form.select-month-year-input id="month" name="month" class="block mt-1 w-full" :type="'month'" :values="$months" required autofocus />
             <x-input-error :messages="$errors->get('month')" class="mt-2" />
         </div>
         <div>
             <x-input-label for="year" :value="__('Year')" />
-            <x-expenses-form.select-month-year-input id="month" name="year" class="block mt-1 w-full" :values="$years" :type="'year'" required autofocus/>
+            <x-expenses-form.select-month-year-input id="month" name="year" class="block mt-1 w-full" :type="'year'" :values="$years" required autofocus />
             <x-input-error :messages="$errors->get('year')" class="mt-2" />
         </div>
     </div>
