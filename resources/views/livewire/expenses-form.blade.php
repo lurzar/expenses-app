@@ -12,7 +12,7 @@
     <div class="grid grid-cols-3 gap-4 mb-6">
         <div>
             <x-input-label for="salary" :value="__('Salary')" />
-            <x-text-input id="salary" class="block mt-1 w-full" type="number" name="salary" min="0.00" step="any" :value="old('salary')" required autofocus />
+            <x-text-input id="salary" class="block mt-1 w-full" type="number" name="salary" min="0.00" step="any" :value="old('salary')" placeholder="0.00" required autofocus />
             <x-input-error :messages="$errors->get('salary')" class="mt-2" />
         </div>
         <div>
@@ -31,12 +31,12 @@
         @forelse ($expenses_items as $expenses_item)   
             <div class="col-span-4">
                 <x-input-label for="expenses-{{ $expenses_item }}" :value="__('Expenses Items')" />
-                <x-text-input id="expenses-{{ $expenses_item }}" class="block mt-1 w-full" type="text" name="expenses.{{ $expenses_item }}" :value="old('expenses-'.$expenses_item)" required autofocus />
-                <x-input-error :messages="$errors->get('expenses-')" class="mt-2" />
+                <x-text-input id="expenses-{{ $expenses_item }}" class="block mt-1 w-full" type="text" name="expenses.{{ $expenses_item }}" :value="old('expenses-'.$expenses_item)" placeholder="e.g. Utilities, Groceries" required autofocus />
+                <x-input-error :messages="$errors->get('expenses-'.$expenses_item)" class="mt-2" />
             </div>
             <div>
                 <x-input-label for="amount-{{ $expenses_item }}" :value="__('Amount')" />
-                <x-text-input id="amount-{{ $expenses_item }}" class="block mt-1 w-full" type="text" name="amount.{{ $expenses_item }}" min="0.00" step="any" :value="old('amount-'.$expenses_item)" required autofocus />
+                <x-text-input id="amount-{{ $expenses_item }}" class="block mt-1 w-full" type="text" name="amount.{{ $expenses_item }}" min="0.00" step="any" :value="old('amount-'.$expenses_item)" placeholder="0.00" required autofocus />
                 <x-input-error :messages="$errors->get('amount-'.$expenses_item)" class="mt-2" />
             </div>
             @if ($expenses_item != 0)
