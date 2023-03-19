@@ -9,14 +9,14 @@ class ExpensesForm extends Component
     public $months;
     public $years;
     public $commitments_items;
-    public $expenses_items;
+    public $others_items;
 
     public function mount()
     {
         $this->months = get_months();
         $this->years = get_years();
         $this->commitments_items = collect(0);
-        $this->expenses_items = collect(0);
+        $this->others_items = collect(0);
     }
 
     public function addCommitmentItem($data)
@@ -29,14 +29,14 @@ class ExpensesForm extends Component
         $this->commitments_items->forget($data);
     }
 
-    public function addExpensesItem($data)
+    public function addOtherItem($data)
     {
-        $this->expenses_items->push(array_pop($data) + 1);
+        $this->others_items->push(array_pop($data) + 1);
     }
 
-    public function removeExpensesItem($data)
+    public function removeOtherItem($data)
     {
-        $this->expenses_items->forget($data);
+        $this->others_items->forget($data);
     }
 
     public function render()

@@ -93,20 +93,20 @@
     <hr class="h-px my-6 w-80 bg-gray-200 border-0 dark:bg-gray-700">
     
     <div class="grid grid-cols-6 gap-4 mb-6 items-end">
-        @forelse ($expenses_items as $expenses_item)   
+        @forelse ($others_items as $others_item)   
             <div class="col-span-4">
-                <x-input-label for="expenses-{{ $expenses_item }}" :value="__('Expenses Items')" />
-                <x-text-input id="expenses-{{ $expenses_item }}" class="block mt-1 w-full" type="text" name="expenses.{{ $expenses_item }}" :value="old('expenses-'.$expenses_item)" placeholder="e.g. Utilities, Groceries" required autofocus />
-                <x-input-error :messages="$errors->get('expenses-'.$expenses_item)" class="mt-2" />
+                <x-input-label for="expenses-{{ $others_item }}" :value="__('Item')" />
+                <x-text-input id="expenses-{{ $others_item }}" class="block mt-1 w-full" type="text" name="expenses.{{ $others_item }}" :value="old('expenses-'.$others_item)" placeholder="e.g. Utilities, Groceries" required autofocus />
+                <x-input-error :messages="$errors->get('expenses-'.$others_item)" class="mt-2" />
             </div>
             <div>
-                <x-input-label for="amount-{{ $expenses_item }}" :value="__('Amount (RM)')" />
-                <x-text-input id="amount-{{ $expenses_item }}" class="block mt-1 w-full" type="number" name="amount.{{ $expenses_item }}" min="0.00" step="any" :value="old('amount-'.$expenses_item)" placeholder="0.00" required autofocus />
-                <x-input-error :messages="$errors->get('amount-'.$expenses_item)" class="mt-2" />
+                <x-input-label for="amount-{{ $others_item }}" :value="__('Amount (RM)')" />
+                <x-text-input id="amount-{{ $others_item }}" class="block mt-1 w-full" type="number" name="amount.{{ $others_item }}" min="0.00" step="any" :value="old('amount-'.$others_item)" placeholder="0.00" required autofocus />
+                <x-input-error :messages="$errors->get('amount-'.$others_item)" class="mt-2" />
             </div>
-            @if ($expenses_item != 0)
+            @if ($others_item != 0)
                 <div>
-                    <x-expenses-form.item-remove-button wire:click="removeExpensesItem({{ $expenses_item }})">
+                    <x-expenses-form.item-remove-button wire:click="removeOtherItem({{ $others_item }})">
                         {{ __('Remove Item') }}
                     </x-xpenses-form.item-remove-button>
                 </div>
@@ -118,7 +118,7 @@
         @endforelse
     </div>
     <div class="mb-10">
-        <x-expenses-form.item-add-button wire:click="addExpensesItem({{ $expenses_items }})">
+        <x-expenses-form.item-add-button wire:click="addOtherItem({{ $others_items }})">
             {{ __('Add Item') }}
         </x-xpenses-form.item-add-button>
     </div>
