@@ -12,3 +12,16 @@ if (! function_exists('get_months')) {
         return $data;
     }
 }
+
+// Get list of years
+if (! function_exists('get_years')) {
+    function get_years() {
+        $data = collect();
+
+        foreach (range(2023, 2035) as $year) {
+            $data->push($year);
+        }
+
+        return $data;
+    }
+}
