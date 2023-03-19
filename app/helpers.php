@@ -18,7 +18,7 @@ if (! function_exists('get_years')) {
     function get_years() {
         $data = collect();
 
-        foreach (range(2023, 2035) as $year) {
+        foreach (range(2023, 2034) as $year) {
             $data->push($year);
         }
 
