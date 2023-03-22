@@ -16,8 +16,8 @@ if (! function_exists('getMonthList')) {
 }
 
 // Get list of years
-if (! function_exists('get_years')) {
-    function get_years() {
+if (! function_exists('getYearList')) {
+    function getYearList() {
         $data = collect();
 
         foreach (range(2023, 2034) as $year) {
