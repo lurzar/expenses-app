@@ -31,15 +31,15 @@ if (! function_exists('getYearList')) {
 // Get current month's name
 if (! function_exists('getCurrentMonthName')) {
     function getCurrentMonthName() {
-        $month = Carbon::now()->format('F');
-        return $month;
+        $data = Carbon::now()->format('F');
+        return $data;
     }
 }
 
 // Get current year
 if (! function_exists('getCurrentYear')) {
     function getCurrentYear() {
-        $year = Carbon::now()->format('Y');
-        return $year;
+        $data = Carbon::now()->format('Y');
+        return $data;
     }
 }
