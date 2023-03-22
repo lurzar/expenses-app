@@ -6,15 +6,15 @@ use Livewire\Component;
 
 class PlanningForm extends Component
 {
-    public $months;
-    public $years;
+    public $current_month;
+    public $current_year;
     public $commitments_items;
     public $others_items;
 
     public function mount()
     {
-        $this->months = get_months();
-        $this->years = get_years();
+        $this->current_month = getCurrentMonthName();
+        $this->current_year = getCurrentYear();
         $this->commitments_items = collect(0);
         $this->others_items = collect(0);
     }
