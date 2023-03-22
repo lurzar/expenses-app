@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 // Get list of months
 if (! function_exists('get_months')) {
     function get_months() {
@@ -23,5 +25,13 @@ if (! function_exists('get_years')) {
         }
 
         return $data;
+    }
+}
+
+// Get current month's name
+if (! function_exists('getCurrentMonthName')) {
+    function getCurrentMonthName() {
+        $month = Carbon::now()->format('F');
+        return $month;
     }
 }
