@@ -14,14 +14,14 @@
 
     <div class="grid grid-cols-2 gap-4 mb-10">
         <div>
-            <x-input-label for="month" :value="__('Month')" />
-            <x-planning-form.select-month-year-input id="month" name="month" class="block mt-1 w-full" :type="'month'" :values="$months" required autofocus />
-            <x-input-error :messages="$errors->get('month')" class="mt-2" />
+            <x-input-label for="current_month" :value="__('Month')" />
+            <x-text-input id="current_month" class="block mt-1 w-full" type="text" name="current_month" :value="$current_month" :disabled="true" required autofocus />
+            <x-input-error :messages="$errors->get('current_month')" class="mt-2" />
         </div>
         <div>
-            <x-input-label for="year" :value="__('Year')" />
-            <x-planning-form.select-month-year-input id="month" name="year" class="block mt-1 w-full" :type="'year'" :values="$years" required autofocus />
-            <x-input-error :messages="$errors->get('year')" class="mt-2" />
+            <x-input-label for="current_year" :value="__('Year')" />
+            <x-text-input id="current_year" class="block mt-1 w-full" type="text" name="current_year" :value="$current_year" :disabled="true" required autofocus  />
+            <x-input-error :messages="$errors->get('current_year')" class="mt-2" />
         </div>
         <div>
             <x-input-label for="salary" :value="__('Salary (RM)')" />
