@@ -43,3 +43,11 @@ if (! function_exists('getCurrentYear')) {
         return $data;
     }
 }
+
+// Get current month's name
+if (! function_exists('getCurrentMonthYear')) {
+    function getCurrentMonthYear() {
+        $data = Carbon::now()->format('F Y');
+        return $data;
+    }
+}
