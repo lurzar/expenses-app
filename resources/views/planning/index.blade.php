@@ -12,7 +12,7 @@
                     @if ($formIsUnlock)
                         @livewire('planning-form')
                     @else
-                        <x-planning-form.lock-banner :allowed_date="$allowed_date" :current_month_year="$currentMonthYear" />
+                        <x-planning-form.lock-banner :allowed_date="$allowedDate" :current_month_year="$currentMonthYear" />
                     @endif
                 </div>
             </div>
