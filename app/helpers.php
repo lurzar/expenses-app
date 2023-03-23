@@ -51,3 +51,13 @@ if (! function_exists('getCurrentMonthYear')) {
         return $data;
     }
 }
+
+// Check allow to unlock form
+if (! function_exists('checkUnlockForm')) {
+    function checkUnlockForm($param = null) {
+        $allowed_date = $param;
+        $today = (int) Carbon::now()->format('d');
+        
+        return ($today == $allowed_date) ? true : false;
+    }
+}
