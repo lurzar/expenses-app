@@ -53,11 +53,12 @@ if (! function_exists('getCurrentMonthYear')) {
 }
 
 // Check allow to unlock form
-if (! function_exists('checkUnlockForm')) {
-    function checkUnlockForm($param = null) {
-        $allowed_date = $param;
+if (! function_exists('unlockForm')) {
+    function unlockForm() {
+        $setting_open_date = 7; // will get from db settings;
+        $setting_close_date = 14; // will get from db settings;
         $today = (int) Carbon::now()->format('d');
         
-        return ($today == $allowed_date) ? true : false;
+        return ($today == $open_date && $today <= $close) ? true : false;
     }
 }
