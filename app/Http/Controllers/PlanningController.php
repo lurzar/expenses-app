@@ -9,10 +9,10 @@ class PlanningController extends Controller
 {
     public function index(): View
     {
-        $allowedDate = 23; //later get from db
-        $formIsUnlock = true; //checkUnlockForm($allowed_date);
-        $currentMonthYear = getCurrentMonthYear();
-
-        return view('planning.index', compact('formIsUnlock', 'allowedDate', 'currentMonthYear'));
+        return view('planning.index', [
+            'form_is_unlock' => true,
+            'form_open_date' => getOpenDate(), 
+            'form_close_date' => getCloseDate(),
+        ]);
     }
 }
