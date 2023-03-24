@@ -10,7 +10,7 @@ class PlanningController extends Controller
     public function index(): View
     {
         return view('planning.index', [
-            'form_is_unlock' => true,
+            'form_is_unlock' => true, // unlockForm()
             'form_open_date' => getOpenDate(), 
             'form_close_date' => getCloseDate(),
         ]);

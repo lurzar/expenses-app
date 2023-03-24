@@ -58,7 +58,7 @@ if (! function_exists('unlockForm')) {
         $setting_open_date = 7; // will get from db settings;
         $setting_close_date = 14; // will get from db settings;
         $today = (int) Carbon::now()->format('d');
-        return ($today == $open_date && $today <= $close) ? true : false;
+        return ($today == $setting_open_date && $today <= $setting_close_date) ? true : false;
     }
 }
 
