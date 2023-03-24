@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 
 // Get list of months
+// Return array
 if (! function_exists('getMonthList')) {
     function getMonthList() {
         $data = collect();
@@ -16,6 +17,7 @@ if (! function_exists('getMonthList')) {
 }
 
 // Get list of years
+// Return array
 if (! function_exists('getYearList')) {
     function getYearList() {
         $data = collect();
@@ -29,6 +31,7 @@ if (! function_exists('getYearList')) {
 }
 
 // Get current month's name
+// Return e.g. March
 if (! function_exists('getCurrentMonthName')) {
     function getCurrentMonthName() {
         $data = Carbon::now()->format('F');
@@ -37,6 +40,7 @@ if (! function_exists('getCurrentMonthName')) {
 }
 
 // Get current year
+// Return e.g. 2023
 if (! function_exists('getCurrentYear')) {
     function getCurrentYear() {
         $data = Carbon::now()->format('Y');
@@ -45,6 +49,7 @@ if (! function_exists('getCurrentYear')) {
 }
 
 // Get current month's name
+// Return e.g. March 2023
 if (! function_exists('getCurrentMonthYear')) {
     function getCurrentMonthYear() {
         $data = Carbon::now()->format('F Y');
@@ -53,6 +58,7 @@ if (! function_exists('getCurrentMonthYear')) {
 }
 
 // Check allow to unlock form
+// Return bool
 if (! function_exists('unlockForm')) {
     function unlockForm() {
         $setting_open_date = 7; // will get from db settings;
@@ -63,6 +69,7 @@ if (! function_exists('unlockForm')) {
 }
 
 // Get open date
+// Return e.g. 7 March 2023
 if (! function_exists('getOpenDate')) {
     function getOpenDate() {
         $setting_open_date = 7; // will get from db settings;
@@ -72,6 +79,7 @@ if (! function_exists('getOpenDate')) {
 }
 
 // Get close date
+// Return e.g. 14 March 2023
 if (! function_exists('getCloseDate')) {
     function getCloseDate() {
         $setting_close_date = 14; // will get from db settings;
