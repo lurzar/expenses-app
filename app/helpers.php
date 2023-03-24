@@ -62,3 +62,12 @@ if (! function_exists('unlockForm')) {
         return ($today == $open_date && $today <= $close) ? true : false;
     }
 }
+
+// Get open date
+if (! function_exists('getOpenDate')) {
+    function getOpenDate() {
+        $setting_open_date = 7; // will get from db settings;
+        $data =  $setting_open_date.' '.getCurrentMonthYear();
+        return $data;
+    }
+}
