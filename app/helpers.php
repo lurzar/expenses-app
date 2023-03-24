@@ -58,7 +58,6 @@ if (! function_exists('unlockForm')) {
         $setting_open_date = 7; // will get from db settings;
         $setting_close_date = 14; // will get from db settings;
         $today = (int) Carbon::now()->format('d');
-        
         return ($today == $open_date && $today <= $close) ? true : false;
     }
 }
@@ -68,6 +67,15 @@ if (! function_exists('getOpenDate')) {
     function getOpenDate() {
         $setting_open_date = 7; // will get from db settings;
         $data =  $setting_open_date.' '.getCurrentMonthYear();
+        return $data;
+    }
+}
+
+// Get close date
+if (! function_exists('getCloseDate')) {
+    function getCloseDate() {
+        $setting_close_date = 14; // will get from db settings;
+        $data =  $setting_close_date.' '.getCurrentMonthYear();
         return $data;
     }
 }
