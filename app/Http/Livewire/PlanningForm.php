@@ -12,6 +12,7 @@ class PlanningForm extends Component
     public $others_items;
 
     public $salary;
+    public $saving_rate;
     public $commitments_values;
     public $others_values;
 
@@ -38,6 +39,7 @@ class PlanningForm extends Component
             'commitments_items' => collect(0),
             'others_items' => collect(0),
             'salary' => '',
+            'saving_rate' => 20,
             'commitments_values' => [],
             'others_values' => [],
         ]);
