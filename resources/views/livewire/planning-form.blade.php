@@ -122,12 +122,12 @@
                     type="text" 
                     name="others.{{ $others_item }}" 
                     wire:model="others_values.{{ $others_item }}.item" 
-                    :value="old('others-'.$others_item)" 
+                    :value="old('others_values.'.$others_item.'.item')" 
                     placeholder="e.g. Utilities, Groceries" 
                     required 
                     autofocus 
                 />
-                <x-input-error :messages="$errors->get('others-'.$others_item)" class="mt-2" />
+                <x-input-error :messages="$errors->get('others_values.'.$others_item.'.item')" class="mt-2" />
             </div>
             <div>
                 <x-input-label for="others-amount-{{ $others_item }}" :value="__('Amount (RM)')" />
@@ -139,12 +139,12 @@
                     wire:model="others_values.{{ $others_item }}.amount" 
                     min="0.00" 
                     step="any" 
-                    :value="old('others-amount-'.$others_item)" 
+                    :value="old('others_values.'.$others_item.'.amount')" 
                     placeholder="0.00" 
                     required 
                     autofocus 
                 />
-                <x-input-error :messages="$errors->get('others-amount-'.$others_item)" class="mt-2" />
+                <x-input-error :messages="$errors->get('others_values.'.$others_item.'.amount')" class="mt-2" />
             </div>
             @if ($others_item != 0)
                 <div>
