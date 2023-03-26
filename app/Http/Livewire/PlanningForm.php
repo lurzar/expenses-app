@@ -14,6 +14,11 @@ class PlanningForm extends Component
     public $commitments_values;
     public $others_values;
 
+    protected $rules = [
+        'commitments_values.*.item' => 'required|string',
+        'commitments_values.*.amount' => 'required|numeric',
+    ];
+
     public function mount()
     {
         $this->fill([
@@ -44,6 +49,11 @@ class PlanningForm extends Component
     public function removeOtherItem($data)
     {
         $this->others_items->forget($data);
+    }
+
+    public function updated($property)
+    {
+        $this->validateOnly($property);
     }
     
     public function render()
