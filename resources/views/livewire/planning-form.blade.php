@@ -23,7 +23,19 @@
         </div>
         <div>
             <x-input-label for="salary" :value="__('Salary (RM)')" />
-            <x-text-input id="salary" class="block mt-1 w-full" type="number" name="salary" min="0.00" step="any" :value="old('salary')" placeholder="0.00" required autofocus />
+            <x-text-input 
+                id="salary" 
+                class="block mt-1 w-full" 
+                type="number" 
+                name="salary" 
+                min="0.00" 
+                step="any" 
+                wire:model="salary"
+                :value="old('salary')" 
+                placeholder="0.00" 
+                required 
+                autofocus 
+            />
             <x-input-error :messages="$errors->get('salary')" class="mt-2" />
         </div>
         <div>
