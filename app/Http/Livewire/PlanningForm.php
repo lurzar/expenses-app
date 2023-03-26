@@ -11,6 +11,9 @@ class PlanningForm extends Component
     public $commitments_items;
     public $others_items;
 
+    public $commitments_values;
+    public $others_values;
+
     public function mount()
     {
         $this->fill([
@@ -18,6 +21,8 @@ class PlanningForm extends Component
             'current_year' => getCurrentYear(),
             'commitments_items' => collect(0),
             'others_items' => collect(0),
+            'commitments_values' => [],
+            'others_values' => [],
         ]);
     }
 
