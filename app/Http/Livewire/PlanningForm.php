@@ -17,6 +17,8 @@ class PlanningForm extends Component
     protected $rules = [
         'commitments_values.*.item' => 'required|string',
         'commitments_values.*.amount' => 'required|numeric',
+        'others_values.*.item' => 'required|string',
+        'others_values.*.amount' => 'required|numeric',
     ];
 
     protected $validationAttributes = [
