@@ -13,10 +13,12 @@ class PlanningForm extends Component
 
     public function mount()
     {
-        $this->current_month = getCurrentMonthName();
-        $this->current_year = getCurrentYear();
-        $this->commitments_items = collect(0);
-        $this->others_items = collect(0);
+        $this->fill([
+            'current_month' => getCurrentMonthName(),
+            'current_year' => getCurrentYear(),
+            'commitments_items' => collect(0),
+            'others_items' => collect(0),
+        ]);
     }
 
     public function addCommitmentItem($data)
