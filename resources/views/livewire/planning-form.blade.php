@@ -116,12 +116,34 @@
         @forelse ($others_items as $others_item)   
             <div class="col-span-4">
                 <x-input-label for="others-{{ $others_item }}" :value="__('Item')" />
-                <x-text-input id="others-{{ $others_item }}" class="block mt-1 w-full" type="text" name="others.{{ $others_item }}" :value="old('others-'.$others_item)" placeholder="e.g. Utilities, Groceries" required autofocus />
+                <x-text-input 
+                    id="others-{{ $others_item }}" 
+                    class="block mt-1 w-full" 
+                    type="text" 
+                    name="others.{{ $others_item }}" 
+                    wire:model="others_values.{{ $others_item }}.item" 
+                    :value="old('others-'.$others_item)" 
+                    placeholder="e.g. Utilities, Groceries" 
+                    required 
+                    autofocus 
+                />
                 <x-input-error :messages="$errors->get('others-'.$others_item)" class="mt-2" />
             </div>
             <div>
                 <x-input-label for="others-amount-{{ $others_item }}" :value="__('Amount (RM)')" />
-                <x-text-input id="others-amount-{{ $others_item }}" class="block mt-1 w-full" type="number" name="others-amount.{{ $others_item }}" min="0.00" step="any" :value="old('others-amount-'.$others_item)" placeholder="0.00" required autofocus />
+                <x-text-input 
+                    id="others-amount-{{ $others_item }}" 
+                    class="block mt-1 w-full" 
+                    type="number" 
+                    name="others-amount.{{ $others_item }}" 
+                    wire:model="others_values.{{ $others_item }}.amount" 
+                    min="0.00" 
+                    step="any" 
+                    :value="old('others-amount-'.$others_item)" 
+                    placeholder="0.00" 
+                    required 
+                    autofocus 
+                />
                 <x-input-error :messages="$errors->get('others-amount-'.$others_item)" class="mt-2" />
             </div>
             @if ($others_item != 0)
