@@ -56,12 +56,12 @@
                     type="text" 
                     name="commitments.{{ $commitments_item }}" 
                     wire:model="commitments_values.{{ $commitments_item }}.item" 
-                    :value="old('commitments-'.$commitments_item)" 
+                    :value="old('commitments_values.'.$commitments_item.'.item')" 
                     placeholder="e.g. Loans, Insurances" 
                     required 
                     autofocus 
                 />
-                <x-input-error :messages="$errors->get('commitments-'.$commitments_item)" class="mt-2" />
+                <x-input-error :messages="$errors->get('commitments_values.'.$commitments_item.'.item')" class="mt-2" />
             </div>
             <div>
                 <x-input-label for="commitments-amount-{{ $commitments_item }}" :value="__('Amount (RM)')" />
@@ -73,12 +73,12 @@
                     wire:model="commitments_values.{{ $commitments_item }}.amount"  
                     min="0.00" 
                     step="any" 
-                    :value="old('commitments-amount-'.$commitments_item)" 
+                    :value="old('commitments_values.'.$commitments_item.'.amount')" 
                     placeholder="0.00" 
                     required 
                     autofocus 
                 />
-                <x-input-error :messages="$errors->get('commitments-amount-'.$commitments_item)" class="mt-2" />
+                <x-input-error :messages="$errors->get('commitments_values.'.$commitments_item.'.amount')" class="mt-2" />
             </div>
             @if ($commitments_item != 0)
                 <div>
