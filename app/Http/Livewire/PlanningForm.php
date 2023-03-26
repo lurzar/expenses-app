@@ -53,6 +53,7 @@ class PlanningForm extends Component
 
     public function removeCommitmentItem($data)
     {
+        unset($this->commitments_values[$data]);
         $this->commitments_items->forget($data);
     }
 
@@ -63,6 +64,7 @@ class PlanningForm extends Component
 
     public function removeOtherItem($data)
     {
+        unset($this->others_values[$data]);
         $this->others_items->forget($data);
     }
 
