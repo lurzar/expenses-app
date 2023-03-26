@@ -19,6 +19,11 @@ class PlanningForm extends Component
         'commitments_values.*.amount' => 'required|numeric',
     ];
 
+    protected $validationAttributes = [
+        'commitments_values.*.item' => 'commitment item',
+        'commitments_values.*.amount' => 'commitment amount',
+    ];
+
     public function mount()
     {
         $this->fill([
