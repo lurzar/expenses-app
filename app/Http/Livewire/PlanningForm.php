@@ -16,6 +16,7 @@ class PlanningForm extends Component
     public $others_values;
 
     protected $rules = [
+        'salary' => 'required|numeric',
         'commitments_values.*.item' => 'required|string',
         'commitments_values.*.amount' => 'required|numeric',
         'others_values.*.item' => 'required|string',
