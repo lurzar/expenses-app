@@ -24,6 +24,8 @@ class PlanningForm extends Component
     protected $validationAttributes = [
         'commitments_values.*.item' => 'commitment item',
         'commitments_values.*.amount' => 'commitment amount',
+        'others_values.*.item' => 'other item',
+        'others_values.*.amount' => 'other amount',
     ];
 
     public function mount()
