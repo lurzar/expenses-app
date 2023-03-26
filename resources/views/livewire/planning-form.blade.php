@@ -50,12 +50,34 @@
         @forelse ($commitments_items as $commitments_item)   
             <div class="col-span-4">
                 <x-input-label for="commitments-{{ $commitments_item }}" :value="__('Item')" />
-                <x-text-input id="commitments-{{ $commitments_item }}" class="block mt-1 w-full" type="text" name="commitments.{{ $commitments_item }}" :value="old('commitments-'.$commitments_item)" placeholder="e.g. Loans, Insurances" required autofocus />
+                <x-text-input 
+                    id="commitments-{{ $commitments_item }}" 
+                    class="block mt-1 w-full" 
+                    type="text" 
+                    name="commitments.{{ $commitments_item }}" 
+                    wire:model="commitments_values.{{ $commitments_item }}.item" 
+                    :value="old('commitments-'.$commitments_item)" 
+                    placeholder="e.g. Loans, Insurances" 
+                    required 
+                    autofocus 
+                />
                 <x-input-error :messages="$errors->get('commitments-'.$commitments_item)" class="mt-2" />
             </div>
             <div>
                 <x-input-label for="commitments-amount-{{ $commitments_item }}" :value="__('Amount (RM)')" />
-                <x-text-input id="commitments-amount-{{ $commitments_item }}" class="block mt-1 w-full" type="number" name="commitments-amount.{{ $commitments_item }}" min="0.00" step="any" :value="old('commitments-amount-'.$commitments_item)" placeholder="0.00" required autofocus />
+                <x-text-input 
+                    id="commitments-amount-{{ $commitments_item }}" 
+                    class="block mt-1 w-full" 
+                    type="number" 
+                    name="commitments-amount.{{ $commitments_item }}"
+                    wire:model="commitments_values.{{ $commitments_item }}.amount"  
+                    min="0.00" 
+                    step="any" 
+                    :value="old('commitments-amount-'.$commitments_item)" 
+                    placeholder="0.00" 
+                    required 
+                    autofocus 
+                />
                 <x-input-error :messages="$errors->get('commitments-amount-'.$commitments_item)" class="mt-2" />
             </div>
             @if ($commitments_item != 0)
