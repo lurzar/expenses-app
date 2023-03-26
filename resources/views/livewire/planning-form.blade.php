@@ -40,8 +40,19 @@
         </div>
         <div>
             <x-input-label for="saving" :value="__('Saving (%)')" />
-            <x-text-input id="saving" class="block mt-1 w-full" type="number" name="saving" min="20" step="5" :value="old('saving')" value="20" required autofocus />
-            <x-input-error :messages="$errors->get('saving')" class="mt-2" />
+            <x-text-input 
+                id="saving" 
+                class="block mt-1 w-full" 
+                type="number" 
+                name="saving" 
+                min="20" 
+                step="5" 
+                wire:model="saving_rate" 
+                :value="old('saving_rate')"  
+                required 
+                autofocus 
+            />
+            <x-input-error :messages="$errors->get('saving_rate')" class="mt-2" />
         </div>
     </div>
 
