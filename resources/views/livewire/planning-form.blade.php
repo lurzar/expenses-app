@@ -58,13 +58,31 @@
 
     {{-- Commitment expenses information --}}
     <header class="mb-6">
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Commitment Expenses Information') }}
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __("Provide your commitment expenses information with appropriate amount.") }}
-        </p>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    {{ __('Commitment Expenses Information') }}
+                </h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    {{ __("Provide your commitment expenses information with appropriate amount.") }}
+                </p>
+            </div>
+            <div class="grid grid-cols-1 place-items-end">
+                <div>
+                    <x-text-input 
+                        id="balance_after_saving_rate" 
+                        class="block mt-1" 
+                        type="number" 
+                        name="balance_after_saving_rate" 
+                        min="0" 
+                        step="any" 
+                        wire:model="balance_after_saving_rate" 
+                        :value="old('balance_after_saving_rate')"  
+                        :disabled="true" 
+                    />
+                </div>
+            </div>
+        </div>
     </header>
 
     <hr class="h-px my-6 w-80 bg-gray-200 border-0 dark:bg-gray-700">
