@@ -80,6 +80,11 @@ class PlanningForm extends Component
     {
         $this->balance_after_saving_rate = ($value * $this->saving_rate) / 100;
     }
+
+    public function updatedSavingRate($value)
+    {
+        $this->balance_after_saving_rate = ($this->salary * $value) / 100;
+    }
     
     public function render()
     {
