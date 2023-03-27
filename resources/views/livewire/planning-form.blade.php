@@ -61,7 +61,7 @@
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    {{ __('Savings Information') }}
+                    {{ __('Savings Information') }} {{ ($total_savings) == 0 ? '' : '(RM '.$total_savings.')'  }}
                 </h2>
                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     {{ __("Provide your savings information with appropriate amount.") }}
@@ -70,14 +70,14 @@
             <div class="grid grid-cols-1 place-items-end">
                 <div>
                     <x-text-input 
-                        id="balance_after_saving_rate" 
+                        id="balance_after_total_savings" 
                         class="block mt-1 dark:text-gray-500 text-right" 
                         type="number" 
-                        name="balance_after_saving_rate" 
+                        name="balance_after_total_savings" 
                         min="0" 
                         step="any" 
-                        wire:model="balance_after_saving_rate" 
-                        :value="old('balance_after_saving_rate')"  
+                        wire:model="balance_after_total_savings" 
+                        :value="old('balance_after_total_savings')"  
                         :disabled="true" 
                     />
                 </div>
@@ -154,14 +154,14 @@
             <div class="grid grid-cols-1 place-items-end">
                 <div>
                     <x-text-input 
-                        id="balance_after_saving_rate" 
+                        id="balance_after_total_savings" 
                         class="block mt-1 dark:text-gray-500 text-right" 
                         type="number" 
-                        name="balance_after_saving_rate" 
+                        name="balance_after_total_savings" 
                         min="0" 
                         step="any" 
-                        wire:model="balance_after_saving_rate" 
-                        :value="old('balance_after_saving_rate')"  
+                        wire:model="balance_after_total_savings" 
+                        :value="old('balance_after_total_savings')"  
                         :disabled="true" 
                     />
                 </div>
