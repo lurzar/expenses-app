@@ -15,11 +15,11 @@
     <div class="grid grid-cols-2 gap-4 mb-10">
         <div>
             <x-input-label for="current_month" :value="__('Month')" />
-            <x-text-input id="current_month" class="block mt-1 w-full" type="text" name="current_month" :value="$current_month" :disabled="true" required autofocus />
+            <x-text-input id="current_month" class="block mt-1 w-full dark:text-gray-500" type="text" name="current_month" :value="$current_month" :disabled="true" required autofocus />
         </div>
         <div>
             <x-input-label for="current_year" :value="__('Year')" />
-            <x-text-input id="current_year" class="block mt-1 w-full" type="text" name="current_year" :value="$current_year" :disabled="true" required autofocus  />
+            <x-text-input id="current_year" class="block mt-1 w-full dark:text-gray-500" type="text" name="current_year" :value="$current_year" :disabled="true" required autofocus  />
         </div>
         <div>
             <x-input-label for="salary" :value="__('Salary (RM)')" />
@@ -71,7 +71,7 @@
                 <div>
                     <x-text-input 
                         id="balance_after_saving_rate" 
-                        class="block mt-1" 
+                        class="block mt-1 dark:text-gray-500 text-right" 
                         type="number" 
                         name="balance_after_saving_rate" 
                         min="0" 
