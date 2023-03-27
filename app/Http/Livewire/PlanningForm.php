@@ -55,6 +55,17 @@ class PlanningForm extends Component
         ]);
     }
 
+    public function addSavingItem($data)
+    {
+        $this->savings_items->push(array_pop($data) + 1);
+    }
+
+    public function removeSavingItem($data)
+    {
+        unset($this->savings_values[$data]);
+        $this->savings_items->forget($data);
+    }
+
     public function addCommitmentItem($data)
     {
         $this->commitments_items->push(array_pop($data) + 1);
