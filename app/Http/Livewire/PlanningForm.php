@@ -14,7 +14,7 @@ class PlanningForm extends Component
     public $others_items;
 
     public $salary;
-    public $saving_rate;//
+    public $saving_rate;
 
     public $savings_values;
     public $commitments_values;
