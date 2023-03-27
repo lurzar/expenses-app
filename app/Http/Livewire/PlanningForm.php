@@ -75,6 +75,11 @@ class PlanningForm extends Component
     {
         $this->validateOnly($property);
     }
+
+    public function updatedSalary($value)
+    {
+        $this->balance_after_saving_rate = ($value * $this->saving_rate) / 100;
+    }
     
     public function render()
     {
