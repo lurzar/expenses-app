@@ -8,11 +8,15 @@ class PlanningForm extends Component
 {
     public $current_month;
     public $current_year;
+
+    public $savings_items;
     public $commitments_items;
     public $others_items;
 
     public $salary;
     public $saving_rate;
+
+    public $savings_values;
     public $commitments_values;
     public $others_values;
 
@@ -39,10 +43,12 @@ class PlanningForm extends Component
         $this->fill([
             'current_month' => getCurrentMonthName(),
             'current_year' => getCurrentYear(),
+            'savings_items' => collect(0),
             'commitments_items' => collect(0),
             'others_items' => collect(0),
             'salary' => '',
             'saving_rate' => 20,
+            'savings_values' => [],
             'commitments_values' => [],
             'others_values' => [],
             'balance_after_saving_rate' => 0,
