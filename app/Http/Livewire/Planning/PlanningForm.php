@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Planning;
 
 use Livewire\Component;
 
@@ -109,6 +109,6 @@ class PlanningForm extends Component
     
     public function render()
     {
-        return view('livewire.planning-form');
+        return view('livewire.planning.planning-form');
     }
 }

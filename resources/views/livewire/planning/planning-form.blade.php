@@ -1,5 +1,10 @@
 <div>
+    <form action="" method="post">
     {{-- Salary information --}}
+    @livewire('planning.salary-information', [
+        'current_month' => $current_month,
+        'current_year' => $current_year
+    ])
     <header class="mb-6">
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
             {{ __('Salary Information') }}
@@ -322,4 +327,5 @@
             {{ __('Submit') }}
         </x-primary-button>
     </div>
+    </form>
 </div>
