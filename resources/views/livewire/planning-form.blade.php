@@ -8,7 +8,7 @@
         />
 
         {{-- Savings information --}}
-        <header class="mb-6">
+        {{-- <header class="mb-6">
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
@@ -36,7 +36,15 @@
             </div>
         </header>
 
-        <hr class="h-px my-6 w-80 bg-gray-200 border-0 dark:bg-gray-700">
+        <hr class="h-px my-6 w-80 bg-gray-200 border-0 dark:bg-gray-700">--}}
+
+        <x-planning-form.section-header 
+            :title="__('Savings Information')" 
+            :description="__('Provide your salary information and savings percentages.')"
+            :total_saving="$total_savings"
+            :balance="$balance_after_total_savings"
+            :custom="true"
+        />
 
         <div class="grid grid-cols-6 gap-4 mb-6 items-end">
             @forelse ($savings_items as $savings_item)   
