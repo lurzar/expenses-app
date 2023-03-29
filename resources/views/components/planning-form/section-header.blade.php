@@ -1,4 +1,4 @@
-@props(['title' => '', 'description' => ''])
+@props(['title' => '', 'description' => '', 'total_saving' => 0, 'balance' => 0])
 
 <div>
     <header class="mb-6">
