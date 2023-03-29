@@ -1,17 +1,10 @@
 @props(['current_month', 'current_year', 'salary', 'saving_rate'])
 
 <div>
-    <header class="mb-6">
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Salary Information') }}
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __("Provide your salary's information and savings percentages.") }}
-        </p>
-    </header>
-
-    <hr class="h-px my-6 w-80 bg-gray-200 border-0 dark:bg-gray-700">
+    <x-planning-form.section-header 
+        :title="__('Salary Information')" 
+        :description="__('Provide your salary information and savings percentages.')"
+    />
 
     <div class="grid grid-cols-2 gap-4 mb-10">
         <div>
