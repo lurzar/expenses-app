@@ -42,7 +42,7 @@
             :title="__('Savings Information')" 
             :description="__('Provide your salary information and savings percentages.')"
             :total_saving="$total_savings"
-            :balance="$balance_after_total_savings"
+            :balance_after_total_savings="$balance_after_total_savings"
             :custom="true"
         />
 

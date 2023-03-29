@@ -1,4 +1,10 @@
-@props(['title' => '', 'description' => '', 'total_saving' => 0, 'balance' => 0, 'custom' => false])
+@props([
+    'title' => '', 
+    'description' => '', 
+    'total_saving' => 0, 
+    'balance_after_total_savings' => 0, 
+    'custom' => false
+])
 
 <div>
     <header class="mb-6">
@@ -29,8 +35,8 @@
                             name="balance_after_total_savings" 
                             min="0" 
                             step="any" 
-                            wire:model="balance" 
-                            :value="old('balance')"  
+                            wire:model="balance_after_total_savings" 
+                            :value="old('balance_after_total_savings')"  
                             :disabled="true" 
                         />
                     </div>
