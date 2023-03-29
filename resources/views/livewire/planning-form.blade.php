@@ -8,36 +8,6 @@
         />
 
         {{-- Savings information --}}
-        {{-- <header class="mb-6">
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        {{ __('Savings Information') }} {{ ($total_savings) == 0 ? '' : '(RM '.$total_savings.')'  }}
-                    </h2>
-                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        {{ __("Provide your savings information with appropriate amount.") }}
-                    </p>
-                </div>
-                <div class="grid grid-cols-1 place-items-end">
-                    <div>
-                        <x-text-input 
-                            id="balance_after_total_savings" 
-                            class="block mt-1 dark:text-gray-500 text-right" 
-                            type="number" 
-                            name="balance_after_total_savings" 
-                            min="0" 
-                            step="any" 
-                            wire:model="balance_after_total_savings" 
-                            :value="old('balance_after_total_savings')"  
-                            :disabled="true" 
-                        />
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <hr class="h-px my-6 w-80 bg-gray-200 border-0 dark:bg-gray-700">--}}
-
         <x-planning-form.section-header 
             :title="__('Savings Information')" 
             :description="__('Provide your salary information and savings percentages.')"
