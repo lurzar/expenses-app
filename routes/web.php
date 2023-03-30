@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // Planning
     Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
+    Route::post('/planning', [PlanningController::class, 'store'])->name('planning.store');
     // Expenses
     Route::get('/expenses', [ExpensesController::class, 'index'])->name('expenses.index');
 });
