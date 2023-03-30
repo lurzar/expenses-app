@@ -15,4 +15,9 @@ class PlanningController extends Controller
             'form_close_date' => getCloseDate(),
         ]);
     }
+
+    public function store(Request $request)
+    {
+        dd($request->all());
+    }
 }
