@@ -1,5 +1,6 @@
 <div>
-    <form action="" method="post">
+    <form action="{{ route('planning.store') }}" method="POST">
+        @csrf
         <x-planning-form.section.salary 
             :current_month="$current_month" 
             :current_year="$current_year" 
@@ -7,67 +8,12 @@
             :saving_rate="$saving_rate" 
         />
 
-        {{-- Savings information --}}
-        <x-planning-form.section-header 
-            :title="__('Savings Information')" 
-            :description="__('Provide your salary information and savings percentages.')"
-            :total_saving="$total_savings"
+        <x-planning-form.section.saving 
+            :total_savings="$total_savings" 
             :balance_after_total_savings="$balance_after_total_savings"
-            :custom="true"
+            :savings_items="$savings_items"
+            :savings_values="$savings_values" 
         />
-
-        <div class="grid grid-cols-6 gap-4 mb-6 items-end">
-            @forelse ($savings_items as $savings_item)   
-                <div class="col-span-4">
-                    <x-input-label for="savings-{{ $savings_item }}" :value="__('Item')" />
-                    <x-text-input 
-                        id="savings-{{ $savings_item }}" 
-                        class="block mt-1 w-full" 
-                        type="text" 
-                        name="savings.{{ $savings_item }}" 
-                        wire:model="savings_values.{{ $savings_item }}.item" 
-                        :value="old('savings_values.'.$savings_item.'.item')" 
-                        placeholder="e.g. Loans, Insurances" 
-                        required 
-                        autofocus 
-                    />
-                    <x-input-error :messages="$errors->get('savings_values.'.$savings_item.'.item')" class="mt-2" />
-                </div>
-                <div>
-                    <x-input-label for="savings-amount-{{ $savings_item }}" :value="__('Amount (RM)')" />
-                    <x-text-input 
-                        id="savings-amount-{{ $savings_item }}" 
-                        class="block mt-1 w-full" 
-                        type="number" 
-                        name="savings-amount.{{ $savings_item }}"
-                        wire:model="savings_values.{{ $savings_item }}.amount"  
-                        min="0.00" 
-                        step="any" 
-                        :value="old('savings_values.'.$savings_item.'.amount')" 
-                        placeholder="0.00" 
-                        required 
-                        autofocus 
-                    />
-                    <x-input-error :messages="$errors->get('savings_values.'.$savings_item.'.amount')" class="mt-2" />
-                </div>
-                @if ($savings_item != 0)
-                    <div>
-                        <x-planning-form.item-remove-button wire:click="removeSavingItem({{ $savings_item }})">
-                            {{ __('Remove Item') }}
-                        </x-planning-form.item-remove-button>
-                    </div>
-                @endif
-            @empty
-                <div class="col-span-5 text-red-700 dark:text-red-500">
-                    {{ __('Error occured while fetching savings items field') }}
-                </div>
-            @endforelse
-        </div>
-        <div class="mb-10">
-            <x-planning-form.item-add-button wire:click="addSavingItem({{ $savings_items }})">
-                {{ __('Add Item') }}
-            </x-planning-form.item-add-button>
-        </div>
 
         {{-- Commitment expenses information --}}
         <header class="mb-6">
@@ -118,12 +64,12 @@
                     <x-input-error :messages="$errors->get('commitments_values.'.$commitments_item.'.item')" class="mt-2" />
                 </div>
                 <div>
-                    <x-input-label for="commitments-amount-{{ $commitments_item }}" :value="__('Amount (RM)')" />
+                    <x-input-label for="commitments_amount_{{ $commitments_item }}" :value="__('Amount (RM)')" />
                     <x-text-input 
-                        id="commitments-amount-{{ $commitments_item }}" 
+                        id="commitments_amount_{{ $commitments_item }}" 
                         class="block mt-1 w-full" 
                         type="number" 
-                        name="commitments-amount.{{ $commitments_item }}"
+                        name="commitments_amount.{{ $commitments_item }}"
                         wire:model="commitments_values.{{ $commitments_item }}.amount"  
                         min="0.00" 
                         step="any" 
@@ -247,7 +193,7 @@
 
         {{-- Button submit --}}
         <div class="mb-6 float-right">
-            <x-primary-button>
+            <x-primary-button type="submit">
                 {{ __('Submit') }}
             </x-primary-button>
         </div>
