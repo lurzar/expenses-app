@@ -50,7 +50,7 @@
             </div>
             @if ($savings_item != 0)
                 <div>
-                    <x-planning-form.item-remove-button wire:click="removeSavingItem({{ $savings_item }})">
+                    <x-planning-form.item-remove-button type="button" wire:click="removeSavingItem({{ $savings_item }})">
                         {{ __('Remove Item') }}
                     </x-planning-form.item-remove-button>
                 </div>
@@ -62,7 +62,7 @@
         @endforelse
     </div>
     <div class="mb-10">
-        <x-planning-form.item-add-button wire:click="addSavingItem({{ $savings_items }})">
+        <x-planning-form.item-add-button type="button" wire:click="addSavingItem({{ $savings_items }})">
             {{ __('Add Item') }}
         </x-planning-form.item-add-button>
     </div>

@@ -82,7 +82,7 @@
                 </div>
                 @if ($commitments_item != 0)
                     <div>
-                        <x-planning-form.item-remove-button wire:click="removeCommitmentItem({{ $commitments_item }})">
+                        <x-planning-form.item-remove-button type="button" wire:click="removeCommitmentItem({{ $commitments_item }})">
                             {{ __('Remove Item') }}
                         </x-planning-form.item-remove-button>
                     </div>
@@ -94,7 +94,7 @@
             @endforelse
         </div>
         <div class="mb-10">
-            <x-planning-form.item-add-button wire:click="addCommitmentItem({{ $commitments_items }})">
+            <x-planning-form.item-add-button type="button" wire:click="addCommitmentItem({{ $commitments_items }})">
                 {{ __('Add Item') }}
             </x-planning-form.item-add-button>
         </div>
@@ -148,7 +148,7 @@
                 </div>
                 @if ($others_item != 0)
                     <div>
-                        <x-planning-form.item-remove-button wire:click="removeOtherItem({{ $others_item }})">
+                        <x-planning-form.item-remove-button type="button" wire:click="removeOtherItem({{ $others_item }})">
                             {{ __('Remove Item') }}
                         </x-planning-form.item-remove-button>
                     </div>
@@ -160,7 +160,7 @@
             @endforelse
         </div>
         <div class="mb-10">
-            <x-planning-form.item-add-button wire:click="addOtherItem({{ $others_items }})">
+            <x-planning-form.item-add-button type="button" wire:click="addOtherItem({{ $others_items }})">
                 {{ __('Add Item') }}
             </x-planning-form.item-add-button>
         </div>
