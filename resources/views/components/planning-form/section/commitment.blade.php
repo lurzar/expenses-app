@@ -1,0 +1,5 @@
+@props(['propName'])
+
+<div>
+
+</div>
