@@ -1,7 +1,7 @@
 <div>
     <form action="{{ route('planning.store') }}" method="POST">
         @csrf
-        
+
         <x-planning-form.section.salary 
             :current_month="$current_month" 
             :current_year="$current_year" 
@@ -10,84 +10,22 @@
         />
 
         <x-planning-form.section.saving 
-            :total_savings="$total_savings" 
             :balance_after_saving_rates="$balance_after_saving_rates"
             :savings_items="$savings_items"
             :savings_values="$savings_values" 
         />
         
         <x-planning-form.section.commitment 
-            :total_savings="$total_savings" 
             :balance_after_savings="$balance_after_savings"
             :commitments_items="$commitments_items"
             :commitments_values="$commitments_values" 
         />
 
-        {{-- Other expenses information --}}
-        <header class="mb-6">
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                {{ __('Other Expenses Information') }}
-            </h2>
-
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                {{ __("Provide your expenses information with appropriate amount.") }}
-            </p>
-        </header>
-        
-        <hr class="h-px my-6 w-80 bg-gray-200 border-0 dark:bg-gray-700">
-        
-        <div class="grid grid-cols-6 gap-4 mb-6 items-end">
-            @forelse ($others_items as $others_item)   
-                <div class="col-span-4">
-                    <x-input-label for="others-{{ $others_item }}" :value="__('Item')" />
-                    <x-text-input 
-                        id="others-{{ $others_item }}" 
-                        class="block mt-1 w-full" 
-                        type="text" 
-                        name="others.{{ $others_item }}" 
-                        wire:model="others_values.{{ $others_item }}.item" 
-                        :value="old('others_values.'.$others_item.'.item')" 
-                        placeholder="e.g. Utilities, Groceries" 
-                        required 
-                        autofocus 
-                    />
-                    <x-input-error :messages="$errors->get('others_values.'.$others_item.'.item')" class="mt-2" />
-                </div>
-                <div>
-                    <x-input-label for="others-amount-{{ $others_item }}" :value="__('Amount (RM)')" />
-                    <x-text-input 
-                        id="others-amount-{{ $others_item }}" 
-                        class="block mt-1 w-full" 
-                        type="number" 
-                        name="others-amount.{{ $others_item }}" 
-                        wire:model="others_values.{{ $others_item }}.amount" 
-                        min="0.00" 
-                        step="any" 
-                        :value="old('others_values.'.$others_item.'.amount')" 
-                        placeholder="0.00" 
-                        required 
-                        autofocus 
-                    />
-                    <x-input-error :messages="$errors->get('others_values.'.$others_item.'.amount')" class="mt-2" />
-                </div>
-                @if ($others_item != 0)
-                    <div>
-                        <x-planning-form.item-remove-button type="button" wire:click="removeOtherItem({{ $others_item }})">
-                            {{ __('Remove Item') }}
-                        </x-planning-form.item-remove-button>
-                    </div>
-                @endif
-            @empty
-                <div class="col-span-5 text-red-700 dark:text-red-500">
-                    {{ __('Error occured while fetching expenses items field') }}
-                </div>
-            @endforelse
-        </div>
-        <div class="mb-10">
-            <x-planning-form.item-add-button type="button" wire:click="addOtherItem({{ $others_items }})">
-                {{ __('Add Item') }}
-            </x-planning-form.item-add-button>
-        </div>
+        <x-planning-form.section.other 
+            :balance_after_commitments="$balance_after_commitments"
+            :others_items="$others_items"
+            :others_values="$others_values" 
+        />
 
         {{-- Planning summary --}}
         <header class="mb-6">
