@@ -22,7 +22,7 @@ class PlanningForm extends Component
 
     public $total_savings;
     public $balance_after_saving_rates;
-    public $balance_after_total_savings;
+    public $balance_after_savings;
 
     protected $rules = [
         'salary' => 'required|numeric',
@@ -55,7 +55,7 @@ class PlanningForm extends Component
             'others_values' => [],
             'total_savings' => 0,
             'balance_after_saving_rates' => 0,
-            'balance_after_total_savings' => 0,
+            'balance_after_savings' => 0,
         ]);
     }
 
