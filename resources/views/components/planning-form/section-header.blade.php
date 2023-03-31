@@ -2,7 +2,9 @@
     'title' => '', 
     'description' => '', 
     'total_saving' => 0, 
-    'balance_after_saving_rates' => 0, 
+    'balance_after_saving_rates' => 0,
+    'balance_after_savings' => 0, 
+    'balance_after_commitments' => 0,  
     'custom' => false
 ])
 
