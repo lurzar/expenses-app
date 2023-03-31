@@ -21,6 +21,7 @@ class PlanningForm extends Component
     public $others_values;
 
     public $total_savings;
+    public $balance_after_saving_rates;
     public $balance_after_total_savings;
 
     protected $rules = [
@@ -53,6 +54,7 @@ class PlanningForm extends Component
             'commitments_values' => [],
             'others_values' => [],
             'total_savings' => 0,
+            'balance_after_saving_rates' => 0,
             'balance_after_total_savings' => 0,
         ]);
     }
@@ -98,13 +100,13 @@ class PlanningForm extends Component
     public function updatedSalary($value)
     {
         $this->total_savings = ($value * $this->saving_rate) / 100;
-        $this->balance_after_total_savings = $value - $this->total_savings;
+        $this->balance_after_saving_rates = $value - $this->total_savings;
     }
 
     public function updatedSavingRate($value)
     {
         $this->total_savings = ($this->salary * $value) / 100;
-        $this->balance_after_total_savings = $this->salary - $this->total_savings;
+        $this->balance_after_saving_rates = $this->salary - $this->total_savings;
     }
     
     public function render()
