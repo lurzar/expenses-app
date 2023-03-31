@@ -1,5 +1,4 @@
 @props([
-    'total_savings' => 0, 
     'balance_after_savings' => 0,
     'commitments_items' => [],
     'commitments_values' => []
@@ -9,7 +8,6 @@
     <x-planning-form.section-header 
         :title="__('Commitment Expenses Information')" 
         :description="__('Provide your commitment expenses information with appropriate amount.')"
-        :total_saving="$total_savings"
         :balance_after_savings="$balance_after_savings"
         :custom="true"
     />
