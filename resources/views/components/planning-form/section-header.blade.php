@@ -2,7 +2,7 @@
     'title' => '', 
     'description' => '', 
     'total_saving' => 0, 
-    'balance_after_total_savings' => 0, 
+    'balance_after_saving_rates' => 0, 
     'custom' => false
 ])
 
@@ -29,14 +29,14 @@
                 <div class="grid grid-cols-1 place-items-end">
                     <div>
                         <x-text-input 
-                            id="balance_after_total_savings" 
+                            id="balance_after_saving_rates" 
                             class="block mt-1 dark:text-gray-500 text-right" 
                             type="number" 
-                            name="balance_after_total_savings" 
+                            name="balance_after_saving_rates" 
                             min="0" 
                             step="any" 
-                            wire:model="balance_after_total_savings" 
-                            :value="old('balance_after_total_savings')"  
+                            wire:model="balance_after_saving_rates" 
+                            :value="old('balance_after_saving_rates')"  
                             :disabled="true" 
                         />
                     </div>

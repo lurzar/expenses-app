@@ -1,6 +1,6 @@
 @props([
     'total_savings' => 0, 
-    'balance_after_total_savings' => 0,
+    'balance_after_saving_rates' => 0,
     'savings_items' => [],
     'savings_values' => []
 ])
@@ -10,7 +10,7 @@
         :title="__('Savings Information')" 
         :description="__('Provide your salary information and savings percentages.')"
         :total_saving="$total_savings"
-        :balance_after_total_savings="$balance_after_total_savings"
+        :balance_after_saving_rates="$balance_after_saving_rates"
         :custom="true"
     />
 

@@ -10,7 +10,7 @@
 
         <x-planning-form.section.saving 
             :total_savings="$total_savings" 
-            :balance_after_total_savings="$balance_after_total_savings"
+            :balance_after_saving_rates="$balance_after_saving_rates"
             :savings_items="$savings_items"
             :savings_values="$savings_values" 
         />
