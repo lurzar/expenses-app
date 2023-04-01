@@ -2,18 +2,26 @@
     <form action="{{ route('planning.store') }}" method="POST">
         @csrf
 
-        <x-planning-form.section.salary 
-            :current_month="$current_month" 
-            :current_year="$current_year" 
-            :salary="$salary" 
-            :saving_rate="$saving_rate" 
-        />
+        <div id="salarySection">
+            <x-planning-form.section.header 
+                :title="__('Salary Information')" 
+                :description="__('Provide your salary information and savings percentages.')"
+                :custom="false"
+            />
+            <x-planning-form.section.salary />
+        </div>
 
-        <x-planning-form.section.saving 
-            :balance_after_saving_rates="$balance_after_saving_rates"
-            :savings_items="$savings_items"
-            :savings_values="$savings_values" 
-        />
+        <div id="savingSection">
+            <x-planning-form.section.header 
+                :title="__('Savings Information')" 
+                :description="__('Provide your salary information and savings percentages.')"
+                :res_total_saving="$total_savings"
+            />
+            <x-planning-form.section.saving 
+                :res_savings_items="$savings_items"
+                :res_savings_values="$savings_values"
+            />
+        </div>
         
         <x-planning-form.section.commitment 
             :balance_after_savings="$balance_after_savings"
