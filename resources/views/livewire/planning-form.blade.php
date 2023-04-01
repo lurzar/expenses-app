@@ -16,24 +16,37 @@
                 :title="__('Savings Information')" 
                 :description="__('Provide your salary information and savings percentages.')"
                 :res_total_saving="$total_savings"
+                :res_balance="$balance_after_saving_rates"
             />
             <x-planning-form.section.saving 
                 :res_savings_items="$savings_items"
                 :res_savings_values="$savings_values"
             />
         </div>
-        
-        <x-planning-form.section.commitment 
-            :balance_after_savings="$balance_after_savings"
-            :commitments_items="$commitments_items"
-            :commitments_values="$commitments_values" 
-        />
 
-        <x-planning-form.section.other 
-            :balance_after_commitments="$balance_after_commitments"
-            :others_items="$others_items"
-            :others_values="$others_values" 
-        />
+        <div id="commitmentSection">
+            <x-planning-form.section.header 
+                :title="__('Commitment Expenses Information')" 
+                :description="__('Provide your commitment expenses information with appropriate amount.')"
+                :res_balance="$balance_after_savings"
+            />
+            <x-planning-form.section.commitment 
+                :res_commitments_items="$commitments_items"
+                :res_commitments_values="$commitments_values" 
+            />
+        </div>
+
+        <div id="otherSection">
+            <x-planning-form.section.header 
+                :title="__('Other Expenses Information')" 
+                :description="__('Provide your other expenses information with appropriate amount.')"
+                :res_balance="$balance_after_commitments"
+            />
+            <x-planning-form.section.other 
+                :res_others_items="$others_items"
+                :res_others_values="$others_values" 
+            />
+        </div>
 
         {{-- Planning summary --}}
         <header class="mb-6">
