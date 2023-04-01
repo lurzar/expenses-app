@@ -1,7 +1,4 @@
-@props([
-    'res_savings_items' => [],
-    'res_savings_values' => []
-])
+@props(['res_savings_items' => []])
 
 <div class="grid grid-cols-6 gap-4 mb-6 items-end">
     @forelse ($res_savings_items as $savings_item)   
