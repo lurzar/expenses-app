@@ -3,6 +3,7 @@
     'description' => '',
     'custom' => true,
     'res_total_saving' => 0, 
+    'res_balance' => 0,
 ])
 
 <header class="mb-6">
@@ -27,14 +28,13 @@
             <div class="grid grid-cols-1 place-items-end">
                 <div>
                     <x-text-input 
-                        id="balance_after_saving_rates" 
+                        id="res_balance" 
                         class="block mt-1 dark:text-gray-500 text-right" 
                         type="number" 
-                        name="balance_after_saving_rates" 
+                        name="res_balance" 
                         min="0" 
-                        step="any" 
-                        wire:model="balance_after_saving_rates"
-                        :value="old('balance_after_saving_rates')"  
+                        step="any"
+                        :value="old('res_balance') ?? $res_balance"  
                         :disabled="true" 
                     />
                 </div>
