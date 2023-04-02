@@ -31,11 +31,11 @@ class PlanningForm extends Component
         'salary' => 'required|numeric',
         'saving_rate' => 'required|numeric|min:20',
         'savings_values.*.item' => 'required|string',
-        'savings_values.*.amount' => 'required|numeric',
+        'savings_values.*.amount' => 'required|numeric|min:1',
         'commitments_values.*.item' => 'required|string',
-        'commitments_values.*.amount' => 'required|numeric',
+        'commitments_values.*.amount' => 'required|numeric|min:1',
         'others_values.*.item' => 'required|string',
-        'others_values.*.amount' => 'required|numeric',
+        'others_values.*.amount' => 'required|numeric|min:1',
     ];
 
     protected $validationAttributes = [
