@@ -3,27 +3,27 @@
 <div class="grid grid-cols-6 gap-4 mb-6 items-end">
     @forelse ($res_savings_items as $savings_item)   
         <div class="col-span-4">
-            <x-input-label for="savings_{{ $savings_item }}" :value="__('Item')" />
+            <x-input-label for="savings_values.{{ $savings_item }}.item" :value="__('Item')" />
             <x-text-input 
-                id="savings_{{ $savings_item }}" 
+                id="savings_values.{{ $savings_item }}.item" 
                 class="block mt-1 w-full" 
                 type="text" 
-                name="savings.{{ $savings_item }}" 
+                name="savings_values.{{ $savings_item }}.item" 
                 wire:model="savings_values.{{ $savings_item }}.item" 
                 :value="old('savings_values.'.$savings_item.'.item')" 
-                placeholder="e.g. Loans, Insurances" 
+                placeholder="e.g. Investment, Cash" 
                 required 
                 autofocus 
             />
             <x-input-error :messages="$errors->get('savings_values.'.$savings_item.'.item')" class="mt-2" />
         </div>
         <div>
-            <x-input-label for="savings_amount_{{ $savings_item }}" :value="__('Amount (RM)')" />
+            <x-input-label for="savings_values.{{ $savings_item }}.amount" :value="__('Amount (RM)')" />
             <x-text-input 
-                id="savings_amount_{{ $savings_item }}" 
+                id="savings_values.{{ $savings_item }}.amount" 
                 class="block mt-1 w-full" 
                 type="number" 
-                name="savings_amount.{{ $savings_item }}"
+                name="savings_values.{{ $savings_item }}.amount"
                 wire:model="savings_values.{{ $savings_item }}.amount"  
                 min="0.00" 
                 step="any" 
