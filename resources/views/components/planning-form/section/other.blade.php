@@ -3,12 +3,12 @@
 <div class="grid grid-cols-6 gap-4 mb-6 items-end">
     @forelse ($res_others_items as $others_item)   
         <div class="col-span-4">
-            <x-input-label for="others-{{ $others_item }}" :value="__('Item')" />
+            <x-input-label for="others_values.{{ $others_item }}.item" :value="__('Item')" />
             <x-text-input 
-                id="others-{{ $others_item }}" 
+                id="others_values.{{ $others_item }}.item" 
                 class="block mt-1 w-full" 
                 type="text" 
-                name="others.{{ $others_item }}" 
+                name="others_values.{{ $others_item }}.item" 
                 wire:model="others_values.{{ $others_item }}.item" 
                 :value="old('others_values.'.$others_item.'.item')" 
                 placeholder="e.g. Utilities, Groceries" 
@@ -18,14 +18,14 @@
             <x-input-error :messages="$errors->get('others_values.'.$others_item.'.item')" class="mt-2" />
         </div>
         <div>
-            <x-input-label for="others-amount-{{ $others_item }}" :value="__('Amount (RM)')" />
+            <x-input-label for="others_values.{{ $others_item }}.amount" :value="__('Amount (RM)')" />
             <x-text-input 
-                id="others-amount-{{ $others_item }}" 
+                id="others_values.{{ $others_item }}.amount" 
                 class="block mt-1 w-full" 
                 type="number" 
-                name="others-amount.{{ $others_item }}" 
+                name="others_values.{{ $others_item }}.amount" 
                 wire:model="others_values.{{ $others_item }}.amount" 
-                min="0.00" 
+                min="1.00" 
                 step="any" 
                 :value="old('others_values.'.$others_item.'.amount')" 
                 placeholder="0.00" 
