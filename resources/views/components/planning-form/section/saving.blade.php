@@ -25,7 +25,7 @@
                 type="number" 
                 name="savings_values.{{ $savings_item }}.amount"
                 wire:model="savings_values.{{ $savings_item }}.amount"  
-                min="0.00" 
+                min="1.00" 
                 step="any" 
                 :value="old('savings_values.'.$savings_item.'.amount')" 
                 placeholder="0.00" 
