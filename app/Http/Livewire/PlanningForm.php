@@ -30,6 +30,8 @@ class PlanningForm extends Component
     protected $rules = [
         'salary' => 'required|numeric',
         'saving_rate' => 'required|numeric|min:20',
+        'savings_values.*.item' => 'required|string',
+        'savings_values.*.amount' => 'required|numeric',
         'commitments_values.*.item' => 'required|string',
         'commitments_values.*.amount' => 'required|numeric',
         'others_values.*.item' => 'required|string',
