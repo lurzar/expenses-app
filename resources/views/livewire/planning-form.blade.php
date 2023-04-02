@@ -6,7 +6,7 @@
             <x-planning-form.section.header 
                 :title="__('Salary Information')" 
                 :description="__('Provide your salary information and savings percentages.')"
-                :custom="false"
+                :show_balance="false"
             />
             <x-planning-form.section.salary />
         </div>
@@ -15,6 +15,7 @@
             <x-planning-form.section.header 
                 :title="__('Savings Information')" 
                 :description="__('Provide your salary information and savings percentages.')"
+                :show_saving="true"
                 :res_total_saving="$total_savings"
                 :res_balance="$balance_after_saving_rates"
             />
