@@ -39,6 +39,8 @@ class PlanningForm extends Component
     ];
 
     protected $validationAttributes = [
+        'savings_values.*.item' => 'saving item',
+        'savings_values.*.amount' => 'saving amount',
         'commitments_values.*.item' => 'commitment item',
         'commitments_values.*.amount' => 'commitment amount',
         'others_values.*.item' => 'other item',
