@@ -19,9 +19,9 @@
             <x-input-error :messages="$errors->get('commitments_values.'.$commitments_item.'.item')" class="mt-2" />
         </div>
         <div>
-            <x-input-label for="commitments_values{{ $commitments_item }}.amount" :value="__('Amount (RM)')" />
+            <x-input-label for="commitments_values.{{ $commitments_item }}.amount" :value="__('Amount (RM)')" />
             <x-text-input 
-                id="commitments_values{{ $commitments_item }}.amount" 
+                id="commitments_values.{{ $commitments_item }}.amount" 
                 class="block mt-1 w-full" 
                 type="number" 
                 name="commitments_values.{{ $commitments_item }}.amount"
