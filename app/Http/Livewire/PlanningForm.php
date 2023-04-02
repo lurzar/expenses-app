@@ -9,7 +9,7 @@ class PlanningForm extends Component
     public $current_month;
     public $current_year;
 
-    // Control fields
+    // Control fieldss
     public $savings_items;
     public $commitments_items;
     public $others_items;
