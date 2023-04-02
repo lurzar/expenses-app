@@ -9,6 +9,7 @@ class PlanningForm extends Component
     public $current_month;
     public $current_year;
 
+    // Control fields
     public $savings_items;
     public $commitments_items;
     public $others_items;
@@ -16,6 +17,7 @@ class PlanningForm extends Component
     public $salary;
     public $saving_rate;
 
+    // Control fields values
     public $savings_values;
     public $commitments_values;
     public $others_values;
