@@ -37,9 +37,7 @@
         </div>
         @if ($commitments_item != 0)
             <div>
-                <x-planning-form.item-remove-button type="button" wire:click="removeCommitmentItem({{ $commitments_item }})">
-                    {{ __('Remove Item') }}
-                </x-planning-form.item-remove-button>
+                <x-planning-form.item-remove-button type="button" wire:click="removeCommitmentItem({{ $commitments_item }})" />
             </div>
         @endif
     @empty
@@ -49,7 +47,5 @@
     @endforelse
 </div>
 <div class="mb-10">
-    <x-planning-form.item-add-button type="button" wire:click="addCommitmentItem({{ $res_commitments_items }})">
-        {{ __('Add Item') }}
-    </x-planning-form.item-add-button>
+    <x-planning-form.item-add-button type="button" wire:click="addCommitmentItem({{ $res_commitments_items }})" />
 </div>

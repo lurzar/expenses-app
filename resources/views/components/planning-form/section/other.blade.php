@@ -36,9 +36,7 @@
         </div>
         @if ($others_item != 0)
             <div>
-                <x-planning-form.item-remove-button type="button" wire:click="removeOtherItem({{ $others_item }})">
-                    {{ __('Remove Item') }}
-                </x-planning-form.item-remove-button>
+                <x-planning-form.item-remove-button type="button" wire:click="removeOtherItem({{ $others_item }})" />
             </div>
         @endif
     @empty
@@ -48,7 +46,5 @@
     @endforelse
 </div>
 <div class="mb-10">
-    <x-planning-form.item-add-button type="button" wire:click="addOtherItem({{ $res_others_items }})">
-        {{ __('Add Item') }}
-    </x-planning-form.item-add-button>
+    <x-planning-form.item-add-button type="button" wire:click="addOtherItem({{ $res_others_items }})" />
 </div>
