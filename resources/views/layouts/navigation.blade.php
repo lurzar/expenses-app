@@ -13,13 +13,19 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        @lang('dashboard.title')
                     </x-nav-link>
                     <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
                         {{ __('Planning') }}
                     </x-nav-link>
                     <x-nav-link :href="route('expenses.index')" :active="request()->routeIs('expenses.index')">
                         {{ __('Expenses') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('language', 'en')" :active="request()->routeIs('language')">
+                        {{ __('English') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('language', 'my')" :active="request()->routeIs('language')">
+                        {{ __('Malay') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -75,7 +81,7 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                @lang('dashboard.title')
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
                 {{ __('Planning') }}
