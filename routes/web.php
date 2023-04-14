@@ -24,7 +24,7 @@ Route::get('/', function () {
 });
 
 // Language
-Route::get('/locale/{language?}', [LanguageController::class, 'index'])->name('language');
+Route::get('/language/{lang?}', [LanguageController::class, 'index'])->name('language');
 
 // Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
