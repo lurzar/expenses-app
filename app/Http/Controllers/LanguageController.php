@@ -13,7 +13,7 @@ class LanguageController extends Controller
      *
      * @return \Illuminate\Http\Response
     */
-    public function setLanguage($language)
+    public function index($language = null)
     {
         App::setLocale($language);
         Session::put('locale', $language);
