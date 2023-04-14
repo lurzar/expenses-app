@@ -23,26 +23,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/lang/change', [LanguageController::class, 'index'])->name('language');
+// Language
+Route::get('/locale/{language?}', [LanguageController::class, 'setLanguage'])->name('language');
 
-Route::group(['middleware'=>'language'],function () {
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->middleware(['auth', 'verified'])
-        ->name('dashboard');
+// Dashboard
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-    Route::middleware('auth')->group(function () {
-        // Profile
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-        // Planning
-        Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
-        Route::post('/planning', [PlanningController::class, 'store'])->name('planning.store');
-        // Expenses
-        Route::get('/expenses', [ExpensesController::class, 'index'])->name('expenses.index');
-    });
-
+Route::middleware('auth')->group(function () {
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Planning
+    Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
+    Route::post('/planning', [PlanningController::class, 'store'])->name('planning.store');
+    // Expenses
+    Route::get('/expenses', [ExpensesController::class, 'index'])->name('expenses.index');
 });
 
 require __DIR__.'/auth.php';
