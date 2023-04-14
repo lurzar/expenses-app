@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 
 class LanguageController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Changing application locale language.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
     */
-    public function index($language = null)
+    public function index($language = null): RedirectResponse
     {
         App::setLocale($language);
         Session::put('locale', $language);
