@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'documentation' => 'Dokumentasi.',
+    'documentation' => 'Documentation',
     'Laravel_News' => 'Berita Laravel.',
     'Vibrant_Ecosystem' => 'Ekosistem Cerdas',
 

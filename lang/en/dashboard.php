@@ -4,17 +4,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Language Lines
+    | Dashboard Language Lines
     |--------------------------------------------------------------------------
     |
-    | The following language lines are used during authentication for various
+    | The following language lines are used during dashboard for various
     | messages that we need to display to the user. You are free to modify
     | these language lines according to your application's requirements.
     |
     */
 
-    'documentation' => 'Dokumentasi.',
-    'Laravel_News' => 'Berita Laravel.',
-    'Vibrant_Ecosystem' => 'Ekosistem Cerdas',
-
+    'title' => 'Dashboard',
 ];
