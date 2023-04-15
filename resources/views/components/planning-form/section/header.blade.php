@@ -13,9 +13,13 @@
         <span class="text-sm italic text-slate-500">
             @if ($show_balance)
                 @if ($show_saving)
-                    {{ ($res_total_saving) == 0 ? '' : '(Saving: RM '.$res_total_saving.', Balance: RM '.$res_balance.')'  }}
+                    @if ($res_total_saving != 0)
+                        (@lang('common.saving'): RM {{ $res_total_saving }}, @lang('common.balance'): RM {{ $res_balance }})
+                    @endif
                 @else
-                    {{ ($res_balance) == 0 ? '' : '(Balance: RM '.$res_balance.')'  }}
+                    @if ($res_balance != 0)
+                        (@lang('common.balance'): RM {{ $res_balance }})
+                    @endif
                 @endif
             @endif
         </span>

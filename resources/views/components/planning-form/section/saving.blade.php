@@ -3,7 +3,7 @@
 <div class="grid grid-cols-6 gap-4 mb-6 items-end">
     @forelse ($res_savings_items as $savings_item)   
         <div class="col-span-4">
-            <x-input-label for="savings_values.{{ $savings_item }}.item" :value="__('Item')" />
+            <x-input-label for="savings_values.{{ $savings_item }}.item" :value="__('label.item')" />
             <x-text-input 
                 id="savings_values.{{ $savings_item }}.item" 
                 class="block mt-1 w-full" 
@@ -11,14 +11,14 @@
                 name="savings_values.{{ $savings_item }}.item" 
                 wire:model="savings_values.{{ $savings_item }}.item" 
                 :value="old('savings_values.'.$savings_item.'.item')" 
-                placeholder="e.g. Investment, Cash" 
+                placeholder="{{ __('label.saving_placeholder') }}" 
                 required 
                 autofocus 
             />
             <x-input-error :messages="$errors->get('savings_values.'.$savings_item.'.item')" class="mt-2" />
         </div>
         <div>
-            <x-input-label for="savings_values.{{ $savings_item }}.amount" :value="__('Amount (RM)')" />
+            <x-input-label for="savings_values.{{ $savings_item }}.amount" :value="__('label.amount')" />
             <x-text-input 
                 id="savings_values.{{ $savings_item }}.amount" 
                 class="block mt-1 w-full" 
@@ -41,7 +41,7 @@
         @endif
     @empty
         <div class="col-span-5 text-red-700 dark:text-red-500">
-            {{ __('Error occured while fetching savings items field') }}
+            @lang('common.error.saving_field')
         </div>
     @endforelse
 </div>

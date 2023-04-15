@@ -4,7 +4,7 @@
 <div class="grid grid-cols-6 gap-4 mb-6 items-end">
     @forelse ($res_commitments_items as $commitments_item)   
         <div class="col-span-4">
-            <x-input-label for="commitments_values.{{ $commitments_item }}.item" :value="__('Item')" />
+            <x-input-label for="commitments_values.{{ $commitments_item }}.item" :value="__('label.item')" />
             <x-text-input 
                 id="commitments_values.{{ $commitments_item }}.item" 
                 class="block mt-1 w-full" 
@@ -12,14 +12,14 @@
                 name="commitments_values.{{ $commitments_item }}.item" 
                 wire:model="commitments_values.{{ $commitments_item }}.item" 
                 :value="old('commitments_values.'.$commitments_item.'.item')" 
-                placeholder="e.g. Loans, Insurances" 
+                placeholder="{{ __('label.commitment_placeholder') }}" 
                 required 
                 autofocus 
             />
             <x-input-error :messages="$errors->get('commitments_values.'.$commitments_item.'.item')" class="mt-2" />
         </div>
         <div>
-            <x-input-label for="commitments_values.{{ $commitments_item }}.amount" :value="__('Amount (RM)')" />
+            <x-input-label for="commitments_values.{{ $commitments_item }}.amount" :value="__('label.amount')" />
             <x-text-input 
                 id="commitments_values.{{ $commitments_item }}.amount" 
                 class="block mt-1 w-full" 
@@ -42,7 +42,7 @@
         @endif
     @empty
         <div class="col-span-5 text-red-700 dark:text-red-500">
-            {{ __('Error occured while fetching expenses items field') }}
+            @lang('common.error.commitment_field')
         </div>
     @endforelse
 </div>

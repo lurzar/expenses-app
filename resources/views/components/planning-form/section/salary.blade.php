@@ -1,14 +1,14 @@
 <div class="grid grid-cols-2 gap-4 mb-10">
     <div>
-        <x-input-label for="current_month" :value="__('Month')" />
+        <x-input-label for="current_month" :value="__('label.month')" />
         <x-text-input id="current_month" class="block mt-1 w-full dark:text-gray-500" type="text" name="current_month" wire:model="current_month" :disabled="true" required autofocus />
     </div>
     <div>
-        <x-input-label for="current_year" :value="__('Year')" />
+        <x-input-label for="current_year" :value="__('label.year')" />
         <x-text-input id="current_year" class="block mt-1 w-full dark:text-gray-500" type="text" name="current_year" wire:model="current_year" :disabled="true" required autofocus  />
     </div>
     <div>
-        <x-input-label for="salary" :value="__('Salary (RM)')" />
+        <x-input-label for="salary" :value="__('label.salary')" />
         <x-text-input 
             id="salary" 
             class="block mt-1 w-full" 
@@ -25,7 +25,7 @@
         <x-input-error :messages="$errors->get('salary')" class="mt-2" />
     </div>
     <div>
-        <x-input-label for="saving_rate" :value="__('Saving (%)')" />
+        <x-input-label for="saving_rate" :value="__('label.saving')" />
         <x-text-input 
             id="saving_rate" 
             class="block mt-1 w-full" 

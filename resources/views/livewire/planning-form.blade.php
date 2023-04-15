@@ -4,8 +4,8 @@
 
         <div id="salarySection">
             <x-planning-form.section.header 
-                :title="__('Salary Information')" 
-                :description="__('Provide your salary information and savings percentages.')"
+                :title="__('common.sentence.salary_information')" 
+                :description="__('common.sentence.salary_desc')"
                 :show_balance="false"
             />
             <x-planning-form.section.salary />
@@ -13,8 +13,8 @@
 
         <div id="savingSection">
             <x-planning-form.section.header 
-                :title="__('Savings Information')" 
-                :description="__('Provide your salary information and savings percentages.')"
+                :title="__('common.sentence.saving_information')" 
+                :description="__('common.sentence.saving_desc')"
                 :show_saving="true"
                 :res_total_saving="$total_savings"
                 :res_balance="$balance_after_saving_rates"
@@ -27,8 +27,8 @@
 
         <div id="commitmentSection">
             <x-planning-form.section.header 
-                :title="__('Commitment Expenses Information')" 
-                :description="__('Provide your commitment expenses information with appropriate amount.')"
+                :title="__('common.sentence.commitment_information')" 
+                :description="__('common.sentence.commitment_desc')"
                 :res_balance="$balance_after_savings"
             />
             <x-planning-form.section.commitment 
@@ -39,8 +39,8 @@
 
         <div id="otherSection">
             <x-planning-form.section.header 
-                :title="__('Other Expenses Information')" 
-                :description="__('Provide your other expenses information with appropriate amount.')"
+                :title="__('common.sentence.other_information')" 
+                :description="__('common.sentence.other_desc')"
                 :res_balance="$balance_after_commitments"
             />
             <x-planning-form.section.other 
@@ -51,18 +51,18 @@
 
         <div id="summarySection">
             <x-planning-form.section.header 
-                :title="__('Planning Summary')" 
-                :description="__('Summaries of your expenses planning.')"
+                :title="__('common.sentence.planning_summary')" 
+                :description="__('common.sentence.planning_summary_desc')"
                 :custom="false"
             />
             <div class="grid grid-cols-2 gap-4 mb-10">
                 <div>
-                    <x-input-label for="total-saving" :value="__('Total Saving (RM)')" />
+                    <x-input-label for="total-saving" :value="__('label.total_saving')" />
                     <x-text-input id="total-saving" class="block mt-1 w-full" type="text" name="total-saving" :value="old('total-saving')" :disabled="true" />
                     <x-input-error :messages="$errors->get('total-saving')" class="mt-2" />
                 </div>
                 <div>
-                    <x-input-label for="total-change" :value="__('Total Change (RM)')" />
+                    <x-input-label for="total-change" :value="__('label.total_balance')" />
                     <x-text-input id="total-change" class="block mt-1 w-full" type="text" name="total-change" :value="old('total-change')" :disabled="true" />
                     <x-input-error :messages="$errors->get('total-change')" class="mt-2" />
                 </div>
@@ -72,7 +72,7 @@
         {{-- Button submit --}}
         <div class="mb-6 float-right">
             <x-primary-button type="submit">
-                {{ __('Submit') }}
+                @lang('common.submit')
             </x-primary-button>
         </div>
     </form>
