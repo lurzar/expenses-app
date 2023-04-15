@@ -11,7 +11,7 @@
         |
         */
 
-        'email' => 'Email',
+        'email' => 'E-mel',
         'password' => 'Kata laluan',
         'confirm_password' => 'Sahkan Kata Laluan',
         'remember_me' => 'Ingat saya',
