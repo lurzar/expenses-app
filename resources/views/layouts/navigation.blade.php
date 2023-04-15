@@ -5,23 +5,25 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="@auth {{ route('dashboard') }} @else {{ route('landing') }} @endauth">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        @lang('common.dashboard')
-                    </x-nav-link>
-                    <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
-                        @lang('common.planning')
-                    </x-nav-link>
-                    <x-nav-link :href="route('expenses.index')" :active="request()->routeIs('expenses.index')">
-                        @lang('common.expenses')
-                    </x-nav-link>
-                </div>
+                @auth
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            @lang('common.dashboard')
+                        </x-nav-link>
+                        <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
+                            @lang('common.planning')
+                        </x-nav-link>
+                        <x-nav-link :href="route('expenses.index')" :active="request()->routeIs('expenses.index')">
+                            @lang('common.expenses')
+                        </x-nav-link>
+                    </div>
+                @endauth
             </div>
 
             <!-- Menu Dropdown -->
@@ -33,7 +35,9 @@
                 <x-compiled.language-option />
                 
                 <!-- Settings Dropdown -->
-                <x-compiled.settings-option />
+                @auth
+                    <x-compiled.settings-option />
+                @endauth
             </div>
 
             <!-- Hamburger -->
@@ -50,46 +54,50 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                @lang('common.dashboard')
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
-                @lang('common.planning')
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('expenses.index')" :active="request()->routeIs('expenses.index')">
-                @lang('common.expenses')
-            </x-responsive-nav-link>
-        </div>
+        @auth
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    @lang('common.dashboard')
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
+                    @lang('common.planning')
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('expenses.index')" :active="request()->routeIs('expenses.index')">
+                    @lang('common.expenses')
+                </x-responsive-nav-link>
+            </div>
+        @endauth
 
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">
-                    <i class="fa-solid fa-gear"></i>
-                    &nbsp;
-                    @lang('common.settings')
+        @auth
+            <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+                <div class="px-4">
+                    <div class="font-medium text-base text-gray-800 dark:text-gray-200">
+                        <i class="fa-solid fa-gear"></i>
+                        &nbsp;
+                        @lang('common.settings')
+                    </div>
+                </div>
+
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('profile.edit')">
+                        <i class="fa-solid fa-user"></i>
+                        &nbsp;
+                        @lang('common.profile')
+                    </x-responsive-nav-link>
+
+                    <!-- Authentication -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();this.closest('form').submit();">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            &nbsp;
+                            @lang('common.logout')
+                        </x-responsive-nav-link>
+                    </form>
                 </div>
             </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    <i class="fa-solid fa-user"></i>
-                    &nbsp;
-                    @lang('common.profile')
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();this.closest('form').submit();">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        &nbsp;
-                        @lang('common.logout')
-                    </x-responsive-nav-link>
-                </form>
-            </div>
-        </div>
+        @endauth
 
         <!-- Responsive Languages Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
