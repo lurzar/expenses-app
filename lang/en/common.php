@@ -2,7 +2,7 @@
     return [
         /*
         |--------------------------------------------------------------------------
-        | English Public Language Lines
+        | English Common Language Lines
         |--------------------------------------------------------------------------
         |
         | The following language lines are used during public used for various

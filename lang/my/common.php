@@ -2,7 +2,7 @@
     return [
         /*
         |--------------------------------------------------------------------------
-        | Malay Public Language Lines
+        | Malay Common Language Lines
         |--------------------------------------------------------------------------
         |
         | The following language lines are used during public used for various
