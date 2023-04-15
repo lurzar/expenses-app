@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 // Landing
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('landing');
 
 // Language
 Route::get('/language/{lang?}', [LanguageController::class, 'index'])->name('language');
