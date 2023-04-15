@@ -11,11 +11,10 @@
         |
         */
 
+        // For short word
         'login' => 'Log Masuk',
         'logout' => 'Log Keluar',
-        'forgot_password' => 'Luapa kata laluan anda?',
         'register' => 'Daftar',
-        'already_registered' => 'Sudah Mendaftar?',
         'language' => 'Bahasa',
         'english' => 'Inggeris',
         'malay' => 'Melayu',
@@ -23,4 +22,10 @@
         'planning' => 'Perancangan',
         'expenses' => 'Perbelanjaan',
         'profile' => 'Profil',
+
+        // For long word or sentences
+        'sentence' => [
+            'forgot_password' => 'Luapa kata laluan anda?',
+            'already_registered' => 'Sudah Mendaftar?',
+        ],
     ];

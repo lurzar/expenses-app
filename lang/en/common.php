@@ -11,11 +11,10 @@
         |
         */
 
+        // For short word
         'login' => 'Login',
         'logout' => 'Logout',
-        'forgot_password' => 'Forgot your Password?',
         'register' => 'Register',
-        'already_registered' => 'Already registered?',
         'language' => 'Language',
         'english' => 'English',
         'malay' => 'Malay',
@@ -23,4 +22,10 @@
         'planning' => 'Planning',
         'expenses' => 'Expenses',
         'profile' => 'Profile',
+
+        // For long word or sentences
+        'sentence' => [
+            'forgot_password' => 'Forgot your Password?',
+            'already_registered' => 'Already registered?',
+        ],
     ];
