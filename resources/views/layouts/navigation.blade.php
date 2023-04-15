@@ -13,13 +13,13 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        @lang('public.dashboard')
+                        @lang('common.dashboard')
                     </x-nav-link>
                     <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
-                        @lang('public.planning')
+                        @lang('common.planning')
                     </x-nav-link>
                     <x-nav-link :href="route('expenses.index')" :active="request()->routeIs('expenses.index')">
-                        @lang('public.expenses')
+                        @lang('common.expenses')
                     </x-nav-link>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>@lang('public.language')</div>
+                            <div>@lang('common.language')</div>
 
                             <div class="ml-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -45,10 +45,10 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('language', 'en')">
-                            {{ __('public.english') }}
+                            {{ __('common.english') }}
                         </x-dropdown-link>
                         <x-dropdown-link :href="route('language', 'my')">
-                            {{ __('public.malay') }}
+                            {{ __('common.malay') }}
                         </x-dropdown-link>
                     </x-slot>
                 </x-dropdown>
@@ -69,14 +69,14 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            @lang('public.profile')
+                            @lang('common.profile')
                         </x-dropdown-link>
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();this.closest('form').submit();">
-                                @lang('public.logout')
+                                @lang('common.logout')
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -137,15 +137,15 @@
         <!-- Responsive Languages Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">@lang('public.language')</div>
+                <div class="font-medium text-base text-gray-800 dark:text-gray-200">@lang('common.language')</div>
             </div>
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('language', 'en')">
-                    @lang('public.english')
+                    @lang('common.english')
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('language', 'my')">
-                    @lang('public.malay')
+                    @lang('common.malay')
                 </x-responsive-nav-link>
             </div>
         </div>
