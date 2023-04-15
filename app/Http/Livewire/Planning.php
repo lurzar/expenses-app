@@ -4,7 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 
-class PlanningForm extends Component
+class Planning extends Component
 {
     public $current_month;
     public $current_year;
@@ -119,6 +119,6 @@ class PlanningForm extends Component
     
     public function render()
     {
-        return view('livewire.planning-form');
+        return view('livewire.planning.index');
     }
 }
