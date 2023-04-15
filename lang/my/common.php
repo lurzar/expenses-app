@@ -15,6 +15,7 @@
         'login' => 'Log Masuk',
         'logout' => 'Log Keluar',
         'register' => 'Daftar',
+        'submit' => 'Hantar',
         'language' => 'Bahasa',
         'english' => 'Inggeris',
         'malay' => 'Melayu',
@@ -22,6 +23,8 @@
         'planning' => 'Perancangan',
         'expenses' => 'Perbelanjaan',
         'profile' => 'Profil',
+        'saving' => 'Simpanan',
+        'balance' => 'Baki',
 
         // For long word or sentences
         'sentence' => [
@@ -37,5 +40,12 @@
             'other_desc' => 'Berikan maklumat perbelanjaan anda yang lain dengan jumlah yang sesuai.',
             'planning_summary' => 'Ringkasan Perancangan',
             'planning_summary_desc' => 'Ringkasan perancangan perbelanjaan anda.',
+        ],
+
+        // For custom error message
+        'error' => [
+            'saving_field' => 'Ralat berlaku semasa memproses medan perkara simpanan.',
+            'commitment_field' => 'Ralat berlaku semasa memproses medan perkara komitment.',
+            'other_field' => 'Ralat berlaku semasa memproses medan perkara lain.',
         ],
     ];

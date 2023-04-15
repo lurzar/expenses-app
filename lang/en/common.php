@@ -15,6 +15,7 @@
         'login' => 'Login',
         'logout' => 'Logout',
         'register' => 'Register',
+        'submit' => 'Submit',
         'language' => 'Language',
         'english' => 'English',
         'malay' => 'Malay',
@@ -22,6 +23,8 @@
         'planning' => 'Planning',
         'expenses' => 'Expenses',
         'profile' => 'Profile',
+        'saving' => 'Saving',
+        'balance' => 'Balance',
 
         // For long word or sentences
         'sentence' => [
@@ -37,5 +40,12 @@
             'other_desc' => 'Provide your other expenses information with appropriate amount.',
             'planning_summary' => 'Planning Summary',
             'planning_summary_desc' => 'Summaries of your expenses planning.',
+        ],
+
+        // For custom error message
+        'error' => [
+            'saving_field' => 'Error occured while fetching savings items field.',
+            'commitment_field' => 'Error occured while fetching commitments items field.',
+            'other_field' => 'Error occured while fetching other items field.',
         ],
     ];
