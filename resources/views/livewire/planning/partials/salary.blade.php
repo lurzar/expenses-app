@@ -35,6 +35,7 @@
             />
             <x-input-error :messages="$errors->get('salary')" class="mt-2" />
         </div>
+
         <div>
             <x-input-label for="saving_rate" :value="__('label.saving')" />
             <x-text-input 
@@ -43,6 +44,7 @@
                 type="number" 
                 name="saving_rate" 
                 min="20" 
+                max="100" 
                 step="5" 
                 wire:model="saving_rate" 
                 :value="old('saving_rate')"  

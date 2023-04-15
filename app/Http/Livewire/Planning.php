@@ -29,7 +29,7 @@ class Planning extends Component
 
     protected $rules = [
         'salary' => 'required|numeric',
-        'saving_rate' => 'required|numeric|min:20',
+        'saving_rate' => 'required|numeric|min:20|max:100',
         'savings_values.*.item' => 'required|string',
         'savings_values.*.amount' => 'required|numeric|min:1',
         'commitments_values.*.item' => 'required|string',
@@ -107,14 +107,18 @@ class Planning extends Component
 
     public function updatedSalary($value)
     {
-        $this->total_savings = ($value * $this->saving_rate) / 100;
-        $this->balance_after_saving_rates = $value - $this->total_savings;
+        if (!blank($value) && !blank($this->saving_rate) && $this->saving_rate <= 100) {
+            $this->total_savings = ($value * $this->saving_rate) / 100;
+            $this->balance_after_saving_rates = $value - $this->total_savings;
+        }
     }
 
     public function updatedSavingRate($value)
     {
-        $this->total_savings = ($this->salary * $value) / 100;
-        $this->balance_after_saving_rates = $this->salary - $this->total_savings;
+        if (!blank($value) && !blank($this->salary) && $value <= 100) {
+            $this->total_savings = ($this->salary * $value) / 100;
+            $this->balance_after_saving_rates = $this->salary - $this->total_savings;
+        }
     }
     
     public function render()
