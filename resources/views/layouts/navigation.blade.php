@@ -27,13 +27,13 @@
             <!-- Menu Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6 gap-x-2">
                 <!-- Themes Mode Dropdown -->
-                <x-compiled.button-theme-mode />
+                <x-compiled.theme-option />
 
                 <!-- Languages Mode Dropdown -->
-                <x-compiled.button-language-mode />
+                <x-compiled.language-option />
                 
                 <!-- Settings Dropdown -->
-                <x-compiled.button-settings />
+                <x-compiled.settings-option />
             </div>
 
             <!-- Hamburger -->
