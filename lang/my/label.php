@@ -13,6 +13,8 @@
 
         'email' => 'E-mel',
         'password' => 'Kata laluan',
+        'current_password' => 'Kata Laluan Semasa',
+        'new_password' => 'Kata Laluan Baharu',
         'confirm_password' => 'Sahkan Kata Laluan',
         'remember_me' => 'Ingat saya',
         'name' => 'Nama',

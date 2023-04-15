@@ -13,6 +13,8 @@
 
         'email' => 'Email',
         'password' => 'Password',
+        'current_password' => 'Current Password',
+        'new_password' => 'New Password',
         'confirm_password' => 'Confirm Password',
         'remember_me' => 'Remember me',
         'name' => 'Name',
