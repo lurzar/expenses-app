@@ -12,6 +12,7 @@
         */
 
         'login' => 'Login',
+        'logout' => 'Logout',
         'forgot_password' => 'Forgot your Password?',
         'register' => 'Register',
         'already_registered' => 'Already registered?',
@@ -19,4 +20,7 @@
         'english' => 'English',
         'malay' => 'Malay',
         'dashboard' => 'Dashboard',
+        'planning' => 'Planning',
+        'expenses' => 'Expenses',
+        'profile' => 'Profile',
     ];

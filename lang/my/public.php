@@ -12,6 +12,7 @@
         */
 
         'login' => 'Log Masuk',
+        'logout' => 'Log Keluar',
         'forgot_password' => 'Luapa kata laluan anda?',
         'register' => 'Daftar',
         'already_registered' => 'Sudah Mendaftar?',
@@ -19,4 +20,7 @@
         'english' => 'Inggeris',
         'malay' => 'Melayu',
         'dashboard' => 'Papan Pemuka',
+        'planning' => 'Perancangan',
+        'expenses' => 'Perbelanjaan',
+        'profile' => 'Profil',
     ];
