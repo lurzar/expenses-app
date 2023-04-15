@@ -7,14 +7,22 @@
 
         <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('label.email')" />
+            <x-input-label for="email">
+                <i class="fa-solid fa-envelope"></i>
+                &nbsp;
+                @lang('label.email')
+            </x-input-label>
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('label.password')" />
+            <x-input-label for="password">
+                <i class="fa-solid fa-key"></i>
+                &nbsp;
+                @lang('label.password')
+            </x-input-label>
 
             <x-text-input id="password" class="block mt-1 w-full"
                             type="password"
