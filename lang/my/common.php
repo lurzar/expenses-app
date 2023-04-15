@@ -16,6 +16,7 @@
         'logout' => 'Log Keluar',
         'register' => 'Daftar',
         'submit' => 'Hantar',
+        'send_link' => 'Hantar Pautan',
         'save' => 'Simpan',
         'saved' => 'Telah Disimpan',
         'cancel' => 'Batal',

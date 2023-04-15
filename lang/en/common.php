@@ -16,6 +16,7 @@
         'logout' => 'Logout',
         'register' => 'Register',
         'submit' => 'Submit',
+        'send_link' => 'Send Link',
         'save' => 'Save',
         'saved' => 'Saved',
         'cancel' => 'Cancel',
