@@ -25,7 +25,7 @@
             </div>
 
             <!-- Menu Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ml-6 gap-x-2">
+            <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <!-- Themes Mode Dropdown -->
                 <x-compiled.theme-option />
 
