@@ -20,6 +20,7 @@
         'saved' => 'Telah Disimpan',
         'cancel' => 'Batal',
         'settings' => 'Tetapan',
+        'back' => 'Kembali',
         'language' => 'Bahasa',
         'english' => 'Inggeris',
         'malay' => 'Melayu',
