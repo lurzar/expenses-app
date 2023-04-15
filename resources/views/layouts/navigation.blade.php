@@ -13,13 +13,13 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        @lang('dashboard.title')
+                        @lang('public.dashboard')
                     </x-nav-link>
                     <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
-                        {{ __('Planning') }}
+                        @lang('public.planning')
                     </x-nav-link>
                     <x-nav-link :href="route('expenses.index')" :active="request()->routeIs('expenses.index')">
-                        {{ __('Expenses') }}
+                        @lang('public.expenses')
                     </x-nav-link>
                 </div>
             </div>
@@ -69,17 +69,14 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            @lang('public.profile')
                         </x-dropdown-link>
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                            <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();this.closest('form').submit();">
+                                @lang('public.logout')
                             </x-dropdown-link>
                         </form>
                     </x-slot>
