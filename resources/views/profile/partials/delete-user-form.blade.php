@@ -1,6 +1,8 @@
 <section class="space-y-6">
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            <i class="fa-solid fa-user-slash"></i>
+            &nbsp;
             @lang('common.sentence.delete_account')
         </h2>
 
@@ -21,6 +23,8 @@
             @method('delete')
 
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                <i class="fa-solid fa-triangle-exclamation text-red-600 dark:text-red-400"></i>
+                &nbsp;
                 @lang('common.sentence.delete_account_confirmation')
             </h2>
 
@@ -29,10 +33,10 @@
             </p>
 
             <div class="mt-6">
-                <x-input-label for="password" value="{{ __('label.password') }}" class="sr-only" />
+                <x-input-label for="password_delete" value="{{ __('label.password') }}" class="sr-only" />
 
                 <x-text-input
-                    id="password"
+                    id="password_delete"
                     name="password"
                     type="password"
                     class="mt-1 block w-3/4"

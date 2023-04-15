@@ -1,6 +1,8 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            <i class="fa-solid fa-key"></i>
+            &nbsp;
             @lang('common.sentence.update_password')
         </h2>
 

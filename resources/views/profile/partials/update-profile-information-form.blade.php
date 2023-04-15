@@ -1,6 +1,8 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            <i class="fa-solid fa-id-card"></i>
+            &nbsp;
             @lang('common.sentence.profile_information')
         </h2>
 
