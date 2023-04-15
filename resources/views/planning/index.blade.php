@@ -1,6 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            <i class="fa-solid fa-clipboard-list"></i>
+            &nbsp;
             @lang('common.planning')
         </h2>
     </x-slot>
