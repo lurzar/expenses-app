@@ -9,6 +9,8 @@
 
 <header class="mb-6">
     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+        {{ $icon ?? '' }}
+        &nbsp;
         {{ $title }}
         <span class="text-sm italic text-slate-500">
             @if ($show_balance)

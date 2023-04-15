@@ -7,7 +7,12 @@
                 :title="__('common.sentence.salary_information')" 
                 :description="__('common.sentence.salary_desc')"
                 :show_balance="false"
-            />
+            >
+                @slot('icon')
+                    <i class="fa-solid fa-sack-dollar"></i>
+                @endslot
+            </x-planning-form.section.header>
+
             <x-planning-form.section.salary />
         </div>
 
@@ -18,7 +23,12 @@
                 :show_saving="true"
                 :res_total_saving="$total_savings"
                 :res_balance="$balance_after_saving_rates"
-            />
+            >
+                @slot('icon')
+                    <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                @endslot
+            </x-planning-form.section.header>
+
             <x-planning-form.section.saving 
                 :res_savings_items="$savings_items"
                 :res_savings_values="$savings_values"
@@ -30,7 +40,12 @@
                 :title="__('common.sentence.commitment_information')" 
                 :description="__('common.sentence.commitment_desc')"
                 :res_balance="$balance_after_savings"
-            />
+            >
+                @slot('icon')
+                    <i class="fa-solid fa-credit-card"></i>
+                @endslot
+            </x-planning-form.section.header>
+
             <x-planning-form.section.commitment 
                 :res_commitments_items="$commitments_items"
                 :res_commitments_values="$commitments_values" 
@@ -42,7 +57,12 @@
                 :title="__('common.sentence.other_information')" 
                 :description="__('common.sentence.other_desc')"
                 :res_balance="$balance_after_commitments"
-            />
+            >
+                @slot('icon')
+                    <i class="fa-solid fa-hand-holding-dollar"></i>
+                @endslot
+            </x-planning-form.section.header>
+
             <x-planning-form.section.other 
                 :res_others_items="$others_items"
                 :res_others_values="$others_values" 
@@ -54,7 +74,12 @@
                 :title="__('common.sentence.planning_summary')" 
                 :description="__('common.sentence.planning_summary_desc')"
                 :custom="false"
-            />
+            >
+                @slot('icon')
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                @endslot
+            </x-planning-form.section.header>
+
             <div class="grid grid-cols-2 gap-4 mb-10">
                 <div>
                     <x-input-label for="total-saving" :value="__('label.total_saving')" />
