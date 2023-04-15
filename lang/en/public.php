@@ -2,7 +2,7 @@
     return [
         /*
         |--------------------------------------------------------------------------
-        | Public Language Lines
+        | English Public Language Lines
         |--------------------------------------------------------------------------
         |
         | The following language lines are used during public used for various
@@ -11,7 +11,12 @@
         |
         */
 
+        'login' => 'Login',
+        'forgot_password' => 'Forgot your Password?',
+        'register' => 'Register',
+        'already_registered' => 'Already registered?',
         'language' => 'Language',
         'english' => 'English',
         'malay' => 'Malay',
+        'dashboard' => 'Dashboard',
     ];

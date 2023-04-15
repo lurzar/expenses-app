@@ -2,7 +2,7 @@
     return [
         /*
         |--------------------------------------------------------------------------
-        | Public Language Lines
+        | Malay Public Language Lines
         |--------------------------------------------------------------------------
         |
         | The following language lines are used during public used for various
@@ -11,7 +11,12 @@
         |
         */
 
+        'login' => 'Log Masuk',
+        'forgot_password' => 'Luapa kata laluan anda?',
+        'register' => 'Daftar',
+        'already_registered' => 'Sudah Mendaftar?',
         'language' => 'Bahasa',
         'english' => 'Inggeris',
         'malay' => 'Melayu',
+        'dashboard' => 'Papan Pemuka',
     ];
