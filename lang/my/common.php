@@ -27,5 +27,15 @@
         'sentence' => [
             'forgot_password' => 'Luapa kata laluan anda?',
             'already_registered' => 'Sudah Mendaftar?',
+            'salary_information' => 'Maklumat Gaji',
+            'salary_desc' => 'Berikan maklumat gaji dan peratusan simpanan anda.',
+            'saving_information' => 'Maklumat Simpanan',
+            'saving_desc' => 'Berikan maklumat simpanan anda dengan jumlah yang sesuai.',
+            'commitment_information' => 'Maklumat Perbelanjaan Komitmen',
+            'commitment_desc' => 'Berikan maklumat perbelanjaan komitmen anda dengan jumlah yang sesuai.',
+            'other_information' => 'Maklumat Perbelanjaan Lain',
+            'other_desc' => 'Berikan maklumat perbelanjaan anda yang lain dengan jumlah yang sesuai.',
+            'planning_summary' => 'Ringkasan Perancangan',
+            'planning_summary_desc' => 'Ringkasan perancangan perbelanjaan anda.',
         ],
     ];
