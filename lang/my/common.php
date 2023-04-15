@@ -19,6 +19,7 @@
         'save' => 'Simpan',
         'saved' => 'Telah Disimpan',
         'cancel' => 'Batal',
+        'settings' => 'Tetapan',
         'language' => 'Bahasa',
         'english' => 'Inggeris',
         'malay' => 'Melayu',

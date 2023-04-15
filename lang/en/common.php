@@ -19,6 +19,7 @@
         'save' => 'Save',
         'saved' => 'Saved',
         'cancel' => 'Cancel',
+        'settings' => 'Settings',
         'language' => 'Language',
         'english' => 'English',
         'malay' => 'Malay',

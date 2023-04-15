@@ -52,36 +52,40 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                @lang('dashboard.title')
+                @lang('common.dashboard')
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
-                {{ __('Planning') }}
+                @lang('common.planning')
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('expenses.index')" :active="request()->routeIs('expenses.index')">
-                {{ __('Expenses') }}
+                @lang('common.expenses')
             </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-base text-gray-800 dark:text-gray-200">
+                    <i class="fa-solid fa-gear"></i>
+                    &nbsp;
+                    @lang('common.settings')
+                </div>
             </div>
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    <i class="fa-solid fa-user"></i>
+                    &nbsp;
+                    @lang('common.profile')
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                    <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();this.closest('form').submit();">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        &nbsp;
+                        @lang('common.logout')
                     </x-responsive-nav-link>
                 </form>
             </div>
@@ -90,7 +94,11 @@
         <!-- Responsive Languages Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">@lang('common.language')</div>
+                <div class="font-medium text-base text-gray-800 dark:text-gray-200">
+                    <i class="fa-solid fa-language"></i>
+                    &nbsp;
+                    @lang('common.language')
+                </div>
             </div>
 
             <div class="mt-3 space-y-1">
