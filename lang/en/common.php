@@ -20,6 +20,7 @@
         'save' => 'Save',
         'saved' => 'Saved',
         'cancel' => 'Cancel',
+        'confirm' => 'Confirm',
         'settings' => 'Settings',
         'back' => 'Back',
         'language' => 'Language',

@@ -13,7 +13,7 @@
 
         'registered' => 'Sudah Mendaftar?',
         'information' => 'Maklumat Akaun',
-        'information_desc' => "Kemas kini maklumat profil dan alamat e-mel akaun anda.",
+        'information_desc' => 'Kemas kini maklumat profil dan alamat e-mel akaun anda.',
         'delete' => 'Padam Akaun',
         'delete_warn' => 'Setelah akaun anda dipadamkan, semua sumber dan datanya akan dipadamkan secara kekal.',
         'delete_warn_download' => 'Sebelum memadamkan akaun anda, sila muat turun sebarang data atau maklumat yang ingin anda simpan.',
