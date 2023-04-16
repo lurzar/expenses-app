@@ -16,19 +16,31 @@
         @method('put')
 
         <div>
-            <x-input-label for="current_password" :value="__('label.current_password')" />
+            <x-input-label for="current_password">
+                <i class="fa-solid fa-user-lock"></i>
+                &nbsp;
+                @lang('label.current_password')
+            </x-input-label>
             <x-text-input id="current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
             <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
         </div>
 
         <div>
-            <x-input-label for="password" :value="__('label.new_password')" />
+            <x-input-label for="password">
+                <i class="fa-solid fa-lock"></i>
+                &nbsp;
+                @lang('label.new_password')
+            </x-input-label>
             <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
             <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
         </div>
 
         <div>
-            <x-input-label for="password_confirmation" :value="__('label.confirm_password')" />
+            <x-input-label for="confirm_password">
+                <i class="fa-solid fa-circle-check"></i>
+                &nbsp;
+                @lang('label.confirm_password')
+            </x-input-label>
             <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
             <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
         </div>
