@@ -3,11 +3,11 @@
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
             <i class="fa-solid fa-id-card"></i>
             &nbsp;
-            @lang('common.sentence.profile_information')
+            @lang('account.information')
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            @lang('common.sentence.profile_desc')
+            @lang('account.information_desc')
         </p>
     </header>
 
@@ -33,16 +33,16 @@
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div>
                     <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                        @lang('common.error.email_unverified')
+                        @lang('email.unverified')
 
                         <button form="send-verification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                            @lang('common.sentence.email_verify_link_resend')
+                            @lang('email.verify_link_resend')
                         </button>
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
                         <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                            @lang('common.sentence.email_verify_link_sent')
+                            @lang('email.verify_link_sent')
                         </p>
                     @endif
                 </div>

@@ -3,11 +3,11 @@
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
             <i class="fa-solid fa-key"></i>
             &nbsp;
-            @lang('common.sentence.update_password')
+            @lang('password.update')
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            @lang('common.sentence.update_password_desc')
+            @lang('password.update_desc')
         </p>
     </header>
 

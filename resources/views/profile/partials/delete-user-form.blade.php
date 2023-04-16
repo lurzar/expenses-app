@@ -3,19 +3,19 @@
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
             <i class="fa-solid fa-user-slash"></i>
             &nbsp;
-            @lang('common.sentence.delete_account')
+            @lang('account.delete')
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            @lang('common.sentence.delete_account_warn')
-            @lang('common.sentence.delete_account_warn_download')
+            @lang('account.delete_warn')
+            @lang('account.delete_warn_download')
         </p>
     </header>
 
     <x-danger-button
         x-data=""
         x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-    >@lang('common.sentence.delete_account')</x-danger-button>
+    >@lang('account.delete')</x-danger-button>
 
     <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
         <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
@@ -25,11 +25,12 @@
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                 <i class="fa-solid fa-triangle-exclamation text-red-600 dark:text-red-400"></i>
                 &nbsp;
-                @lang('common.sentence.delete_account_confirmation')
+                @lang('account.delete_confirmation')
             </h2>
 
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                @lang('common.sentence.delete_account_warn')
+                @lang('account.delete_warn')
+                @lang('password.ask_enter')
             </p>
 
             <div class="mt-6">
@@ -52,7 +53,7 @@
                 </x-secondary-button>
 
                 <x-danger-button class="ml-3">
-                    @lang('common.sentence.delete_account')
+                    @lang('account.delete')
                 </x-danger-button>
             </div>
         </form>
