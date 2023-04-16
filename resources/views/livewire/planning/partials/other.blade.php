@@ -1,13 +1,12 @@
 <div id="otherSection">
-    <x-planning-form.header 
+    <x-section-header 
         :title="__('common.sentence.other_information')" 
         :description="__('common.sentence.other_desc')"
         :res_balance="$balance_after_commitments"
     >
-        @slot('icon')
-            <i class="fa-solid fa-hand-holding-dollar"></i>
-        @endslot
-    </x-planning-form.header>
+        <i class="fa-solid fa-hand-holding-dollar"></i>
+        &nbsp;
+    </x-section-header>
 
     <div class="grid grid-cols-6 gap-4 mb-6 items-end">
         @forelse ($others_items as $others_item)   

@@ -1,13 +1,12 @@
 <div id="summarySection">
-    <x-planning-form.header 
+    <x-section-header 
         :title="__('common.sentence.planning_summary')" 
         :description="__('common.sentence.planning_summary_desc')"
         :custom="false"
     >
-        @slot('icon')
-            <i class="fa-solid fa-file-invoice-dollar"></i>
-        @endslot
-    </x-planning-form.header>
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        &nbsp;
+    </x-section-header>
 
     <div class="grid grid-cols-2 gap-4 mb-10">
         <div>

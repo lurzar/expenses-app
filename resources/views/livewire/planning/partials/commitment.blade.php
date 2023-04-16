@@ -1,13 +1,12 @@
 <div id="commitmentSection">
-    <x-planning-form.header 
+    <x-section-header 
         :title="__('common.sentence.commitment_information')" 
         :description="__('common.sentence.commitment_desc')"
         :res_balance="$balance_after_savings"
     >
-        @slot('icon')
-            <i class="fa-solid fa-credit-card"></i>
-        @endslot
-    </x-planning-form.header>
+        <i class="fa-solid fa-credit-card"></i>
+        &nbsp;
+    </x-section-header>
 
     <div class="grid grid-cols-6 gap-4 mb-6 items-end">
         @forelse ($commitments_items as $commitments_item)   

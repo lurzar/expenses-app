@@ -1,13 +1,12 @@
 <div id="salarySection">
-    <x-planning-form.header 
+    <x-section-header 
         :title="__('common.sentence.salary_information')" 
         :description="__('common.sentence.salary_desc')"
         :show_balance="false"
     >
-        @slot('icon')
-            <i class="fa-solid fa-sack-dollar"></i>
-        @endslot
-    </x-planning-form.header>
+        <i class="fa-solid fa-sack-dollar"></i>
+        &nbsp;
+    </x-section-header>
     
     <div class="grid grid-cols-2 gap-4 mb-10">
         <div>

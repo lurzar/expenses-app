@@ -1,15 +1,14 @@
 <div id="savingSection">
-    <x-planning-form.header 
+    <x-section-header 
         :title="__('common.sentence.saving_information')" 
         :description="__('common.sentence.saving_desc')"
         :show_saving="true"
         :res_total_saving="$total_savings"
         :res_balance="$balance_after_saving_rates"
     >
-        @slot('icon')
-            <i class="fa-solid fa-circle-dollar-to-slot"></i>
-        @endslot
-    </x-planning-form.header>
+        <i class="fa-solid fa-circle-dollar-to-slot"></i>
+        &nbsp;
+    </x-section-header>
 
     <div class="grid grid-cols-6 gap-4 mb-6 items-end">
         @forelse ($savings_items as $savings_item)   
