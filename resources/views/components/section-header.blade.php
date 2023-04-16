@@ -9,11 +9,10 @@
 
 <header class="mb-6">
     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-        {{ $icon ?? '' }}
-        &nbsp;
+        {{ $slot }} 
         {{ $title }}
-        <span class="text-sm italic text-slate-500">
-            @if ($show_balance)
+        @if ($show_balance)
+            <span class="text-sm italic text-slate-500">
                 @if ($show_saving)
                     @if ($res_total_saving != 0)
                         (@lang('common.saving'): RM {{ $res_total_saving }}, @lang('common.balance'): RM {{ $res_balance }})
@@ -23,7 +22,8 @@
                         (@lang('common.balance'): RM {{ $res_balance }})
                     @endif
                 @endif
-            @endif
+            </span>
+        @endif
         </span>
     </h2>
     <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
