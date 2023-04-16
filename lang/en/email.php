@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Malay Password Reset Language Lines
+    | English Email Language Lines
     |--------------------------------------------------------------------------
     |
     | The following language lines are the default lines which match reasons
@@ -13,10 +13,7 @@ return [
     |
     */
 
-    'reset' => 'Kata laluan anda telah ditetapkan semula.',
-    'sent' => 'Kami telah menghantar e-mel pautan tetapan semula kata laluan anda.',
-    'throttled' => 'Sila tunggu sebelum mencuba semula.',
-    'token' => 'Token tetapan semula kata laluan ini tidak sah.',
-    'user' => "Kami tidak dapat mencari pengguna dengan alamat e-mel itu.",
-
+    'verify_link_resend' => 'Click here to re-send the verification email.',
+    'verify_link_sent' => 'A new verification link has been sent to your email address.',
+    'unverified' => 'Your email address is unverified.',
 ];

@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | English Password Reset Language Lines
+    | English Email Language Lines
     |--------------------------------------------------------------------------
     |
     | The following language lines are the default lines which match reasons
@@ -13,10 +13,7 @@ return [
     |
     */
 
-    'reset' => 'Your password has been reset.',
-    'sent' => 'We have emailed your password reset link.',
-    'throttled' => 'Please wait before retrying.',
-    'token' => 'This password reset token is invalid.',
-    'user' => "We can't find a user with that email address.",
-
+    'verify_link_resend' => 'Klik di sini untuk menghantar semula pengesahan e-mel.',
+    'verify_link_sent' => 'Pautan pengesahan baharu telah dihantar ke alamat e-mel anda.',
+    'unverified' => 'Alamat e-mel anda tidak disahkan.',
 ];
