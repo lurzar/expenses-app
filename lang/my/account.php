@@ -17,5 +17,6 @@
         'delete' => 'Padam Akaun',
         'delete_warn' => 'Setelah akaun anda dipadamkan, semua sumber dan datanya akan dipadamkan secara kekal.',
         'delete_warn_download' => 'Sebelum memadamkan akaun anda, sila muat turun sebarang data atau maklumat yang ingin anda simpan.',
+        'delete_warn_full' => 'Setelah akaun anda dipadamkan, semua sumber dan datanya akan dipadamkan secara kekal. Sebelum memadamkan akaun anda, sila muat turun sebarang data atau maklumat yang ingin anda simpan.',
         'delete_confirmation' => 'Adakah anda pasti ingin memadamkan akaun anda?',
     ];
