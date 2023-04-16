@@ -19,7 +19,7 @@
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password">
-                <i class="fa-solid fa-key"></i>
+                <i class="fa-solid fa-lock"></i>
                 &nbsp;
                 @lang('label.password')
             </x-input-label>
