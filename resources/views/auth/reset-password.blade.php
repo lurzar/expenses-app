@@ -31,7 +31,7 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
+            <x-primary-button :icon="'update'">
                 @lang('password.reset')
             </x-primary-button>
         </div>

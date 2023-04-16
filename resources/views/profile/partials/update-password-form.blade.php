@@ -46,8 +46,8 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>
-                @lang('common.save')
+            <x-primary-button :icon="'update'">
+                @lang('common.update')
             </x-primary-button>
 
             @if (session('status') === 'password-updated')

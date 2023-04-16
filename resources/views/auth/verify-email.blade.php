@@ -14,7 +14,7 @@
             @csrf
 
             <div>
-                <x-primary-button>
+                <x-primary-button :icon="'submit'">
                     @lang('email.resend_link')
                 </x-primary-button>
             </div>

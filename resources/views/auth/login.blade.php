@@ -49,7 +49,7 @@
                 </a>
             @endif
 
-            <x-primary-button class="ml-3">
+            <x-primary-button class="ml-3" :icon="'login'">
                 @lang('common.login')
             </x-primary-button>
         </div>

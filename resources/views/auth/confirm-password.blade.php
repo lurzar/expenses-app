@@ -19,7 +19,7 @@
         </div>
 
         <div class="flex justify-end mt-4">
-            <x-primary-button>
+            <x-primary-button :icon="'confirm'">
                 @lang('common.confirm')
             </x-primary-button>
         </div>

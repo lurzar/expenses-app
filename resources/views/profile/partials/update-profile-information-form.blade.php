@@ -58,7 +58,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>
+            <x-primary-button :icon="'save'">
                 @lang('common.save')
             </x-primary-button>
 

@@ -62,7 +62,7 @@
                 @lang('account.registered')
             </a>
 
-            <x-primary-button class="ml-4">
+            <x-primary-button class="ml-4" :icon="'submit'">
                 @lang('common.register')
             </x-primary-button>
         </div>

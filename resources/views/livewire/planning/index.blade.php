@@ -9,7 +9,7 @@
         @include('livewire.planning.partials.summary')
         
         <div class="mb-6 float-right">
-            <x-primary-button type="submit">
+            <x-primary-button type="submit" :icon="'submit'">
                 @lang('common.submit')
             </x-primary-button>
         </div>
