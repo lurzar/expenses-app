@@ -21,6 +21,7 @@
         'saved' => 'Saved',
         'cancel' => 'Cancel',
         'confirm' => 'Confirm',
+        'update' => 'Update',
         'settings' => 'Settings',
         'back' => 'Back',
         'language' => 'Language',

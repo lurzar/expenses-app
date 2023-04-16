@@ -21,6 +21,7 @@
         'saved' => 'Telah Disimpan',
         'cancel' => 'Batal',
         'confirm' => 'Sahkan',
+        'update' => 'Kemaskini',
         'settings' => 'Tetapan',
         'back' => 'Kembali',
         'language' => 'Bahasa',
