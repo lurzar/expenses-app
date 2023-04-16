@@ -4,7 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 
-class PlanningForm extends Component
+class Planning extends Component
 {
     public $current_month;
     public $current_year;
@@ -29,7 +29,7 @@ class PlanningForm extends Component
 
     protected $rules = [
         'salary' => 'required|numeric',
-        'saving_rate' => 'required|numeric|min:20',
+        'saving_rate' => 'required|numeric|min:20|max:100',
         'savings_values.*.item' => 'required|string',
         'savings_values.*.amount' => 'required|numeric|min:1',
         'commitments_values.*.item' => 'required|string',
@@ -107,18 +107,22 @@ class PlanningForm extends Component
 
     public function updatedSalary($value)
     {
-        $this->total_savings = ($value * $this->saving_rate) / 100;
-        $this->balance_after_saving_rates = $value - $this->total_savings;
+        if (!blank($value) && !blank($this->saving_rate) && $this->saving_rate <= 100) {
+            $this->total_savings = ($value * $this->saving_rate) / 100;
+            $this->balance_after_saving_rates = $value - $this->total_savings;
+        }
     }
 
     public function updatedSavingRate($value)
     {
-        $this->total_savings = ($this->salary * $value) / 100;
-        $this->balance_after_saving_rates = $this->salary - $this->total_savings;
+        if (!blank($value) && !blank($this->salary) && $value <= 100) {
+            $this->total_savings = ($this->salary * $value) / 100;
+            $this->balance_after_saving_rates = $this->salary - $this->total_savings;
+        }
     }
     
     public function render()
     {
-        return view('livewire.planning-form');
+        return view('livewire.planning.index');
     }
 }
