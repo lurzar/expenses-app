@@ -20,13 +20,21 @@
         @method('patch')
 
         <div>
-            <x-input-label for="name" :value="__('label.name')" />
+            <x-input-label for="name">
+                <i class="fa-solid fa-user"></i>
+                &nbsp;
+                @lang('label.name')
+            </x-input-label>
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <div>
-            <x-input-label for="email" :value="__('label.email')" />
+            <x-input-label for="email">
+                <i class="fa-solid fa-envelope"></i>
+                &nbsp;
+                @lang('label.email')
+            </x-input-label>
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
