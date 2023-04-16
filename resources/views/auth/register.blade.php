@@ -27,7 +27,7 @@
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password">
-                <i class="fa-solid fa-user-lock"></i>
+                <i class="fa-solid fa-lock"></i>
                 &nbsp;
                 @lang('label.password')
             </x-input-label>
@@ -43,7 +43,7 @@
         <!-- Confirm Password -->
         <div class="mt-4">
             <x-input-label for="password_confirmation">
-                <i class="fa-solid fa-key"></i>
+                <i class="fa-solid fa-circle-check"></i>
                 &nbsp;
                 @lang('label.confirm_password')
             </x-input-label>
