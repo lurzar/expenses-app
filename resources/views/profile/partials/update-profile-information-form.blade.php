@@ -1,15 +1,12 @@
 <section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            <i class="fa-solid fa-id-card"></i>
-            &nbsp;
-            @lang('account.information')
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            @lang('account.information_desc')
-        </p>
-    </header>
+    <x-section-header 
+        :title="__('account.information')" 
+        :description="__('account.information_desc')"
+        :show_balance="false"
+    >
+        <i class="fa-solid fa-id-card"></i>
+        &nbsp;
+    </x-section-header>
 
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf

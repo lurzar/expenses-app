@@ -1,16 +1,12 @@
 <section class="space-y-6">
-    <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            <i class="fa-solid fa-user-slash"></i>
-            &nbsp;
-            @lang('account.delete')
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            @lang('account.delete_warn')
-            @lang('account.delete_warn_download')
-        </p>
-    </header>
+    <x-section-header 
+        :title="__('account.delete')" 
+        :description="__('account.delete_warn_full')"
+        :show_balance="false"
+    >
+        <i class="fa-solid fa-user-slash"></i>
+        &nbsp;
+    </x-section-header>
 
     <x-danger-button
         x-data=""

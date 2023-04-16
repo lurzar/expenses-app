@@ -1,15 +1,12 @@
 <section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            <i class="fa-solid fa-key"></i>
-            &nbsp;
-            @lang('password.update')
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            @lang('password.update_desc')
-        </p>
-    </header>
+    <x-section-header 
+        :title="__('password.update')" 
+        :description="__('password.update_desc')"
+        :show_balance="false"
+    >
+        <i class="fa-solid fa-key"></i>
+        &nbsp;
+    </x-section-header>
 
     <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
         @csrf
