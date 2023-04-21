@@ -2,7 +2,7 @@
     <x-section-header 
         :title="__('common.sentence.planning_summary')" 
         :description="__('common.sentence.planning_summary_desc')"
-        :custom="false"
+        :show_total_balance="false"
     >
         <i class="fa-solid fa-file-invoice-dollar"></i>
         &nbsp;

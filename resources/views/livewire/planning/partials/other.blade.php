@@ -2,6 +2,7 @@
     <x-section-header 
         :title="__('common.sentence.other_information')" 
         :description="__('common.sentence.other_desc')"
+        :res_total="$total_other"
         :res_balance="$balance_after_commitments"
     >
         <i class="fa-solid fa-hand-holding-dollar"></i>

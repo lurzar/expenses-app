@@ -23,6 +23,7 @@ class Planning extends Component
     public $balance_after_commitments;
     public $total_balance;
     public $total_commitment;
+    public $total_other;
 
     // Control fields
     public $savings_fields;
@@ -65,6 +66,7 @@ class Planning extends Component
             'balance_after_commitments' => 0,
             'total_balance' => 0,
             'total_commitment' => 0,
+            'total_other' => 0,
             'savings_fields' => collect(0),
             'commitments_fields' => collect(0),
             'others_fields' => collect(0),
@@ -155,6 +157,7 @@ class Planning extends Component
         if ($counted > $this->balance_after_commitments) {
             $this->addError('others_amount_limit', 'Your others amount exceed the balance');
         } else {
+            $this->total_other = $counted;
             $this->total_balance = $this->balance_after_commitments - $counted;
         }
     }
