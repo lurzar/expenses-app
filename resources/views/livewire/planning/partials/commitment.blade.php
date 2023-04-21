@@ -2,6 +2,7 @@
     <x-section-header 
         :title="__('common.sentence.commitment_information')" 
         :description="__('common.sentence.commitment_desc')"
+        :res_total="$total_commitment"
         :res_balance="$balance_after_savings"
     >
         <i class="fa-solid fa-credit-card"></i>

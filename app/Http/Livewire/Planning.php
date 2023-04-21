@@ -22,6 +22,7 @@ class Planning extends Component
     public $balance_after_savings;
     public $balance_after_commitments;
     public $total_balance;
+    public $total_commitment;
 
     // Control fields
     public $savings_fields;
@@ -63,6 +64,7 @@ class Planning extends Component
             'balance_after_savings' => 0,
             'balance_after_commitments' => 0,
             'total_balance' => 0,
+            'total_commitment' => 0,
             'savings_fields' => collect(0),
             'commitments_fields' => collect(0),
             'others_fields' => collect(0),
@@ -101,7 +103,7 @@ class Planning extends Component
         $this->savings_fields->forget($data);
     }
 
-    public function updatedSavingsValues($field_value)
+    public function updatedSavingsValues()
     {
         $counted = $this->countTotal($this->savings_values);
 
@@ -130,6 +132,7 @@ class Planning extends Component
         if ($counted > $this->balance_after_savings) {
             $this->addError('commitments_amount_limit', 'Your commitments amount exceed the balance');
         } else {
+            $this->total_commitment = $counted;
             $this->balance_after_commitments = $this->balance_after_savings - $counted;
         }
     }
