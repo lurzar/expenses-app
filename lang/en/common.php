@@ -33,6 +33,7 @@
         'profile' => 'Profile',
         'saving' => 'Saving',
         'balance' => 'Balance',
+        'total' => 'Total',
 
         // For long word or sentences
         'sentence' => [

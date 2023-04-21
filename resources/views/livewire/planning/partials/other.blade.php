@@ -2,23 +2,25 @@
     <x-section-header 
         :title="__('common.sentence.other_information')" 
         :description="__('common.sentence.other_desc')"
+        :res_total="$total_other"
         :res_balance="$balance_after_commitments"
     >
         <i class="fa-solid fa-hand-holding-dollar"></i>
         &nbsp;
     </x-section-header>
 
+    <x-input-error :messages="$errors->get('others_amount_limit')" class="mt-2  my-6" />
+
     <div class="grid grid-cols-6 gap-4 mb-6 items-end">
-        @forelse ($others_items as $others_item)   
+        @forelse ($others_fields as $others_item)   
             <div class="col-span-4">
                 <x-input-label for="others_values.{{ $others_item }}.item" :value="__('label.item')" />
                 <x-text-input 
                     id="others_values.{{ $others_item }}.item" 
                     class="block mt-1 w-full" 
                     type="text" 
-                    name="others_values.{{ $others_item }}.item" 
+                    name="others_values[{{ $others_item }}][item]" 
                     wire:model="others_values.{{ $others_item }}.item" 
-                    :value="old('others_values.'.$others_item.'.item')" 
                     placeholder="{{ __('label.other_placeholder') }}" 
                     required 
                     autofocus 
@@ -31,11 +33,10 @@
                     id="others_values.{{ $others_item }}.amount" 
                     class="block mt-1 w-full" 
                     type="number" 
-                    name="others_values.{{ $others_item }}.amount" 
+                    name="others_values[{{ $others_item }}][amount]" 
                     wire:model="others_values.{{ $others_item }}.amount" 
                     min="1.00" 
                     step="any" 
-                    :value="old('others_values.'.$others_item.'.amount')" 
                     placeholder="0.00" 
                     required 
                     autofocus 
@@ -44,7 +45,7 @@
             </div>
             @if ($others_item != 0)
                 <div>
-                    <x-planning-form.item-remove-button type="button" wire:click="removeOtherItem({{ $others_item }})" />
+                    <x-planning-form.item-remove-button type="button" wire:click="removeOtherField({{ $others_item }})" />
                 </div>
             @endif
         @empty
@@ -54,6 +55,6 @@
         @endforelse
     </div>
     <div class="mb-10">
-        <x-planning-form.item-add-button type="button" wire:click="addOtherItem({{ $others_items }})" />
+        <x-planning-form.item-add-button type="button" wire:click="addOtherField({{ $others_fields }})" />
     </div>
 </div>

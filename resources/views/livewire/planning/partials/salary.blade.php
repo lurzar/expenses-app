@@ -2,7 +2,7 @@
     <x-section-header 
         :title="__('common.sentence.salary_information')" 
         :description="__('common.sentence.salary_desc')"
-        :show_balance="false"
+        :show_total_balance="false"
     >
         <i class="fa-solid fa-sack-dollar"></i>
         &nbsp;
@@ -27,7 +27,6 @@
                 min="0.00" 
                 step="any" 
                 wire:model="salary"
-                :value="old('salary')" 
                 placeholder="0.00" 
                 required 
                 autofocus 
@@ -46,7 +45,6 @@
                 max="100" 
                 step="5" 
                 wire:model="saving_rate" 
-                :value="old('saving_rate')"  
                 required 
                 autofocus 
             />

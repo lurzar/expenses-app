@@ -3,29 +3,32 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Arr;
 
 class Planning extends Component
 {
+    // Model
     public $current_month;
     public $current_year;
-
-    // Control fieldss
-    public $savings_items;
-    public $commitments_items;
-    public $others_items;
-
     public $salary;
     public $saving_rate;
-
-    // Control fields values
     public $savings_values;
     public $commitments_values;
     public $others_values;
 
+    // Variables
     public $total_savings;
     public $balance_after_saving_rates;
     public $balance_after_savings;
     public $balance_after_commitments;
+    public $total_balance;
+    public $total_commitment;
+    public $total_other;
+
+    // Control fields
+    public $savings_fields;
+    public $commitments_fields;
+    public $others_fields;
 
     protected $rules = [
         'salary' => 'required|numeric',
@@ -52,9 +55,6 @@ class Planning extends Component
         $this->fill([
             'current_month' => getCurrentMonthName(),
             'current_year' => getCurrentYear(),
-            'savings_items' => collect(0),
-            'commitments_items' => collect(0),
-            'others_items' => collect(0),
             'salary' => '',
             'saving_rate' => 20,
             'savings_values' => [],
@@ -64,40 +64,13 @@ class Planning extends Component
             'balance_after_saving_rates' => 0,
             'balance_after_savings' => 0,
             'balance_after_commitments' => 0,
+            'total_balance' => 0,
+            'total_commitment' => 0,
+            'total_other' => 0,
+            'savings_fields' => collect(0),
+            'commitments_fields' => collect(0),
+            'others_fields' => collect(0),
         ]);
-    }
-
-    public function addSavingItem($data)
-    {
-        $this->savings_items->push(array_pop($data) + 1);
-    }
-
-    public function removeSavingItem($data)
-    {
-        unset($this->savings_values[$data]);
-        $this->savings_items->forget($data);
-    }
-
-    public function addCommitmentItem($data)
-    {
-        $this->commitments_items->push(array_pop($data) + 1);
-    }
-
-    public function removeCommitmentItem($data)
-    {
-        unset($this->commitments_values[$data]);
-        $this->commitments_items->forget($data);
-    }
-
-    public function addOtherItem($data)
-    {
-        $this->others_items->push(array_pop($data) + 1);
-    }
-
-    public function removeOtherItem($data)
-    {
-        unset($this->others_values[$data]);
-        $this->others_items->forget($data);
     }
 
     public function updated($property)
@@ -120,9 +93,91 @@ class Planning extends Component
             $this->balance_after_saving_rates = $this->salary - $this->total_savings;
         }
     }
-    
+
+    public function addSavingField($data)
+    {
+        $this->savings_fields->push(array_pop($data) + 1);
+    }
+
+    public function removeSavingField($data)
+    {
+        unset($this->savings_values[$data]);
+        $this->savings_fields->forget($data);
+    }
+
+    public function updatedSavingsValues()
+    {
+        $counted = $this->countTotal($this->savings_values);
+
+        if ($counted > $this->total_savings) {
+            $this->addError('savings_amount_limit', 'Your savings amount exceed the total savings');
+        } else {
+            if (!blank($this->salary)) {
+                $this->balance_after_savings = $this->salary - $counted;
+            }
+        }
+    }
+
+    public function addCommitmentField($data)
+    {
+        $this->commitments_fields->push(array_pop($data) + 1);
+    }
+
+    public function removeCommitmentField($data)
+    {
+        unset($this->commitments_values[$data]);
+        $this->commitments_fields->forget($data);
+    }
+
+    public function updatedCommitmentsValues()
+    {
+        $counted = $this->countTotal($this->commitments_values);
+
+        if ($counted > $this->balance_after_savings) {
+            $this->addError('commitments_amount_limit', 'Your commitments amount exceed the balance');
+        } else {
+            $this->total_commitment = $counted;
+            $this->balance_after_commitments = $this->balance_after_savings - $counted;
+        }
+    }
+
+    public function addOtherField($data)
+    {
+        $this->others_fields->push(array_pop($data) + 1);
+    }
+
+    public function removeOtherField($data)
+    {
+        unset($this->others_values[$data]);
+        $this->others_fields->forget($data);
+    }
+
+    public function updatedOthersValues()
+    {
+        $counted = $this->countTotal($this->others_values);
+
+        if ($counted > $this->balance_after_commitments) {
+            $this->addError('others_amount_limit', 'Your others amount exceed the balance');
+        } else {
+            $this->total_other = $counted;
+            $this->total_balance = $this->balance_after_commitments - $counted;
+        }
+    }
+
     public function render()
     {
         return view('livewire.planning.index');
+    }
+
+    private function countTotal($value): int
+    {
+        $result = 0;
+        $amounts = Arr::pluck($value, 'amount');
+
+        foreach ($amounts as $amount) {
+            $result += ((int) $amount);
+        }
+
+        return $result;
     }
 }
