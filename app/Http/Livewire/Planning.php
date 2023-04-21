@@ -112,7 +112,9 @@ class Planning extends Component
         if ($counted > $this->total_savings) {
             $this->addError('savings_amount_limit', 'Your savings amount exceed the total savings');
         } else {
-            $this->balance_after_savings = $this->salary - $counted;
+            if (!blank($this->salary)) {
+                $this->balance_after_savings = $this->salary - $counted;
+            }
         }
     }
 
