@@ -8,8 +8,10 @@
         &nbsp;
     </x-section-header>
 
+    <x-input-error :messages="$errors->get('commitments_amount_limit')" class="mt-2  my-6" />
+
     <div class="grid grid-cols-6 gap-4 mb-6 items-end">
-        @forelse ($commitments_items as $commitments_item)   
+        @forelse ($commitments_fields as $commitments_item)   
             <div class="col-span-4">
                 <x-input-label for="commitments_values.{{ $commitments_item }}.item" :value="__('label.item')" />
                 <x-text-input 
@@ -54,6 +56,6 @@
         @endforelse
     </div>
     <div class="mb-10">
-        <x-planning-form.item-add-button type="button" wire:click="addCommitmentItem({{ $commitments_items }})" />
+        <x-planning-form.item-add-button type="button" wire:click="addCommitmentItem({{ $commitments_fields }})" />
     </div>
 </div>
