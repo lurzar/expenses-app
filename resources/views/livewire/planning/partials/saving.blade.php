@@ -19,9 +19,8 @@
                     id="savings_values.{{ $savings_field }}.item" 
                     class="block mt-1 w-full" 
                     type="text" 
-                    name="savings_values.{{ $savings_field }}.item" 
+                    name="savings_values[{{ $savings_field }}][item]" 
                     wire:model="savings_values.{{ $savings_field }}.item" 
-                    :value="old('savings_values.'.$savings_field.'.item')" 
                     placeholder="{{ __('label.saving_placeholder') }}" 
                     required 
                     autofocus 
@@ -34,11 +33,10 @@
                     id="savings_values.{{ $savings_field }}.amount" 
                     class="block mt-1 w-full" 
                     type="number" 
-                    name="savings_values.{{ $savings_field }}.amount"
+                    name="savings_values[{{ $savings_field }}][amount]"
                     wire:model="savings_values.{{ $savings_field }}.amount"  
                     min="1.00" 
                     step="any" 
-                    :value="old('savings_values.'.$savings_field.'.amount')" 
                     placeholder="0.00" 
                     required 
                     autofocus 

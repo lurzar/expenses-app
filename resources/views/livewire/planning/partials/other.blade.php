@@ -19,9 +19,8 @@
                     id="others_values.{{ $others_item }}.item" 
                     class="block mt-1 w-full" 
                     type="text" 
-                    name="others_values.{{ $others_item }}.item" 
+                    name="others_values[{{ $others_item }}][item]" 
                     wire:model="others_values.{{ $others_item }}.item" 
-                    :value="old('others_values.'.$others_item.'.item')" 
                     placeholder="{{ __('label.other_placeholder') }}" 
                     required 
                     autofocus 
@@ -34,11 +33,10 @@
                     id="others_values.{{ $others_item }}.amount" 
                     class="block mt-1 w-full" 
                     type="number" 
-                    name="others_values.{{ $others_item }}.amount" 
+                    name="others_values[{{ $others_item }}][amount]" 
                     wire:model="others_values.{{ $others_item }}.amount" 
                     min="1.00" 
                     step="any" 
-                    :value="old('others_values.'.$others_item.'.amount')" 
                     placeholder="0.00" 
                     required 
                     autofocus 

@@ -19,9 +19,8 @@
                     id="commitments_values.{{ $commitments_item }}.item" 
                     class="block mt-1 w-full" 
                     type="text" 
-                    name="commitments_values.{{ $commitments_item }}.item" 
+                    name="commitments_values[{{ $commitments_item }}][item]" 
                     wire:model="commitments_values.{{ $commitments_item }}.item" 
-                    :value="old('commitments_values.'.$commitments_item.'.item')" 
                     placeholder="{{ __('label.commitment_placeholder') }}" 
                     required 
                     autofocus 
@@ -34,11 +33,10 @@
                     id="commitments_values.{{ $commitments_item }}.amount" 
                     class="block mt-1 w-full" 
                     type="number" 
-                    name="commitments_values.{{ $commitments_item }}.amount"
+                    name="commitments_values[{{ $commitments_item }}][amount]"
                     wire:model="commitments_values.{{ $commitments_item }}.amount"  
                     min="1.00" 
                     step="any" 
-                    :value="old('commitments_values.'.$commitments_item.'.amount')" 
                     placeholder="0.00" 
                     required 
                     autofocus 
