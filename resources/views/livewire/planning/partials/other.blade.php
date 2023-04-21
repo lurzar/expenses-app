@@ -8,8 +8,10 @@
         &nbsp;
     </x-section-header>
 
+    <x-input-error :messages="$errors->get('others_amount_limit')" class="mt-2  my-6" />
+
     <div class="grid grid-cols-6 gap-4 mb-6 items-end">
-        @forelse ($others_items as $others_item)   
+        @forelse ($others_fields as $others_item)   
             <div class="col-span-4">
                 <x-input-label for="others_values.{{ $others_item }}.item" :value="__('label.item')" />
                 <x-text-input 
@@ -54,6 +56,6 @@
         @endforelse
     </div>
     <div class="mb-10">
-        <x-planning-form.item-add-button type="button" wire:click="addOtherItem({{ $others_items }})" />
+        <x-planning-form.item-add-button type="button" wire:click="addOtherItem({{ $others_fields }})" />
     </div>
 </div>
