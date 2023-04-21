@@ -7,27 +7,26 @@ use Illuminate\Support\Arr;
 
 class Planning extends Component
 {
+    // Model
     public $current_month;
     public $current_year;
-
     public $salary;
     public $saving_rate;
-    public $total_savings;
-    public $total_balance;
-
-    // Control fieldss
-    public $savings_fields;
-    public $commitments_fields;
-    public $others_fields;
-
-    // Control fields values
     public $savings_values;
     public $commitments_values;
     public $others_values;
 
+    // Variables
+    public $total_savings;
     public $balance_after_saving_rates;
     public $balance_after_savings;
     public $balance_after_commitments;
+    public $total_balance;
+
+    // Control fields
+    public $savings_fields;
+    public $commitments_fields;
+    public $others_fields;
 
     protected $rules = [
         'salary' => 'required|numeric',
@@ -54,53 +53,20 @@ class Planning extends Component
         $this->fill([
             'current_month' => getCurrentMonthName(),
             'current_year' => getCurrentYear(),
-            'savings_fields' => collect(0),
-            'commitments_fields' => collect(0),
-            'others_fields' => collect(0),
             'salary' => '',
             'saving_rate' => 20,
             'savings_values' => [],
             'commitments_values' => [],
             'others_values' => [],
             'total_savings' => 0,
-            'total_balance' => 0,
             'balance_after_saving_rates' => 0,
             'balance_after_savings' => 0,
             'balance_after_commitments' => 0,
+            'total_balance' => 0,
+            'savings_fields' => collect(0),
+            'commitments_fields' => collect(0),
+            'others_fields' => collect(0),
         ]);
-    }
-
-    public function addSavingItem($data)
-    {
-        $this->savings_fields->push(array_pop($data) + 1);
-    }
-
-    public function removeSavingItem($data)
-    {
-        unset($this->savings_values[$data]);
-        $this->savings_fields->forget($data);
-    }
-
-    public function addCommitmentItem($data)
-    {
-        $this->commitments_fields->push(array_pop($data) + 1);
-    }
-
-    public function removeCommitmentItem($data)
-    {
-        unset($this->commitments_values[$data]);
-        $this->commitments_fields->forget($data);
-    }
-
-    public function addOtherItem($data)
-    {
-        $this->others_fields->push(array_pop($data) + 1);
-    }
-
-    public function removeOtherItem($data)
-    {
-        unset($this->others_values[$data]);
-        $this->others_fields->forget($data);
     }
 
     public function updated($property)
@@ -124,6 +90,17 @@ class Planning extends Component
         }
     }
 
+    public function addSavingItem($data)
+    {
+        $this->savings_fields->push(array_pop($data) + 1);
+    }
+
+    public function removeSavingItem($data)
+    {
+        unset($this->savings_values[$data]);
+        $this->savings_fields->forget($data);
+    }
+
     public function updatedSavingsValues($field_value)
     {
         $counted = $this->countTotal($this->savings_values);
@@ -135,6 +112,17 @@ class Planning extends Component
         }
     }
 
+    public function addCommitmentItem($data)
+    {
+        $this->commitments_fields->push(array_pop($data) + 1);
+    }
+
+    public function removeCommitmentItem($data)
+    {
+        unset($this->commitments_values[$data]);
+        $this->commitments_fields->forget($data);
+    }
+
     public function updatedCommitmentsValues()
     {
         $counted = $this->countTotal($this->commitments_values);
@@ -144,6 +132,17 @@ class Planning extends Component
         } else {
             $this->balance_after_commitments = $this->balance_after_savings - $counted;
         }
+    }
+
+    public function addOtherItem($data)
+    {
+        $this->others_fields->push(array_pop($data) + 1);
+    }
+
+    public function removeOtherItem($data)
+    {
+        unset($this->others_values[$data]);
+        $this->others_fields->forget($data);
     }
 
     public function updatedOthersValues()
