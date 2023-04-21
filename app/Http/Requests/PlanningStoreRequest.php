@@ -22,12 +22,23 @@ class PlanningStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'month' => 'required|string',
+            'year' => 'required|string',
+            'salary' => 'required|string',
+            'saving_rate' => 'required|string',
+            'total_saving' => 'nullable',
+            'total_balance' => 'nullable',
+            'total_commitment' => 'nullable',
+            'total_other' => 'nullable',
+            'savings_values' => 'array',
             'savings_values.*.item' => 'required|string',
-            'savings_values.*.amount' => 'required|numeric',
+            'savings_values.*.amount' => 'required|string',
+            'commitments_values' => 'array',
             'commitments_values.*.item' => 'required|string',
-            'commitments_values.*.amount' => 'required|numeric',
+            'commitments_values.*.amount' => 'required|string',
+            'others_values' => 'array',
             'others_values.*.item' => 'required|string',
-            'others_values.*.amount' => 'required|numeric',
+            'others_values.*.amount' => 'required|string',
         ];
     }
 }

@@ -19,7 +19,6 @@ class PlanningController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $request->validated();
-        // dd($request->validated());
+        dd($request->validated());
     }
 }
