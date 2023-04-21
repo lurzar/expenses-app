@@ -90,12 +90,12 @@ class Planning extends Component
         }
     }
 
-    public function addSavingItem($data)
+    public function addSavingField($data)
     {
         $this->savings_fields->push(array_pop($data) + 1);
     }
 
-    public function removeSavingItem($data)
+    public function removeSavingField($data)
     {
         unset($this->savings_values[$data]);
         $this->savings_fields->forget($data);
@@ -112,12 +112,12 @@ class Planning extends Component
         }
     }
 
-    public function addCommitmentItem($data)
+    public function addCommitmentField($data)
     {
         $this->commitments_fields->push(array_pop($data) + 1);
     }
 
-    public function removeCommitmentItem($data)
+    public function removeCommitmentField($data)
     {
         unset($this->commitments_values[$data]);
         $this->commitments_fields->forget($data);
@@ -134,12 +134,12 @@ class Planning extends Component
         }
     }
 
-    public function addOtherItem($data)
+    public function addOtherField($data)
     {
         $this->others_fields->push(array_pop($data) + 1);
     }
 
-    public function removeOtherItem($data)
+    public function removeOtherField($data)
     {
         unset($this->others_values[$data]);
         $this->others_fields->forget($data);
