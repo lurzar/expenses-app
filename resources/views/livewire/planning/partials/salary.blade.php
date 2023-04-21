@@ -2,7 +2,7 @@
     <x-section-header 
         :title="__('common.sentence.salary_information')" 
         :description="__('common.sentence.salary_desc')"
-        :show_balance="false"
+        :show_total_balance="false"
     >
         <i class="fa-solid fa-sack-dollar"></i>
         &nbsp;

@@ -2,8 +2,7 @@
     <x-section-header 
         :title="__('common.sentence.saving_information')" 
         :description="__('common.sentence.saving_desc')"
-        :show_saving="true"
-        :res_total_saving="$total_savings"
+        :res_total="$total_savings"
         :res_balance="$balance_after_saving_rates"
     >
         <i class="fa-solid fa-circle-dollar-to-slot"></i>

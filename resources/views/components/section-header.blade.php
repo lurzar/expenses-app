@@ -1,9 +1,8 @@
 @props([
     'title' => '', 
     'description' => '',
-    'show_saving' => false,
-    'show_balance' => true,
-    'res_total_saving' => 0, 
+    'show_total_balance' => true,
+    'res_total' => 0, 
     'res_balance' => 0,
 ])
 
@@ -11,17 +10,9 @@
     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
         {{ $slot }} 
         {{ $title }}
-        @if ($show_balance)
+        @if ($show_total_balance)
             <span class="text-sm italic text-slate-500">
-                @if ($show_saving)
-                    @if ($res_total_saving != 0)
-                        (@lang('common.saving'): RM {{ $res_total_saving }}, @lang('common.balance'): RM {{ $res_balance }})
-                    @endif
-                @else
-                    @if ($res_balance != 0)
-                        (@lang('common.balance'): RM {{ $res_balance }})
-                    @endif
-                @endif
+                (@lang('common.total'): RM {{ $res_total }}, @lang('common.balance'): RM {{ $res_balance }})
             </span>
         @endif
         </span>
