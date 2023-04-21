@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Http\Requests\PlanningStoreRequest as StoreRequest;
 
 class PlanningController extends Controller
 {
@@ -16,8 +17,9 @@ class PlanningController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        dd($request->all());
+        $request->validated();
+        // dd($request->validated());
     }
 }
