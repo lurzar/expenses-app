@@ -40,7 +40,7 @@ class PlanningController extends Controller
         $this->model->totals = $request->totals;
         $this->model->save();
 
-        return Redirect::to('/dashboard');
+        return Redirect::route('expenses.index');
     }
 
     private function handleSectionsRequest(Request $request)
