@@ -40,7 +40,6 @@ class PlanningController extends Controller
         $this->model->salary = $request->salary;
         $this->model->sections = $request->sections;
         $this->model->totals = $request->totals;
-        $this->model->slug = $request->slug;
         $this->model->save();
 
         return Redirect::to('/dashboard');

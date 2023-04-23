@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Observers\PlanningObserver;
+use App\Models\Planning;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -25,8 +27,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
-    }
+        Planning::observe(PlanningObserver::class);
+    }   
 
     /**
      * Determine if events and listeners should be automatically discovered.
