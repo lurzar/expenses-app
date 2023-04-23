@@ -12,12 +12,10 @@ use App\Models\Planning;
 class PlanningController extends Controller
 {
     protected $model;
-    protected $sections;
 
     public function __construct()
     {
         $this->model = new Planning;
-        $this->sections = [];
     }
 
     public function index(): View
