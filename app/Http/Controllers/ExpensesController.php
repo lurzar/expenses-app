@@ -13,12 +13,18 @@ class ExpensesController extends Controller
     public function index(): View
     {
         $plannings = Auth::user()->plannings;
-        return view('expenses.index', compact('plannings'));
+        return view('expenses.index', [
+            'plannings' => $plannings,
+            'slug' => null,
+        ]);
     }
 
     public function show($planningSlug)
     {
         $plannings = Planning::where('slug', $planningSlug)->get();
-        return view('expenses.index', compact('plannings'));
+        return view('expenses.index', [
+            'plannings' => $plannings,
+            'slug' => $planningSlug,
+        ]);
     }
 }
