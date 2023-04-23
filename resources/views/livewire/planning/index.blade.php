@@ -10,10 +10,10 @@
         
         <input type="hidden" name="month" id="month" wire:model="current_month">
         <input type="hidden" name="year" id="year" wire:model="current_year">
-        <input type="hidden" name="total_saving" wire:model="total_savings">
-        <input type="hidden" name="total_balance" wire:model="total_balance">
-        <input type="hidden" name="total_commitment" wire:model="total_commitment">
-        <input type="hidden" name="total_other" wire:model="total_other">
+        <input type="hidden" name="totals[saving]" wire:model="total_savings">
+        <input type="hidden" name="totals[balance]" wire:model="total_balance">
+        <input type="hidden" name="totals[commitment]" wire:model="total_commitment">
+        <input type="hidden" name="totals[other]" wire:model="total_other">
 
         <div class="mb-6 float-right">
             <x-primary-button type="submit" :icon="'submit'">
