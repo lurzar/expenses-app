@@ -15,6 +15,22 @@ class PlanningService
         $this->model = $planning;
     }
 
+    // public function all(): Collection
+    // {
+    //     return $this->model
+    //                 ->where('user_id', Auth::id())
+    //                 ->thisMonth()
+    //                 ->get();
+    // }
+
+    public function thisMonth(): Collection
+    {
+        return $this->model
+                    ->where('user_id', Auth::id())
+                    ->thisMonth()
+                    ->get();
+    }
+
     public function store($planning): Planning
     {
         $this->handleRequest($planning);
