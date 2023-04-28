@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
 use App\Http\Requests\PlanningStoreRequest as StoreRequest;
 use App\Services\PlanningService;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class PlanningController extends Controller
 {
@@ -22,13 +22,12 @@ class PlanningController extends Controller
             'form_is_unlock' => false, // unlockForm()
             'form_open_date' => getOpenDate(), 
             'form_close_date' => getCloseDate(),
-            'plannings' => $this->service->thisMonth(),
         ]);
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): Redirector
     {
         $this->service->store(collect($request->validated()));
-        return Redirect::route('expenses.index');
+        return redirect('expense.index');
     }
 }
