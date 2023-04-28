@@ -20,6 +20,7 @@
         'save' => 'Simpan',
         'saved' => 'Telah Disimpan',
         'cancel' => 'Batal',
+        'close' => 'Tutup',
         'confirm' => 'Sahkan',
         'update' => 'Kemaskini',
         'settings' => 'Tetapan',
