@@ -31,11 +31,11 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: '18'
-    - run: npm install
+    - run: |
+        npm install
+        npm run build
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
-      run: |
-        npm run build
-        vendor/bin/pest
+      run: vendor/bin/pest
