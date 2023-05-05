@@ -23,7 +23,7 @@ class PlanningService
     //                 ->get();
     // }
 
-    public function thisMonth(): Collection
+    public function getThisMonth(): Collection
     {
         return $this->model
                     ->where('user_id', Auth::id())

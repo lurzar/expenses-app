@@ -28,6 +28,6 @@
     </div>
 
     @if (! $form_is_unlock)
-        <x-expenses.all :inject="$plannings->thisMonth()"/>
+        <x-expenses.all :plannings="$plannings->getThisMonth()"/>
     @endif
 </x-app-layout>

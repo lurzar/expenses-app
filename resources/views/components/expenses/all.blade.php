@@ -1,11 +1,11 @@
-@props(['inject' => 'currently service get all expenses unavailable'])
+@props(['plannings' => collect()])
 
 <div>
     <div class="pt-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    @if ($inject->isNotEmpty())
+                    @if ($plannings->isNotEmpty())
                         <section id="thisMonthPlanning">
                             <div class="relative overflow-x-auto">
                                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -26,7 +26,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($inject as $planning)
+                                        @forelse ($plannings as $planning)
                                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                     <span
@@ -67,7 +67,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @forelse ($inject as $planning)
+                                                    @forelse ($plannings as $planning)
                                                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                                 Planning {{ $planning->month }}, {{ $planning->year }}
