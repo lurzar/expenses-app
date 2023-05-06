@@ -2,29 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Services\PlanningService;
 use Illuminate\View\View;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Planning;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Redirect;
 class ExpensesController extends Controller
 {
+    private $service;
+
+    public function __construct(PlanningService $planning)
+    {
+        $this->service = $planning;
+    }
+
     public function index(): View
     {
-        $plannings = Auth::user()->plannings;
         return view('expenses.index', [
-            'plannings' => $plannings,
-            'slug' => null,
+            'plannings' => $this->service->getAllListPlanning(),
         ]);
     }
 
     public function show($planningSlug)
     {
-        $plannings = Planning::where('slug', $planningSlug)->get();
-        return view('expenses.index', [
-            'plannings' => $plannings,
-            'slug' => $planningSlug,
-        ]);
+        // $plannings = Planning::where('slug', $planningSlug)->get();
+        // return view('expenses.index', [
+        //     'plannings' => $plannings,
+        //     'slug' => $planningSlug,
+        // ]);
     }
 }
