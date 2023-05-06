@@ -30,7 +30,7 @@
                     @forelse ($plannings as $planning)
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a target="_blank" href="{{ route('expenses.show', ['slug' => $planning->slug]) }}">
+                                <a target="_blank" href="{{ route('planning.show', ['slug' => $planning->slug]) }}">
                                     Planning {{ $planning->month }}, {{ $planning->year }}
                                 </a>
                             </th>
