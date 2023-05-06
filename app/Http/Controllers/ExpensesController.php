@@ -19,13 +19,4 @@ class ExpensesController extends Controller
             'plannings' => $this->service->getAllListPlanning(),
         ]);
     }
-
-    public function show($planningSlug)
-    {
-        // $plannings = Planning::where('slug', $planningSlug)->get();
-        // return view('expenses.index', [
-        //     'plannings' => $plannings,
-        //     'slug' => $planningSlug,
-        // ]);
-    }
 }
