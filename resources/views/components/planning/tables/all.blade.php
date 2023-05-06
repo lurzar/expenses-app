@@ -1,10 +1,4 @@
-@inject('service', 'App\Services\PlanningService')
-
-@php
-    $plannings = $service->getAllListPlanning();
-@endphp
-
-<section id="thisMonthPlanning">
+<section id="allPlanning">
     <x-section-header 
         :title="__('common.sentence.list_expenses')" 
         :description="__('common.sentence.list_expenses_desc')"
@@ -13,7 +7,7 @@
         <i class="fa-solid fa-file-lines"></i>
         &nbsp;
     </x-section-header>
-    @if ( blank($plannings) )
+    @if (!blank($plannings))
         <div class="relative overflow-x-auto">
             {{-- @if (blank($slug)) --}}
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -52,7 +46,7 @@
                                 </td>
                             </tr>
                         @empty
-                            Data Not Found
+                            <span class="text-red-400 dark:text-red-600">@lang('common.error.data_not_found')</span>
                         @endforelse
                     </tbody>
                 </table>

@@ -1,9 +1,3 @@
-@inject('service', 'App\Services\PlanningService')
-
-@php
-    $plannings = $service->getThisMonthPlanning();
-@endphp
-
 <section id="currentMonthPlanning">
     <x-section-header 
         :title="__('common.sentence.latest_planning')" 
@@ -13,7 +7,7 @@
         <i class="fa-solid fa-file-lines"></i>
         &nbsp;
     </x-section-header>
-    @if ( !blank($plannings) )
+    @if (!blank($plannings))
         <div class="relative overflow-x-auto">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -51,62 +45,10 @@
                             </td>
                         </tr>
                     @empty
-                        Data Not Found
+                        <span class="text-red-400 dark:text-red-600">@lang('common.error.data_not_found')</span>
                     @endforelse
                 </tbody>
             </table>
-
-            <x-modal name="show-expenses" focusable>
-                <div class="p-4">
-                    <div class="mt-6 flex justify-end">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        Name
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Section
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($plannings as $planning)
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            Planning {{ $planning->month }}, {{ $planning->year }}
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            @forelse ($planning->sections as $key => $section)
-                                                {{ $key }}
-                                                <br />
-                                                @forelse ($section as $key => $item)
-                                                    {{  $key + 1 }}. Item: {{ $item['item'] }}
-                                                    <br /> 
-                                                    &nbsp;&nbsp; Amount: RM{{ $item['amount'] }}
-                                                @empty
-                                                    No section detail found
-                                                @endforelse
-                                                <br />
-                                                <br />
-                                            @empty
-                                                No section data found
-                                            @endforelse
-                                        </td>
-                                    </tr>
-                                @empty
-                                    Data Not Found
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="mt-6 flex justify-end">
-                        <x-secondary-button x-on:click="$dispatch('close')" :icon="'cancel'">
-                            @lang('common.close')
-                        </x-secondary-button>
-                    </div>
-                </div>
-            </x-modal>
         </div>
     @else
         <span class="text-red-400 dark:text-red-600">@lang('common.error.expenses_current_month_table')</span>
