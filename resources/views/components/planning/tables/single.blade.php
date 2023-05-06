@@ -1,12 +1,12 @@
 <section id="currentMonthPlanning">
-    <x-section-header 
+    {{-- <x-section-header 
         :title="__('common.sentence.latest_planning')" 
         :description="__('common.sentence.latest_planning_desc')"
         :show_total_balance="false"
     >
         <i class="fa-solid fa-file-lines"></i>
         &nbsp;
-    </x-section-header>
+    </x-section-header> --}}
     <div class="relative overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
