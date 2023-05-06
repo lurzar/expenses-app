@@ -48,6 +48,10 @@
             'other_desc' => 'Provide your other expenses information with appropriate amount.',
             'planning_summary' => 'Planning Summary',
             'planning_summary_desc' => 'Summaries of your expenses planning.',
+            'latest_planning' => 'Latest Planning',
+            'latest_planning_desc' => 'Your this month planning information.',
+            'list_expenses' => 'Expenses List',
+            'list_expenses_desc' => 'All your expenses list information.',
         ],
 
         // For custom error message
@@ -55,5 +59,7 @@
             'saving_field' => 'Error occured while fetching savings items field.',
             'commitment_field' => 'Error occured while fetching commitments items field.',
             'other_field' => 'Error occured while fetching other items field.',
+            'expenses_list_table' => "Expenses list's table cannot be retrieve at moment.",
+            'expenses_current_month_table' => 'Table for this month expenses cannot be retrieve at moment.',
         ],
     ];
