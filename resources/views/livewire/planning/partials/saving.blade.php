@@ -45,7 +45,7 @@
             </div>
             @if ($savings_field != 0)
                 <div>
-                    <x-planning-form.item-remove-button type="button" wire:click="removeSavingField({{ $savings_field }})" />
+                    <x-planning.form.item-remove-button type="button" wire:click="removeSavingField({{ $savings_field }})" />
                 </div>
             @endif
         @empty
@@ -55,6 +55,6 @@
         @endforelse
     </div>
     <div class="mb-10">
-        <x-planning-form.item-add-button type="button" wire:click="addSavingField({{ $savings_fields }})" />
+        <x-planning.form.item-add-button type="button" wire:click="addSavingField({{ $savings_fields }})" />
     </div>
 </div>

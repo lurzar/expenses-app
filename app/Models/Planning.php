@@ -87,4 +87,9 @@ class Planning extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    protected function scopeThisMonth($query)
+    {
+        return $query->where('month', getCurrentMonthName());
+    }
 }

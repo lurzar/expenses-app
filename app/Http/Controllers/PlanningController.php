@@ -2,68 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
 use App\Http\Requests\PlanningStoreRequest as StoreRequest;
-use App\Models\Planning;
+use App\Services\PlanningService;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class PlanningController extends Controller
 {
-    protected $model;
+    private $service;
 
-    public function __construct()
+    public function __construct(PlanningService $planning)
     {
-        $this->model = new Planning;
+        $this->service = $planning;
     }
 
     public function index(): View
     {
         return view('planning.index', [
-            'form_is_unlock' => true, // unlockForm()
+            'form_is_unlock' => false, // unlockForm()
             'form_open_date' => getOpenDate(), 
             'form_close_date' => getCloseDate(),
+            'plannings' => $this->service->getThisMonthPlanning(),
         ]);
     }
 
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): Redirector
     {
-        $request = $this->handleSectionsRequest($request);
-        $request['slug'] = $this->generateSlug($request);
-
-        $this->model->user_id = Auth::id();
-        $this->model->month = $request->month;
-        $this->model->year = $request->year;
-        $this->model->salary = $request->salary;
-        $this->model->sections = $request->sections;
-        $this->model->totals = $request->totals;
-        $this->model->save();
-
-        return Redirect::route('expenses.index');
+        $this->service->store(collect($request->validated()));
+        return redirect('expense.index');
     }
 
-    private function handleSectionsRequest(Request $request)
+    public function show($slug)
     {
-        $sections = [
-            'savings' => $request->savings_values ?? [],
-            'commitments' => $request->commitments_values ?? [],
-            'others' => $request->others_values ?? [],
-        ];
-
-        $request['sections'] = $sections;
-
-        unset($request['savings_values']);
-        unset($request['commitments_values']);
-        unset($request['others_values']);
-
-        return $request;
-    }
-
-    private function generateSlug(Request $request): string
-    {
-        $slug = 'Planning-'.$request['month'].'-'.$request['year'];
-
-        return $slug;
+        return view('planning.show', [
+            'plannings' => $this->service->getSinglePlanning($slug),
+        ]);
     }
 }

@@ -20,6 +20,7 @@
         'save' => 'Simpan',
         'saved' => 'Telah Disimpan',
         'cancel' => 'Batal',
+        'close' => 'Tutup',
         'confirm' => 'Sahkan',
         'update' => 'Kemaskini',
         'settings' => 'Tetapan',
@@ -47,6 +48,10 @@
             'other_desc' => 'Berikan maklumat perbelanjaan anda yang lain dengan jumlah yang sesuai.',
             'planning_summary' => 'Ringkasan Perancangan',
             'planning_summary_desc' => 'Ringkasan perancangan perbelanjaan anda.',
+            'latest_planning' => 'Perancangan Terkini',
+            'latest_planning_desc' => 'Informasi perancangan anda pada bulan ini.',
+            'list_expenses' => 'Senarai Perbelanjaan',
+            'list_expenses_desc' => 'Seluruh informasi senarai perbelanjaan anda.',
         ],
 
         // For custom error message
@@ -54,5 +59,8 @@
             'saving_field' => 'Ralat berlaku semasa memproses medan perkara simpanan.',
             'commitment_field' => 'Ralat berlaku semasa memproses medan perkara komitment.',
             'other_field' => 'Ralat berlaku semasa memproses medan perkara lain.',
+            'expenses_list_table' => 'Jadual senarai perbelanjaan tidak boleh diperoleh pada masa ini.',
+            'expenses_current_month_table' => 'Jadual senarai perbelanjaan untuk bulan tidak boleh diperoleh pada masa ini.',
+            'data_not_found' => 'Maklumat tidak boleh diperoleh pada masa ini',
         ],
     ];

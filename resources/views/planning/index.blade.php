@@ -7,7 +7,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="pt-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -17,11 +17,23 @@
                         </section>
                     @else
                         <section id="planningLock">
-                            <x-planning-form.lock-banner :open_date="$form_open_date"/>
+                            <x-planning.lock-banner :open_date="$form_open_date"/>
                         </section>
                     @endif
                 </div>
             </div>
         </div>
     </div>
+
+    @if (! $form_is_unlock)
+        <div class="pt-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                        <x-planning.tables.current-month :plannings="$plannings"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 </x-app-layout>
