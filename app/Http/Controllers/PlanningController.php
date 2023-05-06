@@ -22,6 +22,7 @@ class PlanningController extends Controller
             'form_is_unlock' => false, // unlockForm()
             'form_open_date' => getOpenDate(), 
             'form_close_date' => getCloseDate(),
+            'plannings' => $this->service->getThisMonthPlanning(),
         ]);
     }
 
