@@ -15,15 +15,14 @@ class PlanningService
         $this->model = $planning;
     }
 
-    // public function all(): Collection
-    // {
-    //     return $this->model
-    //                 ->where('user_id', Auth::id())
-    //                 ->thisMonth()
-    //                 ->get();
-    // }
+    public function getAllListPlanning(): Collection
+    {
+        return $this->model
+                    ->where('user_id', Auth::id())
+                    ->get();
+    }
 
-    public function getThisMonth(): Collection
+    public function getThisMonthPlanning(): Collection
     {
         return $this->model
                     ->where('user_id', Auth::id())
