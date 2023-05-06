@@ -31,4 +31,11 @@ class PlanningController extends Controller
         $this->service->store(collect($request->validated()));
         return redirect('expense.index');
     }
+
+    public function show($slug)
+    {
+        return view('planning.show', [
+            'plannings' => $this->service->getSinglePlanning($slug),
+        ]);
+    }
 }
