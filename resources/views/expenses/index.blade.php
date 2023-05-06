@@ -7,110 +7,11 @@
         </h2>
     </x-slot>
 
-    {{-- <div class="py-12">
+    <div class="pt-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're on expenses page!") }}
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-
-                    {{-- <section id="expensesSection">
-                        @livewire('expenses', ['plannings' => $plannings])
-                    </section> --}}
-                    
-                    <div class="relative overflow-x-auto">
-                        @if (blank($slug))
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3">
-                                            Name
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Month
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Year
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Salary
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($plannings as $planning)
-                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                <a target="_blank" href="{{ route('expenses.show', ['slug' => $planning->slug]) }}">
-                                                    Planning {{ $planning->month }}, {{ $planning->year }}
-                                                </a>
-                                            </th>
-                                            <td class="px-6 py-4">
-                                                {{ $planning->month }}
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                {{ $planning->year }}
-                                            </td>
-                                            <td class="px-6 py-4">
-                                                {{ $planning->salary }}
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        Data Not Found
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        @else
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3">
-                                            Name
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Section
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($plannings as $planning)
-                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                Planning {{ $planning->month }}, {{ $planning->year }}
-                                            </th>
-                                            <td class="px-6 py-4">
-                                                @forelse ($planning->sections as $key => $section)
-                                                    {{ $key }}
-                                                    <br />
-                                                    @forelse ($section as $key => $item)
-                                                        {{  $key + 1 }}. Item: {{ $item['item'] }}
-                                                        <br /> 
-                                                        &nbsp;&nbsp; Amount: RM{{ $item['amount'] }}
-                                                    @empty
-                                                        No section detail found
-                                                    @endforelse
-                                                    <br />
-                                                    <br />
-                                                @empty
-                                                    No section data found
-                                                @endforelse
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        Data Not Found
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        @endif
-                    </div>
-
+                    <x-planning-form.tables.all />
                 </div>
             </div>
         </div>
