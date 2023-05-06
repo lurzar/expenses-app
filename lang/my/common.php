@@ -59,7 +59,8 @@
             'saving_field' => 'Ralat berlaku semasa memproses medan perkara simpanan.',
             'commitment_field' => 'Ralat berlaku semasa memproses medan perkara komitment.',
             'other_field' => 'Ralat berlaku semasa memproses medan perkara lain.',
-            'expenses_list_table' => 'Jadual senarai perbelanjaan tidak boleh diambil pada masa ini.',
-            'expenses_current_month_table' => 'Jadual senarai perbelanjaan untuk bulan tidak boleh diambil pada masa ini.',
+            'expenses_list_table' => 'Jadual senarai perbelanjaan tidak boleh diperoleh pada masa ini.',
+            'expenses_current_month_table' => 'Jadual senarai perbelanjaan untuk bulan tidak boleh diperoleh pada masa ini.',
+            'data_not_found' => 'Maklumat tidak boleh diperoleh pada masa ini',
         ],
     ];

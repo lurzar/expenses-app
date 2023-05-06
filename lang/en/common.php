@@ -61,5 +61,6 @@
             'other_field' => 'Error occured while fetching other items field.',
             'expenses_list_table' => "Expenses list's table cannot be retrieve at moment.",
             'expenses_current_month_table' => 'Table for this month expenses cannot be retrieve at moment.',
+            'data_not_found' => 'Data cannot be retrieve at the moment',
         ],
     ];
