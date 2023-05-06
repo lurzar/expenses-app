@@ -30,6 +30,14 @@ class PlanningService
                     ->get();
     }
 
+    public function getSinglePlanning($slug): Collection
+    {
+        return $this->model
+                    ->where('user_id', Auth::id())
+                    ->where('slug', $slug)
+                    ->get();
+    }
+
     public function store($planning): Planning
     {
         $this->handleRequest($planning);
