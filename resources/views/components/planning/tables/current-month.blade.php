@@ -51,6 +51,6 @@
             </table>
         </div>
     @else
-        <span class="text-red-400 dark:text-red-600">@lang('common.error.expenses_current_month_table')</span>
+        <span class="text-red-400 dark:text-red-600">@lang('common.error.planning_current_month_table')</span>
     @endif
 </section>
