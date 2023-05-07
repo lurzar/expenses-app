@@ -38,6 +38,14 @@ class PlanningService
                     ->get();
     }
 
+    public function getAllExpenses()
+    {
+        return $this->model
+                    ->select('month', 'year', 'slug', 'sections', 'totals')
+                    ->where('user_id', Auth::id())
+                    ->get();
+    }
+
     public function store($planning): Planning
     {
         $this->handleRequest($planning);
