@@ -30,12 +30,9 @@ class PlanningService
                     ->get();
     }
 
-    public function getSinglePlanning($slug): Collection
+    public function getSinglePlanning($slug): Planning
     {
-        return $this->model
-                    ->where('user_id', Auth::id())
-                    ->where('slug', $slug)
-                    ->get();
+        return $this->model->firstWhere('slug', $slug);
     }
 
     public function getAllExpenses()
