@@ -40,7 +40,7 @@ class PlanningService
         return $this->model
                     ->select('month', 'year', 'slug', 'sections', 'totals')
                     ->where('user_id', Auth::id())
-                    ->get();
+                    ->paginate(12);
     }
 
     public function store($planning): Planning

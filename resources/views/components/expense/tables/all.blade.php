@@ -9,7 +9,7 @@
     </x-section-header>
     @if (!blank($expenses))
         <div class="relative overflow-x-auto">
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mb-6">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
@@ -53,6 +53,7 @@
                     @endforelse
                 </tbody>
             </table>
+            {{ $expenses->links() }}
         </div>
     @else
         <span class="text-red-400 dark:text-red-600">@lang('common.error.expenses_list_table')</span>
