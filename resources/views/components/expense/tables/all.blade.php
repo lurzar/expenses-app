@@ -30,7 +30,7 @@
                     @forelse ($expenses as $expense)
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                <a target="_blank" href="{{ route('expenses.show', ['slug' => $expense->slug]) }}">
+                                <a href="{{ route('expenses.show', ['slug' => $expense->slug]) }}">
                                     Expenses {{ $expense->month }}, {{ $expense->year }}
                                 </a>
                             </th>
@@ -41,11 +41,7 @@
                                 {{ $expense->year }}
                             </td>
                             <td class="px-6 py-4">
-                                @if (!blank($expense->totals))
-                                    RM {{ array_sum($expense->totals) }}
-                                @else
-                                    N/A
-                                @endif
+                                RM {{ $expense->total_spent ?? 'N/A' }}
                             </td>
                         </tr>
                     @empty
