@@ -59,8 +59,9 @@
             'saving_field' => 'Error occured while fetching savings items field.',
             'commitment_field' => 'Error occured while fetching commitments items field.',
             'other_field' => 'Error occured while fetching other items field.',
+            'plannings_list_table' => "Planning list's table cannot be retrieve at moment.",
+            'planning_current_month_table' => 'Table for this month expenses cannot be retrieve at moment.',
             'expenses_list_table' => "Expenses list's table cannot be retrieve at moment.",
-            'expenses_current_month_table' => 'Table for this month expenses cannot be retrieve at moment.',
             'data_not_found' => 'Data cannot be retrieve at the moment',
         ],
     ];

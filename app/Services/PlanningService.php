@@ -30,12 +30,17 @@ class PlanningService
                     ->get();
     }
 
-    public function getSinglePlanning($slug): Collection
+    public function getSinglePlanning($slug): Planning
+    {
+        return $this->model->firstWhere('slug', $slug);
+    }
+
+    public function getAllExpenses()
     {
         return $this->model
+                    ->select('month', 'year', 'slug', 'sections', 'totals')
                     ->where('user_id', Auth::id())
-                    ->where('slug', $slug)
-                    ->get();
+                    ->paginate(12);
     }
 
     public function store($planning): Planning

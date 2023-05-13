@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -58,25 +59,26 @@ class Planning extends Model
      */
     protected $casts = [
         'salary' => 'float',
-        'sections' => 'array',
-        'totals' => 'array',
+        'sections' => AsCollection::class,
+        'totals' => AsCollection::class,
     ];
 
-    protected function sections(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
-            set: fn ($value) => json_encode($value),
-        );
-    }
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['total_spent'];
 
-    protected function totals(): Attribute
+    /**
+     * Determine if the user is an administrator.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function getTotalSpentAttribute()
     {
-        return Attribute::make(
-            get: fn ($value) => json_decode($value, true),
-            set: fn ($value) => json_encode($value),
-        );
-    } 
+        return number_format($this->totals->sum(), 2);
+    }
 
     /**
      * Get the user that owns the Planning

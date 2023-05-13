@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\PlanningService;
+use App\Services\PlanningService as ExpenseService;
 use Illuminate\View\View;
 class ExpensesController extends Controller
 {
     private $service;
 
-    public function __construct(PlanningService $planning)
+    public function __construct(ExpenseService $planning)
     {
         $this->service = $planning;
     }
@@ -16,7 +16,14 @@ class ExpensesController extends Controller
     public function index(): View
     {
         return view('expenses.index', [
-            'plannings' => $this->service->getAllListPlanning(),
+            'expenses' => $this->service->getAllExpenses(),
+        ]);
+    }
+
+    public function show($slug)
+    {
+        return view('expenses.show', [
+            'expenses' => $this->service->getSinglePlanning($slug),
         ]);
     }
 }

@@ -3,7 +3,7 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             <i class="fa-solid fa-clipboard-list"></i>
             &nbsp;
-            @lang('common.planning')
+            @lang('common.expenses')
         </h2>
     </x-slot>
 
@@ -11,7 +11,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <x-planning.single-content :plannings="$plannings"/>
+                    <x-expense.single-content :expenses="$expenses"/>
                 </div>
             </div>
         </div>
