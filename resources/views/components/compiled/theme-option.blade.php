@@ -4,6 +4,8 @@
     class="inline-flex items-center px-3 py-2 border border-transparent text-lg leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
 >
     <svg
+        data-key="color-theme"
+        data-set-theme="night"
         id="theme-toggle-dark-icon"
         class="w-5 h-5 hidden"
         fill="currentColor"
@@ -13,6 +15,8 @@
         <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
     </svg>
     <svg
+        data-key="color-theme"
+        data-set-theme="cupcake"
         id="theme-toggle-light-icon"
         class="w-5 h-5 hidden"
         fill="currentColor"
