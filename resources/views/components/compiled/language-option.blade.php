@@ -1,18 +1,34 @@
-<x-dropdown align="right" width="48">
-    <x-slot name="trigger">
-        <button class="inline-flex items-center px-3 py-2 border border-transparent text-lg leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-            <div>
-                <i class="fa-solid fa-language"></i>
-            </div>
-        </button>
-    </x-slot>
-
-    <x-slot name="content">
-        <x-dropdown-link :href="route('language', 'en')">
-            {{ __('common.english') }}
-        </x-dropdown-link>
-        <x-dropdown-link :href="route('language', 'my')">
-            {{ __('common.malay') }}
-        </x-dropdown-link>
-    </x-slot>
-</x-dropdown>
+<div class="dropdown dropdown-end mr-2">
+    <label
+        tabindex="0"
+        class="btn btn-ghost btn-circle"
+    >
+        <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke-width="1.5" 
+            stroke="currentColor" 
+            class="w-6 h-6"
+        >
+            <path 
+                stroke-linecap="round" 
+                stroke-linejoin="round" 
+                d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802" 
+            />
+        </svg>
+    </label>
+    <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+        <li>
+            <a href="{{ route('language', 'en') }}">
+                @lang('common.english')
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('language', 'my') }}">
+                @lang('common.malay')
+            </a>
+        </li>
+    </ul>
+</div>
+  
