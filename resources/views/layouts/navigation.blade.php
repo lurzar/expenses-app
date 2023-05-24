@@ -1,4 +1,4 @@
-<div class="navbar bg-base-100">
+<div class="navbar bg-base-200">
     <div class="navbar-start">
         @auth
             <!-- Responsive Navigation Links -->

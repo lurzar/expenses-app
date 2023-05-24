@@ -17,7 +17,7 @@
     </head>
     <body class="font-sans antialiased">
         @livewireScripts
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        {{-- <div class="min-h-screen bg-gray-100 dark:bg-gray-900 ">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
@@ -32,6 +32,36 @@
             <!-- Page Content -->
             <main>
                 {{ $slot }}
+            </main>
+        </div> --}}
+
+        {{-- New --}}
+
+        <!-- Navbar -->
+        @include('layouts.navigation')
+
+        <div class="container mx-auto py-4">
+            <!-- Page Heading -->
+            @if (isset($header))
+                <header class="bg-base-200 shadow rounded-lg mb-4">
+                    <div class="py-6 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endif
+
+            <!-- Page Breadcrumb -->
+            <div class="bg-primary text-black rounded-lg mb-4">
+                <div class="px-4 sm:px-6 lg:px-8">
+                    @include('layouts.breadcrumb')
+                </div>
+            </div>
+
+            <!-- Page Content -->
+            <main class="bg-base-200 overflow-hidden shadow rounded-lg">
+                <div class="py-6 px-4 sm:px-6 lg:px-8">
+                    {{ $slot }}
+                </div>
             </main>
         </div>
     </body>
