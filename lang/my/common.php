@@ -35,6 +35,7 @@
         'saving' => 'Simpanan',
         'balance' => 'Baki',
         'total' => 'Jumlah',
+        'detail' => 'Perincian',
 
         // For long word or sentences
         'sentence' => [

@@ -35,6 +35,7 @@
         'saving' => 'Saving',
         'balance' => 'Balance',
         'total' => 'Total',
+        'detail' => 'Detail',
 
         // For long word or sentences
         'sentence' => [
