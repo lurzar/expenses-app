@@ -22,10 +22,10 @@
                 <table class="table w-full">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Month</th>
-                            <th>Year</th>
-                            <th>Spending</th>
+                            <th class="bg-primary dark:text-base-300">Name</th>
+                            <th class="bg-primary dark:text-base-300">Month</th>
+                            <th class="bg-primary dark:text-base-300">Year</th>
+                            <th class="bg-primary dark:text-base-300">Spending</th>
                         </tr>
                     </thead>
                     <tbody>
