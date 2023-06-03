@@ -7,33 +7,35 @@
         </h2>
     </x-slot>
 
-    <div class="pt-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    @if ($form_is_unlock)
-                        <section id="planningForm">
-                            @livewire('planning', ['close_date' => $form_close_date])
-                        </section>
-                    @else
-                        <section id="planningLock">
-                            <x-planning.lock-banner :open_date="$form_open_date"/>
-                        </section>
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @if (! $form_is_unlock)
-        <div class="pt-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                        <x-planning.tables.current-month :plannings="$plannings"/>
+    @if ($form_is_unlock)
+        <section id="planningForm">
+            @livewire('planning', ['close_date' => $form_close_date])
+        </section>
+    @else
+        <section id="planningLockHero">
+            <div class="hero">
+                <div class="hero-content text-center">
+                    <div class="max-w-md">
+                        <h1 class="text-5xl font-bold">
+                            Form Locked
+                        </h1>
+                        <p class="py-6">
+                            Please wait until {{ $form_open_date ?? '' }}.
+                        </p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
+        <section id="planningList">
+            <x-section-header 
+                :title="__('common.sentence.list_expenses')" 
+                :description="__('common.sentence.list_expenses_desc')"
+                :show_total_balance="false"
+            >
+                <i class="fa-solid fa-file-lines"></i>
+                &nbsp;
+            </x-section-header>
+            <x-table :datasets="$plannings"/>
+        </section>
     @endif
 </x-app-layout>
