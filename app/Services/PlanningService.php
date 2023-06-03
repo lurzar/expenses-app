@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Planning;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,11 +16,13 @@ class PlanningService
         $this->model = $planning;
     }
 
-    public function getAllListPlanning(): Collection
+    public function getAllPlannings(): Paginator
     {
         return $this->model
+                    ->select('month', 'year', 'slug', 'salary')
                     ->where('user_id', Auth::id())
-                    ->get();
+                    ->latest()
+                    ->paginate(10);
     }
 
     public function getThisMonthPlanning(): Collection
@@ -27,6 +30,7 @@ class PlanningService
         return $this->model
                     ->where('user_id', Auth::id())
                     ->thisMonth()
+                    ->latest()
                     ->get();
     }
 
@@ -35,7 +39,7 @@ class PlanningService
         return $this->model->firstWhere('slug', $slug);
     }
 
-    public function getAllExpenses()
+    public function getAllExpenses(): Paginator
     {
         return $this->model
                     ->select('month', 'year', 'slug', 'sections', 'totals')
