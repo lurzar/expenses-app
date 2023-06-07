@@ -6,7 +6,7 @@
     'res_balance' => 0,
 ])
 
-<header class="mb-6">
+<header>
     <h2 class="text-lg font-medium">
         {{ $slot }} 
         {{ $title }}

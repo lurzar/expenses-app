@@ -36,6 +36,7 @@
         'balance' => 'Baki',
         'total' => 'Jumlah',
         'detail' => 'Perincian',
+        'new_planning' => 'Perancangan Baru',
 
         // For long word or sentences
         'sentence' => [

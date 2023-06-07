@@ -7,35 +7,32 @@
         </h2>
     </x-slot>
 
-    @if ($form_is_unlock)
+    {{-- @if ($form_is_unlock)
         <section id="planningForm">
             @livewire('planning', ['close_date' => $form_close_date])
         </section>
-    @else
-        <section id="planningLockHero">
-            <div class="hero">
-                <div class="hero-content text-center">
-                    <div class="max-w-md">
-                        <h1 class="text-5xl font-bold">
-                            Form Locked
-                        </h1>
-                        <p class="py-6">
-                            Please wait until {{ $form_open_date ?? '' }}.
-                        </p>
-                    </div>
+    @else --}}
+        <section id="planningList">
+            <div class="mb-6 flow-root">
+                <div class="float-left">
+                    <x-section-header 
+                        :title="__('common.sentence.list_expenses')" 
+                        :description="__('common.sentence.list_expenses_desc')"
+                        :show_total_balance="false"
+                    >
+                        <i class="fa-solid fa-file-lines"></i>
+                        &nbsp;
+                    </x-section-header>
+                </div>
+                <div class="float-right">
+                    <a href="{{ route('planning.create') }}">
+                        <x-primary-button :icon="'create'">
+                            @lang('common.new_planning')
+                        </x-primary-button>
+                    </a>
                 </div>
             </div>
-        </section>
-        <section id="planningList">
-            <x-section-header 
-                :title="__('common.sentence.list_expenses')" 
-                :description="__('common.sentence.list_expenses_desc')"
-                :show_total_balance="false"
-            >
-                <i class="fa-solid fa-file-lines"></i>
-                &nbsp;
-            </x-section-header>
             <x-table :datasets="$plannings"/>
         </section>
-    @endif
+    {{-- @endif --}}
 </x-app-layout>
