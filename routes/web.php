@@ -35,13 +35,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // Planning
-    // Route::prefix('planning')->group(function () {
-    //     Route::get('/', [PlanningController::class, 'index'])->name('index');
-    // });
-    Route::get('/planning', [PlanningController::class, 'index'])->name('planning.index');
-    Route::get('/planning/create', [PlanningController::class, 'create'])->name('planning.create');
-    Route::post('/planning', [PlanningController::class, 'store'])->name('planning.store');
-    Route::get('/planning/{slug}', [PlanningController::class, 'show'])->name('planning.show');
+    Route::resource('planning', PlanningController::class)->except([
+        'update', 'edit',
+    ]);
     // Expenses
     Route::get('/expenses', [ExpensesController::class, 'index'])->name('expenses.index');
     Route::get('/expenses/{slug}', [ExpensesController::class, 'show'])->name('expenses.show');
