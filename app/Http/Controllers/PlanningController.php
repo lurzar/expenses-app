@@ -19,10 +19,16 @@ class PlanningController extends Controller
     public function index(): View
     {
         return view('planning.index', [
-            'form_is_unlock' => false, // unlockForm()
+            'plannings' => $this->service->getAllPlannings(),
+        ]);
+    }
+
+    public function create(): View
+    {
+        return view('planning.create', [
+            'form_is_unlock' => true, // unlockForm()
             'form_open_date' => getOpenDate(), 
             'form_close_date' => getCloseDate(),
-            'plannings' => $this->service->getAllPlannings(),
         ]);
     }
 
