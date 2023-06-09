@@ -9,7 +9,7 @@
         &nbsp;
     </x-section-header>
 
-    <x-input-error :messages="$errors->get('savings_amount_limit')" class="mt-2  my-6" />
+    <x-input-error :messages="$errors->get('savings_amount_limit')" class="mt-2 my-6" />
 
     <div class="grid grid-cols-6 gap-4 mb-6 items-end">
         @forelse ($savings_fields as $savings_field)   
@@ -17,7 +17,6 @@
                 <x-input-label for="savings_values.{{ $savings_field }}.item" :value="__('label.item')" />
                 <x-text-input 
                     id="savings_values.{{ $savings_field }}.item" 
-                    class="block mt-1 w-full" 
                     type="text" 
                     name="savings_values[{{ $savings_field }}][item]" 
                     wire:model="savings_values.{{ $savings_field }}.item" 
@@ -31,7 +30,6 @@
                 <x-input-label for="savings_values.{{ $savings_field }}.amount" :value="__('label.amount')" />
                 <x-text-input 
                     id="savings_values.{{ $savings_field }}.amount" 
-                    class="block mt-1 w-full" 
                     type="number" 
                     name="savings_values[{{ $savings_field }}][amount]"
                     wire:model="savings_values.{{ $savings_field }}.amount"  

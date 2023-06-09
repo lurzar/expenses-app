@@ -13,7 +13,6 @@
             <x-input-label for="total_savings" :value="__('label.total_saving')" />
             <x-text-input 
                 id="total_savings" 
-                class="block mt-1 w-full" 
                 type="text" 
                 name="total_savings" 
                 wire:model="total_savings"
@@ -25,8 +24,7 @@
         <div>
             <x-input-label for="total_balance" :value="__('label.total_balance')" />
             <x-text-input 
-                id="total_balance" 
-                class="block mt-1 w-full" 
+                id="total_balance"
                 type="text" 
                 name="total_balance" 
                 wire:model="total_balance"

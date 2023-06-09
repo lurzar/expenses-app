@@ -17,7 +17,6 @@
                 <x-input-label for="others_values.{{ $others_item }}.item" :value="__('label.item')" />
                 <x-text-input 
                     id="others_values.{{ $others_item }}.item" 
-                    class="block mt-1 w-full" 
                     type="text" 
                     name="others_values[{{ $others_item }}][item]" 
                     wire:model="others_values.{{ $others_item }}.item" 
@@ -31,7 +30,6 @@
                 <x-input-label for="others_values.{{ $others_item }}.amount" :value="__('label.amount')" />
                 <x-text-input 
                     id="others_values.{{ $others_item }}.amount" 
-                    class="block mt-1 w-full" 
                     type="number" 
                     name="others_values[{{ $others_item }}][amount]" 
                     wire:model="others_values.{{ $others_item }}.amount" 

@@ -7,31 +7,25 @@
         </h2>
     </x-slot>
 
-    {{-- @if ($form_is_unlock)
-        <section id="planningForm">
-            @livewire('planning', ['close_date' => $form_close_date])
-        </section>
-    @else --}}
-        <section id="planningList">
-            <div class="mb-6 flow-root">
-                <div class="float-left">
-                    <x-section-header 
-                        :title="__('common.sentence.list_plannings')" 
-                        :description="__('common.sentence.list_plannings_desc')"
-                    >
-                        <i class="fa-solid fa-file-lines"></i>
-                        &nbsp;
-                    </x-section-header>
-                </div>
-                <div class="float-right">
-                    <a href="{{ route('planning.create') }}">
-                        <x-primary-button :icon="'create'">
-                            @lang('common.new_planning')
-                        </x-primary-button>
-                    </a>
-                </div>
+    <section id="planningList">
+        <div class="mb-6 flow-root">
+            <div class="float-left">
+                <x-section-header 
+                    :title="__('common.sentence.list_plannings')" 
+                    :description="__('common.sentence.list_plannings_desc')"
+                >
+                    <i class="fa-solid fa-file-lines"></i>
+                    &nbsp;
+                </x-section-header>
             </div>
-            <x-table :datasets="$plannings"/>
-        </section>
-    {{-- @endif --}}
+            <div class="float-right">
+                <a href="{{ route('planning.create') }}">
+                    <x-primary-button :icon="'create'">
+                        @lang('common.new_planning')
+                    </x-primary-button>
+                </a>
+            </div>
+        </div>
+        <x-table :datasets="$plannings"/>
+    </section>
 </x-app-layout>
