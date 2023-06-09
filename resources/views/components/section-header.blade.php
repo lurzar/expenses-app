@@ -1,7 +1,7 @@
 @props([
     'title' => '', 
     'description' => '',
-    'show_total_balance' => true,
+    'show_total_balance' => false,
     'res_total' => 0, 
     'res_balance' => 0,
 ])

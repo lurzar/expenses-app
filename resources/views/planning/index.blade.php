@@ -16,9 +16,8 @@
             <div class="mb-6 flow-root">
                 <div class="float-left">
                     <x-section-header 
-                        :title="__('common.sentence.list_expenses')" 
-                        :description="__('common.sentence.list_expenses_desc')"
-                        :show_total_balance="false"
+                        :title="__('common.sentence.list_plannings')" 
+                        :description="__('common.sentence.list_plannings_desc')"
                     >
                         <i class="fa-solid fa-file-lines"></i>
                         &nbsp;
