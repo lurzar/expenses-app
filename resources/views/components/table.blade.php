@@ -1,6 +1,7 @@
 @php
     $results = blank($datasets) ? collect() : $datasets;
     $columns = blank($results) ? collect() : collect(($results[0])->getAttributes())->keys();
+    $module = explode('.', \Route::currentRouteName())[0];
 
     if ($columns->isNotEmpty()) {
 
@@ -24,7 +25,9 @@
                 @if ($columns->isNotEmpty())
                     <tr>
                         @foreach ($columns as $header)
-                            <th class="bg-primary dark:text-base-300">{{ $header }}</th>
+                            <th class="bg-primary dark:text-base-300">
+                                @lang('label.'.$header.'')
+                            </th>
                         @endforeach
                     </tr>
                 @endif
@@ -36,13 +39,13 @@
                             @foreach ($columns as $column)
                                 @if ($loop->first)
                                     <th>
-                                        <a href="{{ route('expenses.show', ['slug' => $result->slug]) }}">
-                                            Planning {{ $result[$column] }}
+                                        <a href="{{ route(''.$module.'.show', [''.$module.'' => $result->slug]) }}">
+                                            {{ ucfirst($module) }} {{ $result[$column] }}
                                         </a>
                                     </th>
                                 @else
                                     <td>
-                                        {{ ($column == 'salary') ? 'RM '.$result[$column] : $result[$column] }}
+                                        {{ $result[$column] }}
                                     </td>
                                 @endif
                             @endforeach
