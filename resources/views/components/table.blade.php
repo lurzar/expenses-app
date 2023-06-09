@@ -1,7 +1,7 @@
 @php
     $results = blank($datasets) ? collect() : $datasets;
     $columns = blank($results) ? collect() : collect(($results[0])->getAttributes())->keys();
-    $module = explode('.', \Route::currentRouteName())[0];
+    $module = getCurrentModule();
 
     if ($columns->isNotEmpty()) {
 
