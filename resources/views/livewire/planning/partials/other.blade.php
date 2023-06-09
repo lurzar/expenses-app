@@ -43,7 +43,9 @@
             </div>
             @if ($others_item != 0)
                 <div>
-                    <x-planning.form.item-remove-button type="button" wire:click="removeOtherField({{ $others_item }})" />
+                    <x-danger-button type="button" :icon="'delete'" wire:click="removeOtherField({{ $others_item }})">
+                        @lang('common.remove')
+                    </x-danger-button>
                 </div>
             @endif
         @empty
@@ -53,6 +55,8 @@
         @endforelse
     </div>
     <div class="mb-10">
-        <x-planning.form.item-add-button type="button" wire:click="addOtherField({{ $others_fields }})" />
+        <x-secondary-button type="button" :icon="'add'" wire:click="addOtherField({{ $others_fields }})">
+            @lang('common.add')
+        </x-secondary-button>
     </div>
 </div>
