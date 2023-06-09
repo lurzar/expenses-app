@@ -38,7 +38,7 @@ class PlanningController extends Controller
         return redirect('expense.index');
     }
 
-    public function show($slug)
+    public function show($slug): View
     {
         return view('planning.show', [
             'plannings' => $this->service->getSinglePlanning($slug),
