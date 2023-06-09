@@ -38,6 +38,7 @@
         'detail' => 'Perincian',
         'add' => 'Tambah',
         'create' => 'Cipta',
+        'remove' => 'Buang',
 
         // For long word or sentences
         'sentence' => [

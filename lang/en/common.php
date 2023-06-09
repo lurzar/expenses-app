@@ -38,6 +38,7 @@
         'detail' => 'Detail',
         'add' => 'Add',
         'create' => 'Create',
+        'remove' => 'Remove',
 
         // For long word or sentences
         'sentence' => [
