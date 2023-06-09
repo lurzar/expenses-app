@@ -26,12 +26,12 @@
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
+                        <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.*')">
                             @lang('common.planning')
                         </x-nav-link>
                     </li>
                     <li>
-                        <x-nav-link :href="route('expenses.index')" :active="request()->routeIs('expenses.index')">
+                        <x-nav-link :href="route('expenses.index')" :active="request()->routeIs('expenses.*')">
                             @lang('common.expenses')
                         </x-nav-link>
                     </li>
@@ -54,12 +54,12 @@
                     </x-nav-link>
                 </li>
                 <li>
-                    <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.index')">
+                    <x-nav-link :href="route('planning.index')" :active="request()->routeIs('planning.*')">
                         @lang('common.planning')
                     </x-nav-link>
                 </li>
                 <li>
-                    <x-nav-link :href="route('expenses.index')" :active="request()->routeIs('expenses.index')">
+                    <x-nav-link :href="route('expenses.index')" :active="request()->routeIs('expenses.*')">
                         @lang('common.expenses')
                     </x-nav-link>
                 </li>

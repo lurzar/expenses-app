@@ -37,6 +37,7 @@
         'total' => 'Jumlah',
         'detail' => 'Perincian',
         'new_planning' => 'Perancangan Baru',
+        'create' => 'Cipta',
 
         // For long word or sentences
         'sentence' => [
