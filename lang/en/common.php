@@ -36,7 +36,7 @@
         'balance' => 'Balance',
         'total' => 'Total',
         'detail' => 'Detail',
-        'new_planning' => 'New Planning',
+        'add' => 'Add',
         'create' => 'Create',
 
         // For long word or sentences
