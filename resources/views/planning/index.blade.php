@@ -21,7 +21,7 @@
             <div class="float-right">
                 <a href="{{ route('planning.create') }}">
                     <x-primary-button :icon="'create'">
-                        @lang('common.new_planning')
+                        @lang('common.create')
                     </x-primary-button>
                 </a>
             </div>
