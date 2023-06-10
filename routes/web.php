@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
     ]);
     // Expenses
     Route::get('/expenses', [ExpensesController::class, 'index'])->name('expenses.index');
-    Route::get('/expenses/{slug}', [ExpensesController::class, 'show'])->name('expenses.show');
+    Route::get('/expenses/{expenses}', [ExpensesController::class, 'show'])->name('expenses.show');
 });
 
 require __DIR__.'/auth.php';
