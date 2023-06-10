@@ -4,6 +4,7 @@
         :description="__('common.sentence.other_desc')"
         :res_total="$total_other"
         :res_balance="$balance_after_commitments"
+        :show_total_balance="true"
     >
         <i class="fa-solid fa-hand-holding-dollar"></i>
         &nbsp;

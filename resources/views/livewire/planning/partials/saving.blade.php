@@ -4,6 +4,7 @@
         :description="__('common.sentence.saving_desc')"
         :res_total="$total_savings"
         :res_balance="$balance_after_saving_rates"
+        :show_total_balance="true"
     >
         <i class="fa-solid fa-circle-dollar-to-slot"></i>
         &nbsp;

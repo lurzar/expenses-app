@@ -4,6 +4,7 @@
         :description="__('common.sentence.commitment_desc')"
         :res_total="$total_commitment"
         :res_balance="$balance_after_savings"
+        :show_total_balance="true"
     >
         <i class="fa-solid fa-credit-card"></i>
         &nbsp;
