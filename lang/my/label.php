@@ -29,4 +29,5 @@
         'other_placeholder' => 'cth. Utiliti, Barangan Runcit',
         'total_saving' => 'Jumlah Simpanan (RM)',
         'total_balance' => 'Jumlah Baki (RM)',
+        'spending' => 'Perbelanjaan (RM)',
     ];

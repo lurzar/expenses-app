@@ -10,6 +10,19 @@
         }
 
         $columns = $columns->prepend('name');
+
+        if ($module == 'expenses') {
+
+            if ($columns->search('sections')) {
+                $columns = $columns->except([$columns->search('sections')]);
+            }
+
+            if ($columns->search('totals')) {
+                $columns = $columns->except([$columns->search('totals')]);
+            }
+
+            $columns = $columns->push('spending');
+        }
     }
 @endphp
 
@@ -45,7 +58,7 @@
                                     </th>
                                 @else
                                     <td>
-                                        {{ $result[$column] }}
+                                        {{ !($column == 'spending') ? $result[$column] : $result->total_spent }}
                                     </td>
                                 @endif
                             @endforeach

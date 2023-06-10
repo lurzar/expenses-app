@@ -6,53 +6,18 @@
             @lang('common.expenses')
         </h2>
     </x-slot>    
-    <section id="allExpenses">
-        <x-section-header 
-            :title="__('common.sentence.list_expenses')" 
-            :description="__('common.sentence.list_expenses_desc')"
-            :show_total_balance="false"
-        >
-            <i class="fa-solid fa-file-lines"></i>
-            &nbsp;
-        </x-section-header>
-        @if (blank($expenses))
-            <span class="text-red-400 dark:text-red-600">@lang('common.error.data_not_found')</span>
-        @else
-            <div class="overflow-x-auto">
-                <table class="table w-full">
-                    <thead>
-                        <tr>
-                            <th class="bg-primary dark:text-base-300">Name</th>
-                            <th class="bg-primary dark:text-base-300">Month</th>
-                            <th class="bg-primary dark:text-base-300">Year</th>
-                            <th class="bg-primary dark:text-base-300">Spending</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($expenses as $expense)
-                            <tr class="hover">
-                                <th>
-                                    <a href="{{ route('expenses.show', ['slug' => $expense->slug]) }}">
-                                        Expenses {{ $expense->month }}, {{ $expense->year }}
-                                    </a>
-                                </th>
-                                <td>
-                                    {{ $expense->month }}
-                                </td>
-                                <td>
-                                    {{ $expense->year }}
-                                </td>
-                                <td>
-                                    RM {{ $expense->total_spent ?? 'N/A' }}
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <div class="mt-3">
-                    {{ $expenses->links() }}
-                </div>
+    <section id="expensesList">
+        <div class="mb-6 flow-root">
+            <div class="float-left">
+                <x-section-header 
+                    :title="__('common.sentence.list_expenses')" 
+                    :description="__('common.sentence.list_expenses_desc')"
+                >
+                    <i class="fa-solid fa-file-lines"></i>
+                    &nbsp;
+                </x-section-header>
             </div>
-        @endif
+        </div>
+        <x-table :datasets="$expenses"/>
     </section>
 </x-app-layout>
