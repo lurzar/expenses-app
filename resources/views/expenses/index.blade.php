@@ -5,7 +5,8 @@
             &nbsp;
             @lang('common.expenses')
         </h2>
-    </x-slot>    
+    </x-slot>
+    
     <section id="expensesList">
         <div class="mb-6 flow-root">
             <div class="float-left">

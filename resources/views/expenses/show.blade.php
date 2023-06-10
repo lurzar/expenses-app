@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl leading-tight">
             <i class="fa-solid fa-clipboard-list"></i>
             &nbsp;
             @lang('common.expenses')
@@ -8,9 +8,7 @@
     </x-slot>
     
     <section id="{{ $expenses->slug }}">
-        <x-section-header 
-            :show_total_balance="false"
-        >
+        <x-section-header>
             <i class="fa-solid fa-money-bill-trend-up"></i>
             &nbsp;
             @lang('common.expenses') {{ $expenses->month }}, {{ $expenses->year }}
@@ -43,21 +41,6 @@
                 <div class="stat-value text-secondary">RM {{ number_format((floatval($expenses->totals['others'])), 2) }}</div>
                 <div class="stat-desc">21% more than last month</div>
             </div>
-    
-            {{-- <div class="stat">
-                <div class="stat-figure text-secondary">
-                    <div class="avatar online">
-                        <div class="w-16 rounded-full">
-                            <img src="{{ asset('images/avatar.png') }}" alt="Avatar">
-                        </div>
-                    </div>
-                </div>
-                <div class="stat-value">
-                    {{ $expenses->total_spent }}
-                </div>
-                <div class="stat-title">Spent</div>
-                <div class="stat-desc text-secondary">86% more than last month</div>
-            </div> --}}
         </div>
     </section>
 </x-app-layout>
