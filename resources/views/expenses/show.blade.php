@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl leading-tight">
-            <i class="fa-solid fa-clipboard-list"></i>
+            <i class="fa-solid fa-money-bill-trend-up"></i>
             &nbsp;
             @lang('common.expenses')
         </h2>
@@ -9,7 +9,7 @@
     
     <section id="{{ $expenses->slug }}">
         <x-section-header>
-            <i class="fa-solid fa-money-bill-trend-up"></i>
+            <i class="fa-solid fa-file"></i>
             &nbsp;
             @lang('common.expenses') {{ $expenses->month }}, {{ $expenses->year }}
         </x-section-header>
