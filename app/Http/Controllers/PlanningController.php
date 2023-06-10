@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PlanningStoreRequest as StoreRequest;
 use App\Services\PlanningService;
-use Illuminate\Routing\Redirector;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class PlanningController extends Controller
@@ -32,10 +32,10 @@ class PlanningController extends Controller
         ]);
     }
 
-    public function store(StoreRequest $request): Redirector
+    public function store(StoreRequest $request): RedirectResponse
     {
         $this->service->store(collect($request->validated()));
-        return redirect('expense.index');
+        return redirect()->route('planning.index');
     }
 
     public function show($slug): View
