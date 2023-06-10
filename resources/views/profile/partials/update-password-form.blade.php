@@ -34,12 +34,12 @@
             </div>
 
             <div>
-                <x-input-label for="confirm_password">
+                <x-input-label for="password_confirmation">
                     <i class="fa-solid fa-circle-check"></i>
                     &nbsp;
                     @lang('label.confirm_password')
                 </x-input-label>
-                <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
+                <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="password_confirmation" />
                 <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
             </div>
 
