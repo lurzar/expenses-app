@@ -10,13 +10,11 @@ if (localStorage.getItem('theme') === 'night' || (!('theme' in localStorage) && 
 }
 
 themeToggleDarkIcon.addEventListener('click', function() {
-    localStorage.theme = 'night'
     themeToggleDarkIcon.classList.toggle('hidden')
     themeToggleLightIcon.classList.remove('hidden')
 });
 
 themeToggleLightIcon.addEventListener('click', function() {
-    localStorage.theme = 'cupcake'
     themeToggleLightIcon.classList.toggle('hidden')
     themeToggleDarkIcon.classList.remove('hidden')
 });
