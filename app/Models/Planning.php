@@ -42,7 +42,6 @@ class Planning extends Model
      */
     protected $fillable = [
         'sections->enabled',
-        'totals->enabled',
     ];
 
     /**
@@ -60,7 +59,7 @@ class Planning extends Model
     protected $casts = [
         'salary' => 'float',
         'sections' => AsCollection::class,
-        'totals' => AsCollection::class,
+        'total_spent' => AsCollection::class,
     ];
 
     /**
@@ -73,7 +72,7 @@ class Planning extends Model
     public function totalSpent(): Attribute
     {
         return new Attribute(
-            get: fn () => number_format($this->totals->sum(), 2),
+            get: fn () => number_format($this->total_spent->sum(), 2),
         );
     }
 
