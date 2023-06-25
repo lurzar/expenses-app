@@ -1,6 +1,6 @@
 @props(['icon' => ''])
 
-<button {{ $attributes->merge(['type' => 'submit', 'class' => 'inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150']) }}>
+<button {{ $attributes->merge(['type' => 'submit', 'class' => 'btn btn-error']) }}>
     @if (! blank($icon))
         <span class="text-xs @if($slot->isNotEmpty()) pr-2 @endif">
             @if ($icon == 'save')
@@ -17,6 +17,14 @@
                 <i class="fa-solid fa-ban"></i>
             @elseif ($icon == 'delete')
                 <i class="fa-solid fa-trash-can"></i>
+            @elseif ($icon == 'create')
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="stroke-current w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            @elseif ($icon == 'add')
+                <i class="fa-solid fa-plus"></i>
+            @else
+                ? 
             @endif
         </span>
     @endif

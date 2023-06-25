@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Route;
 
 // Get list of months
 // Return array
@@ -84,6 +85,15 @@ if (! function_exists('getCloseDate')) {
     function getCloseDate() {
         $setting_close_date = 14; // will get from db settings;
         $data =  $setting_close_date.' '.getCurrentMonthYear();
+        return $data;
+    }
+}
+
+// Get current module name
+// Return e.g. planning
+if (! function_exists('getCurrentModule')) {
+    function getCurrentModule() {
+        $data = explode('.', Route::currentRouteName())[0];
         return $data;
     }
 }

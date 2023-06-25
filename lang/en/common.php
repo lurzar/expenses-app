@@ -35,6 +35,10 @@
         'saving' => 'Saving',
         'balance' => 'Balance',
         'total' => 'Total',
+        'detail' => 'Detail',
+        'add' => 'Add',
+        'create' => 'Create',
+        'remove' => 'Remove',
 
         // For long word or sentences
         'sentence' => [
@@ -52,6 +56,8 @@
             'latest_planning_desc' => 'Your this month planning information.',
             'list_expenses' => 'Expenses List',
             'list_expenses_desc' => 'All your expenses list information.',
+            'list_plannings' => 'Plannings List',
+            'list_plannings_desc' => 'All your plannings list information.',
         ],
 
         // For custom error message

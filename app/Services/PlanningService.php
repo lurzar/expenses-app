@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Planning;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,34 +16,7 @@ class PlanningService
         $this->model = $planning;
     }
 
-    public function getAllListPlanning(): Collection
-    {
-        return $this->model
-                    ->where('user_id', Auth::id())
-                    ->get();
-    }
-
-    public function getThisMonthPlanning(): Collection
-    {
-        return $this->model
-                    ->where('user_id', Auth::id())
-                    ->thisMonth()
-                    ->get();
-    }
-
-    public function getSinglePlanning($slug): Planning
-    {
-        return $this->model->firstWhere('slug', $slug);
-    }
-
-    public function getAllExpenses()
-    {
-        return $this->model
-                    ->select('month', 'year', 'slug', 'sections', 'totals')
-                    ->where('user_id', Auth::id())
-                    ->paginate(12);
-    }
-
+    // Create
     public function store($planning): Planning
     {
         $this->handleRequest($planning);
@@ -58,6 +32,37 @@ class PlanningService
         return $this->model;
     }
 
+    // Read
+    public function getAllPlannings(): Paginator
+    {
+        return $this->model
+                    ->select('month', 'year', 'slug', 'salary')
+                    ->where('user_id', Auth::id())
+                    ->latest()
+                    ->paginate(10);
+    }
+
+    public function getAllExpenses(): Paginator
+    {
+        return $this->model
+                    ->select('month', 'year', 'slug', 'totals')
+                    ->where('user_id', Auth::id())
+                    ->latest()
+                    ->paginate(10);
+    }
+
+    public function getSinglePlanning($slug): Planning
+    {
+        return $this->model->firstWhere('slug', $slug);
+    }
+
+    // Update
+        // ...
+    
+    // Delete
+        // ...
+
+    // Misc
     private function handleRequest(Collection $planning): Collection
     {
         $sections = [

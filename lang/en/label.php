@@ -29,4 +29,5 @@
         'other_placeholder' => 'e.g. Utilities, Groceries',
         'total_saving' => 'Total Saving (RM)',
         'total_balance' => 'Total Change (RM)',
+        'spending' => 'Spending (RM)',
     ];

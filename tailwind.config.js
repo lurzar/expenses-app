@@ -7,7 +7,7 @@ module.exports = {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
     ],
-    darkMode: 'class',
+    darkMode: ['class', '[data-theme="night"]'],
 
     theme: {
         extend: {
@@ -19,6 +19,11 @@ module.exports = {
 
     plugins: [
         require('@tailwindcss/forms'),
+        require('@tailwindcss/typography'),
         require('daisyui'),
     ],
+
+    daisyui: {
+        themes: ["night", "cupcake"],
+    },
 };

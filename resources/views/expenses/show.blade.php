@@ -1,19 +1,46 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            <i class="fa-solid fa-clipboard-list"></i>
+        <h2 class="font-semibold text-xl leading-tight">
+            <i class="fa-solid fa-money-bill-trend-up"></i>
             &nbsp;
             @lang('common.expenses')
         </h2>
     </x-slot>
-
-    <div class="pt-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <x-expense.single-content :expenses="$expenses"/>
+    
+    <section id="{{ $expenses->slug }}">
+        <x-section-header>
+            <i class="fa-solid fa-file"></i>
+            &nbsp;
+            @lang('common.expenses') {{ $expenses->month }}, {{ $expenses->year }}
+        </x-section-header>
+    
+        <div class="stats stats-horizontal shadow w-full">
+            <div class="stat">
+                <div class="stat-figure text-primary place-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                 </div>
+                <div class="stat-title">Total Savings</div>
+                <div class="stat-value text-primary">RM {{ number_format((floatval($expenses->totals->get('saving'))), 2) }}</div>
+                <div class="stat-desc">21% more than last month</div>
+            </div>
+            
+            <div class="stat">
+                <div class="stat-figure text-secondary place-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <div class="stat-title">Total Commitments</div>
+                <div class="stat-value text-secondary">RM {{ number_format((floatval($expenses->totals->get('commitment'))), 2) }}</div>
+                <div class="stat-desc">21% more than last month</div>
+            </div>
+            
+            <div class="stat">
+                <div class="stat-figure text-secondary place-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-8 h-8 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <div class="stat-title">Total Others</div>
+                <div class="stat-value text-secondary">RM {{ number_format((floatval($expenses->totals->get('other'))), 2) }}</div>
+                <div class="stat-desc">21% more than last month</div>
             </div>
         </div>
-    </div>
+    </section>
 </x-app-layout>
