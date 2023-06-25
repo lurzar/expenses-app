@@ -42,6 +42,7 @@ class Planning extends Model
      */
     protected $fillable = [
         'sections->enabled',
+        'totals->enabled',
     ];
 
     /**
@@ -59,7 +60,7 @@ class Planning extends Model
     protected $casts = [
         'salary' => 'float',
         'sections' => AsCollection::class,
-        'total_spent' => AsCollection::class,
+        'totals' => AsCollection::class,
     ];
 
     /**
@@ -67,19 +68,21 @@ class Planning extends Model
      *
      * @var array
      */
-    protected $appends = ['total_spent', 'name'];
-
-    public function totalSpent(): Attribute
-    {
-        return new Attribute(
-            get: fn () => number_format($this->total_spent->sum(), 2),
-        );
-    }
+    protected $appends = ['name', 'spending'];
 
     public function name(): Attribute
     {
         return new Attribute(
             get: fn () => $this->month.', '.$this->year,
+        );
+    }
+
+    public function spending(): Attribute
+    {
+        $value = $this->totals ? $this->totals->sum() : 0.00;
+
+        return new Attribute(
+            get: fn () => number_format($value, 2),
         );
     }
 

@@ -20,7 +20,7 @@ class ExpensesController extends Controller
         ]);
     }
 
-    public function show($slug)
+    public function show($slug): View
     {
         return view('expenses.show', [
             'expenses' => $this->service->getSinglePlanning($slug),
