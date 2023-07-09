@@ -1,39 +1,31 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl leading-tight">
             <i class="fa-solid fa-clipboard-list"></i>
             &nbsp;
             @lang('common.planning')
         </h2>
     </x-slot>
 
-    <div class="pt-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    @if ($form_is_unlock)
-                        <section id="planningForm">
-                            @livewire('planning', ['close_date' => $form_close_date])
-                        </section>
-                    @else
-                        <section id="planningLock">
-                            <x-planning.lock-banner :open_date="$form_open_date"/>
-                        </section>
-                    @endif
-                </div>
+    <section id="planningList">
+        <div class="mb-6 flow-root">
+            <div class="float-left">
+                <x-section-header 
+                    :title="__('common.sentence.list_plannings')" 
+                    :description="__('common.sentence.list_plannings_desc')"
+                >
+                    <i class="fa-solid fa-file-lines"></i>
+                    &nbsp;
+                </x-section-header>
+            </div>
+            <div class="float-right">
+                <a href="{{ route('planning.create') }}">
+                    <x-primary-button :icon="'create'">
+                        @lang('common.create')
+                    </x-primary-button>
+                </a>
             </div>
         </div>
-    </div>
-
-    @if (! $form_is_unlock)
-        <div class="pt-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                        <x-planning.tables.current-month :plannings="$plannings"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
+        <x-table :datasets="$plannings"/>
+    </section>
 </x-app-layout>

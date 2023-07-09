@@ -1,17 +1,17 @@
 @props([
     'title' => '', 
     'description' => '',
-    'show_total_balance' => true,
+    'show_total_balance' => false,
     'res_total' => 0, 
     'res_balance' => 0,
 ])
 
-<header class="mb-6">
-    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+<header>
+    <h2 class="text-lg font-medium">
         {{ $slot }} 
         {{ $title }}
         @if ($show_total_balance)
-            <span class="text-sm italic text-slate-500">
+            <span class="text-sm italic">
                 (@lang('common.total'): RM {{ $res_total }}, @lang('common.balance'): RM {{ $res_balance }})
             </span>
         @endif
@@ -22,4 +22,4 @@
     </p>
 </header>
 
-<hr class="h-px my-6 w-80 bg-gray-200 border-0 dark:bg-gray-700">
+<div class="divider w-80"></div> 

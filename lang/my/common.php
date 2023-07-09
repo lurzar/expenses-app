@@ -35,6 +35,10 @@
         'saving' => 'Simpanan',
         'balance' => 'Baki',
         'total' => 'Jumlah',
+        'detail' => 'Perincian',
+        'add' => 'Tambah',
+        'create' => 'Cipta',
+        'remove' => 'Buang',
 
         // For long word or sentences
         'sentence' => [
@@ -52,6 +56,8 @@
             'latest_planning_desc' => 'Informasi perancangan anda pada bulan ini.',
             'list_expenses' => 'Senarai Perbelanjaan',
             'list_expenses_desc' => 'Seluruh informasi senarai perbelanjaan anda.',
+            'list_plannings' => 'Senarai Perancangan',
+            'list_plannings_desc' => 'Seluruh informasi senarai perancangan anda.',
         ],
 
         // For custom error message

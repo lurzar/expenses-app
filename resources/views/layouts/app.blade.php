@@ -17,21 +17,29 @@
     </head>
     <body class="font-sans antialiased">
         @livewireScripts
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.navigation')
+        <!-- Navbar -->
+        @include('layouts.navigation')
 
+        <div class="container mx-auto py-4">
             <!-- Page Heading -->
             @if (isset($header))
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <header class="bg-base-200 shadow rounded-lg mb-4">
+                    <div class="py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
             @endif
-
+            <!-- Page Breadcrumb -->
+            <div class="bg-primary text-black rounded-lg mb-4">
+                <div class="px-4 sm:px-6 lg:px-8">
+                    @include('layouts.breadcrumb')
+                </div>
+            </div>
             <!-- Page Content -->
-            <main>
-                {{ $slot }}
+            <main class="bg-base-200 overflow-hidden shadow rounded-lg">
+                <div class="py-6 px-4 sm:px-6 lg:px-8">
+                    {{ $slot }}
+                </div>
             </main>
         </div>
     </body>

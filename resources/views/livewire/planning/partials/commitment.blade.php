@@ -4,6 +4,7 @@
         :description="__('common.sentence.commitment_desc')"
         :res_total="$total_commitment"
         :res_balance="$balance_after_savings"
+        :show_total_balance="true"
     >
         <i class="fa-solid fa-credit-card"></i>
         &nbsp;
@@ -11,13 +12,12 @@
 
     <x-input-error :messages="$errors->get('commitments_amount_limit')" class="mt-2  my-6" />
 
-    <div class="grid grid-cols-6 gap-4 mb-6 items-end">
+    <div class="grid grid-cols-6 gap-4 mb-6">
         @forelse ($commitments_fields as $commitments_item)   
             <div class="col-span-4">
                 <x-input-label for="commitments_values.{{ $commitments_item }}.item" :value="__('label.item')" />
                 <x-text-input 
                     id="commitments_values.{{ $commitments_item }}.item" 
-                    class="block mt-1 w-full" 
                     type="text" 
                     name="commitments_values[{{ $commitments_item }}][item]" 
                     wire:model="commitments_values.{{ $commitments_item }}.item" 
@@ -27,11 +27,10 @@
                 />
                 <x-input-error :messages="$errors->get('commitments_values.'.$commitments_item.'.item')" class="mt-2" />
             </div>
-            <div>
+            <div class="col-span-1">
                 <x-input-label for="commitments_values.{{ $commitments_item }}.amount" :value="__('label.amount')" />
                 <x-text-input 
                     id="commitments_values.{{ $commitments_item }}.amount" 
-                    class="block mt-1 w-full" 
                     type="number" 
                     name="commitments_values[{{ $commitments_item }}][amount]"
                     wire:model="commitments_values.{{ $commitments_item }}.amount"  
@@ -44,8 +43,12 @@
                 <x-input-error :messages="$errors->get('commitments_values.'.$commitments_item.'.amount')" class="mt-2" />
             </div>
             @if ($commitments_item != 0)
-                <div>
-                    <x-planning.form.item-remove-button type="button" wire:click="removeCommitmentField({{ $commitments_item }})" />
+                <div class="col-span-1">
+                    <div class="pt-9">
+                        <x-danger-button type="button" :icon="'delete'" wire:click="removeCommitmentField({{ $commitments_item }})">
+                            @lang('common.remove')
+                        </x-danger-button>
+                    </div>
                 </div>
             @endif
         @empty
@@ -55,6 +58,8 @@
         @endforelse
     </div>
     <div class="mb-10">
-        <x-planning.form.item-add-button type="button" wire:click="addCommitmentField({{ $commitments_fields }})" />
+        <x-secondary-button type="button" :icon="'add'" wire:click="addCommitmentField({{ $commitments_fields }})">
+            @lang('common.add')
+        </x-secondary-button>
     </div>
 </div>

@@ -68,16 +68,22 @@ class Planning extends Model
      *
      * @var array
      */
-    protected $appends = ['total_spent'];
+    protected $appends = ['name', 'spending'];
 
-    /**
-     * Determine if the user is an administrator.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
-     */
-    public function getTotalSpentAttribute()
+    public function name(): Attribute
     {
-        return number_format($this->totals->sum(), 2);
+        return new Attribute(
+            get: fn () => $this->month.', '.$this->year,
+        );
+    }
+
+    public function spending(): Attribute
+    {
+        $value = $this->totals ? $this->totals->sum() : 0.00;
+
+        return new Attribute(
+            get: fn () => number_format($value, 2),
+        );
     }
 
     /**

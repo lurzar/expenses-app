@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PlanningStoreRequest as StoreRequest;
 use App\Services\PlanningService;
-use Illuminate\Routing\Redirector;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class PlanningController extends Controller
@@ -19,20 +19,26 @@ class PlanningController extends Controller
     public function index(): View
     {
         return view('planning.index', [
-            'form_is_unlock' => false, // unlockForm()
-            'form_open_date' => getOpenDate(), 
-            'form_close_date' => getCloseDate(),
-            'plannings' => $this->service->getThisMonthPlanning(),
+            'plannings' => $this->service->getAllPlannings(),
         ]);
     }
 
-    public function store(StoreRequest $request): Redirector
+    public function create(): View
     {
-        $this->service->store(collect($request->validated()));
-        return redirect('expense.index');
+        return view('planning.create', [
+            'form_is_unlock' => true, // unlockForm()
+            'form_open_date' => getOpenDate(), 
+            'form_close_date' => getCloseDate(),
+        ]);
     }
 
-    public function show($slug)
+    public function store(StoreRequest $request): RedirectResponse
+    {
+        $this->service->store(collect($request->validated()));
+        return redirect()->route('planning.index');
+    }
+
+    public function show($slug): View
     {
         return view('planning.show', [
             'plannings' => $this->service->getSinglePlanning($slug),
