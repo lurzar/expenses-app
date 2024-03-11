@@ -17,7 +17,7 @@
         "fakerphp/faker": "^1.9.1",
         "laravel/breeze": "^1.19",
         "laravel/pint": "^1.0",
-        "laravel/sail": "^1.18",
+        "laravel/sail": "^1.23",
         "laravel/telescope": "^4.14",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.4",
@@ -57,7 +57,9 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [
+                "laravel/telescope"
+            ]
         }
     },
     "config": {

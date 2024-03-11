@@ -41,7 +41,7 @@
 
         <!-- Logo -->
         <a href="@auth {{ route('dashboard') }} @else {{ route('landing') }} @endauth" class="btn btn-ghost normal-case text-xl">
-            <x-application-logo class="block h-9 w-auto fill-current" />
+            <x-application-logo id="navLogo" class="h-9 w-auto fill-current" />
         </a>
     </div>
     <div class="navbar-center hidden lg:flex">
