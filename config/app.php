@@ -193,7 +193,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        // App\Providers\RouteServiceProvider::class, // Removed in Laravel 12 - routing now in bootstrap/app.php
         App\Providers\TelescopeServiceProvider::class,
 
     ],
