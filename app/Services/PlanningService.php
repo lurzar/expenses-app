@@ -17,7 +17,7 @@ class PlanningService
     }
 
     // Create
-    public function store($planning): Planning
+    public function store(Collection $planning): Planning
     {
         $this->handleRequest($planning);
 
