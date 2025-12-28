@@ -6,7 +6,6 @@ use Illuminate\Support\ServiceProvider;
 use App\Modules\Planning\Models\Planning;
 use App\Modules\Planning\Observers\PlanningObserver;
 use App\Modules\Planning\Services\PlanningService;
-use Livewire\Livewire;
 
 class PlanningServiceProvider extends ServiceProvider
 {
@@ -28,7 +27,5 @@ class PlanningServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__.'/routes.php');
         
         Planning::observe(PlanningObserver::class);
-        
-        Livewire::component('planning', \App\Modules\Planning\Livewire\Planning::class);
     }
 }

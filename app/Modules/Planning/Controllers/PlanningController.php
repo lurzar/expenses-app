@@ -3,43 +3,49 @@
 namespace App\Modules\Planning\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Planning\Models\Planning;
 use App\Modules\Planning\Requests\PlanningStoreRequest as StoreRequest;
 use App\Modules\Planning\Services\PlanningService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class PlanningController extends Controller
 {
     public function __construct(
-        private PlanningService $service
+        private readonly PlanningService $service,
     ) {}
 
-    public function index(): View
+    public function index(): Response
     {
-        return view('planning.index', [
+        return Inertia::render('Planning/Index', [
             'plannings' => $this->service->getAllPlannings(),
         ]);
     }
 
-    public function create(): View
+    public function create(): Response
     {
-        return view('planning.create', [
-            'form_is_unlock' => true,
-            'form_open_date' => getOpenDate(), 
-            'form_close_date' => getCloseDate(),
-        ]);
+        return Inertia::render('Planning/Create');
     }
 
     public function store(StoreRequest $request): RedirectResponse
     {
         $this->service->store(collect($request->validated()));
+
         return redirect()->route('planning.index');
     }
 
-    public function show($slug): View
+    public function show(Planning $planning): Response
     {
-        return view('planning.show', [
-            'plannings' => $this->service->getSinglePlanning($slug),
+        return Inertia::render('Planning/Show', [
+            'planning' => $planning,
         ]);
+    }
+
+    public function destroy(Planning $planning): RedirectResponse
+    {
+        $planning->delete();
+
+        return redirect()->route('planning.index');
     }
 }
