@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace App\Core\Providers;
 
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -14,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Service bindings are handled by module ServiceProviders
+        //
     }
 
     /**
@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Email verification listener (moved from EventServiceProvider)
+        // Email verification listener
         Event::listen(
             Registered::class,
             SendEmailVerificationNotification::class,

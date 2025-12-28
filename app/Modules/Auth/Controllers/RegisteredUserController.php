@@ -3,8 +3,8 @@
 namespace App\Modules\Auth\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Modules\Shared\Middleware\RedirectIfAuthenticated;
-use App\Modules\Shared\Models\User;
+use App\Core\Middleware\RedirectIfAuthenticated;
+use App\Core\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
