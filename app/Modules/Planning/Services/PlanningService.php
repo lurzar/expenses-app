@@ -3,7 +3,6 @@
 namespace App\Modules\Planning\Services;
 
 use App\Modules\Planning\Models\Planning;
-use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,25 +33,23 @@ class PlanningService
     /**
      * Get all plannings for the authenticated user.
      */
-    public function getAllPlannings(): Paginator
+    public function getAllPlannings(): Collection
     {
         return $this->model
-            ->select('month', 'year', 'slug', 'salary')
             ->where('user_id', Auth::id())
             ->latest()
-            ->paginate(10);
+            ->get();
     }
 
     /**
      * Get all expenses for the authenticated user.
      */
-    public function getAllExpenses(): Paginator
+    public function getAllExpenses(): Collection
     {
         return $this->model
-            ->select('month', 'year', 'slug', 'totals')
             ->where('user_id', Auth::id())
             ->latest()
-            ->paginate(10);
+            ->get();
     }
 
     /**
