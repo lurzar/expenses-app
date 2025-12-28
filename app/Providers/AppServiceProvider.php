@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use App\Models\Planning;
-use App\Services\PlanningService;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,9 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(PlanningService::class, function ($app) {
-            return new PlanningService(new Planning());
-        });
+        // Service bindings are handled by module ServiceProviders
     }
 
     /**
@@ -23,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Email verification listener (moved from EventServiceProvider)
+        Event::listen(
+            Registered::class,
+            SendEmailVerificationNotification::class,
+        );
     }
 }
