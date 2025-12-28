@@ -190,11 +190,20 @@ return [
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
+
+        /*
+         * Module Service Providers...
+         */
+        App\Modules\Shared\SharedServiceProvider::class,
+        App\Modules\Auth\AuthServiceProvider::class,
+        App\Modules\Landing\LandingServiceProvider::class,
+        App\Modules\Planning\PlanningServiceProvider::class,
+        App\Modules\Expenses\ExpensesServiceProvider::class,
+        App\Modules\Dashboard\DashboardServiceProvider::class,
+        App\Modules\Profile\ProfileServiceProvider::class,
+        App\Modules\Language\LanguageServiceProvider::class,
 
     ],
 
