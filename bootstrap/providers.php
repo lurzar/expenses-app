@@ -1,8 +1,8 @@
 <?php
 
 return [
+    // Core Service Providers
     App\Core\Providers\AppServiceProvider::class,
-    App\Core\Providers\TelescopeServiceProvider::class,
 
     // Module Service Providers
     App\Modules\Auth\AuthServiceProvider::class,
