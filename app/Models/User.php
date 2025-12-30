@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Models;
+namespace App\Models;
 
 use App\Modules\Planning\Models\Planning;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;

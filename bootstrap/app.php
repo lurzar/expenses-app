@@ -11,8 +11,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
-            \App\Core\Middleware\LanguageManager::class,
-            \App\Core\Middleware\HandleInertiaRequests::class,
+            \App\Modules\Language\Middleware\LanguageManager::class,
+            \App\Http\Middleware\HandleInertiaRequests::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

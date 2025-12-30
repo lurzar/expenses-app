@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Modules\Auth\Middleware\RedirectIfAuthenticated;
 
 test('registration screen can be rendered', function () {
     $response = $this->get('/register');

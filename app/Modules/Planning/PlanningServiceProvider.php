@@ -25,6 +25,7 @@ class PlanningServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
         
         Planning::observe(PlanningObserver::class);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Providers;
+namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Laravel\Telescope\IncomingEntry;
@@ -14,7 +14,7 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      */
     public function register(): void
     {
-        // Telescope::night();
+        Telescope::night();
 
         $this->hideSensitiveRequestDetails();
 
@@ -32,7 +32,7 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
     }
 
     /**
-     * Prevent sensitive request details from being logged by Telescope.
+     * Prevent the sensitive request details from being logged by Telescope.
      */
     protected function hideSensitiveRequestDetails(): void
     {
