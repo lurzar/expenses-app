@@ -1,14 +1,14 @@
 <?php
 
-namespace Database\Factories;
+namespace App\Modules\Planning\Database\Factories;
 
+use App\Modules\Planning\Models\Planning;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Planning>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Modules\Planning\Models\Planning>
  */
 class PlanningFactory extends Factory
 {

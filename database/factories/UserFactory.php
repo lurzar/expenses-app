@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +21,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => bcrypt('password'),
             'remember_token' => null,
         ];
     }
@@ -43,7 +44,7 @@ class UserFactory extends Factory
             'name' => 'Super Admin',
             'email' => 'superadmin@app.com',
             'email_verified_at' => now(),
-            'password' => '$2y$10$v93WnEoYslOys3mEosKU/eEBPVGOBmjU.xAaeqUiDT4n.i1Zieh6O' // superadmin@app.com
+            'password' => bcrypt('superadmin@app.com')
         ]);
     }
 }

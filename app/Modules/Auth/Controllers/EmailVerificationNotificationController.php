@@ -3,7 +3,7 @@
 namespace App\Modules\Auth\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Core\Middleware\RedirectIfAuthenticated;
+use App\Modules\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 

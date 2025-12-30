@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Modules\Auth\Middleware\RedirectIfAuthenticated;
 use App\Models\User;
 
 test('login screen can be rendered', function () {

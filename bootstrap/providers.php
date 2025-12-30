@@ -2,7 +2,7 @@
 
 return [
     // Core Service Providers
-    App\Core\Providers\AppServiceProvider::class,
+    App\Providers\AppServiceProvider::class,
 
     // Module Service Providers
     App\Modules\Auth\AuthServiceProvider::class,

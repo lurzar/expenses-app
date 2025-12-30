@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Modules\Auth\Middleware\RedirectIfAuthenticated;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
