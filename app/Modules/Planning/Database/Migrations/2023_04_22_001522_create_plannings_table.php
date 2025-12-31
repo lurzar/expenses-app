@@ -14,13 +14,12 @@ return new class extends Migration
         Schema::create('plannings', function (Blueprint $table) {
             $table->id();
             $table->ulid('planning_id')->unique();
-            $table->ulid('user_id')->index()->foreign()->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('month');
             $table->string('year');
             $table->float('salary');
             $table->json('sections');
             $table->json('totals');
-            $table->string('slug')->unique();
             $table->timestamps();
             $table->softDeletes();
         });

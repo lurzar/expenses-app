@@ -4,7 +4,6 @@ namespace App\Modules\Planning;
 
 use Illuminate\Support\ServiceProvider;
 use App\Modules\Planning\Models\Planning;
-use App\Modules\Planning\Observers\PlanningObserver;
 use App\Modules\Planning\Services\PlanningService;
 
 class PlanningServiceProvider extends ServiceProvider
@@ -26,7 +25,5 @@ class PlanningServiceProvider extends ServiceProvider
     {
         $this->loadRoutesFrom(__DIR__.'/routes.php');
         $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
-        
-        Planning::observe(PlanningObserver::class);
     }
 }

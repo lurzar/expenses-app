@@ -1,8 +1,7 @@
 export interface User {
-    id: string;
+    id: number;
     user_id: string;
     name: string;
-    slug: string;
     email: string;
     email_verified_at: string | null;
     created_at: string;
@@ -27,13 +26,12 @@ export interface PlanningTotals {
 }
 
 export interface Planning {
-    id: string;
+    id: number;
     planning_id: string;
-    user_id: string;
+    user_id: number;
     month: string;
     year: string;
     salary: number;
-    slug: string;
     sections: PlanningSection;
     totals: PlanningTotals;
     name: string;      // computed attribute

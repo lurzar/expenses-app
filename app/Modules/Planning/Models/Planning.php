@@ -31,7 +31,6 @@ class Planning extends Model
         'salary',
         'sections',
         'totals',
-        'slug',
     ];
 
     /**
@@ -85,7 +84,7 @@ class Planning extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id', 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     protected function scopeThisMonth($query)
