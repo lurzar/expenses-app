@@ -32,8 +32,8 @@ export default function Index({ auth, plannings }: PlanningIndexProps) {
                                 <div className="grid gap-4">
                                     {plannings.map((planning) => (
                                         <Link
-                                            key={planning.id}
-                                            href={`/planning/${planning.id}`}
+                                            key={planning.planning_id}
+                                            href={`/planning/${planning.slug}`}
                                             className="block p-4 border rounded-lg hover:bg-gray-50 transition"
                                         >
                                             <div className="flex justify-between items-center">

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use App\Observers\UserObserver;
 use App\Providers\TelescopeServiceProvider as AppTelescopeServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -34,6 +36,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Email verification listener
         Event::listen(Registered::class, SendEmailVerificationNotification::class);
+
+        // Register observers
+        User::observe(UserObserver::class);
     }
 
     /**

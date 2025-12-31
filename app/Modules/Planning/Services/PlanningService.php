@@ -19,7 +19,7 @@ class PlanningService
     {
         $this->handleRequest($planning);
 
-        $this->model->user_id = Auth::id();
+        $this->model->user_id = Auth::user()->user_id;
         $this->model->month = $planning->get('month');
         $this->model->year = $planning->get('year');
         $this->model->salary = $planning->get('salary');
@@ -36,7 +36,7 @@ class PlanningService
     public function getAllPlannings(): Collection
     {
         return $this->model
-            ->where('user_id', Auth::id())
+            ->where('user_id', Auth::user()->user_id)
             ->latest()
             ->get();
     }
@@ -47,7 +47,7 @@ class PlanningService
     public function getAllExpenses(): Collection
     {
         return $this->model
-            ->where('user_id', Auth::id())
+            ->where('user_id', Auth::user()->user_id)
             ->latest()
             ->get();
     }

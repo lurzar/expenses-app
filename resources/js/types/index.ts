@@ -1,6 +1,8 @@
 export interface User {
     id: string;
+    user_id: string;
     name: string;
+    slug: string;
     email: string;
     email_verified_at: string | null;
     created_at: string;
@@ -26,6 +28,7 @@ export interface PlanningTotals {
 
 export interface Planning {
     id: string;
+    planning_id: string;
     user_id: string;
     month: string;
     year: string;

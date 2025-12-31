@@ -3,9 +3,9 @@
 namespace App\Modules\Planning\Models;
 
 use App\Models\User;
+use App\Traits\HasPublicId;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Planning extends Model
 {
-    use HasFactory, HasUlids, SoftDeletes;
+    use HasFactory, HasPublicId, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -21,21 +21,17 @@ class Planning extends Model
     protected $table = 'plannings';
 
     /**
-     * The primary key associated with the table.
-     */
-    protected $primaryKey = 'id';
-
-    /**
-     * Indicates if the model's ID is auto-incrementing.
-     */
-    public $incrementing = false;
-
-    /**
      * The attributes that are mass assignable.
      */
     protected $fillable = [
-        'sections->enabled',
-        'totals->enabled',
+        'planning_id',
+        'user_id',
+        'month',
+        'year',
+        'salary',
+        'sections',
+        'totals',
+        'slug',
     ];
 
     /**
@@ -60,6 +56,14 @@ class Planning extends Model
      */
     protected $appends = ['name', 'spending'];
 
+    /**
+     * Get the column name for the public ID.
+     */
+    public function publicIdColumn(): string
+    {
+        return 'planning_id';
+    }
+
     public function name(): Attribute
     {
         return new Attribute(
@@ -81,7 +85,7 @@ class Planning extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 
     protected function scopeThisMonth($query)
