@@ -9,7 +9,7 @@ interface ShowProps extends PageProps {
 export default function Show({ auth, planning }: ShowProps) {
     const handleDelete = () => {
         if (confirm('Are you sure you want to delete this planning?')) {
-            router.delete(`/planning/${planning.id}`);
+            router.delete(`/planning/${planning.slug}`);
         }
     };
 
@@ -61,7 +61,7 @@ export default function Show({ auth, planning }: ShowProps) {
                                 </p>
                                 <div className="flex gap-2">
                                     <Link
-                                        href={`/expenses/${planning.id}`}
+                                        href={`/expenses/${planning.slug}`}
                                         className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
                                     >
                                         View Expenses

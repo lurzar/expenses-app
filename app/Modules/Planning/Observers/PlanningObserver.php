@@ -12,7 +12,9 @@ class PlanningObserver
      */
     public function creating(Planning $planning): void
     {
-        $slugId = (string) Str::ulid();
-        $planning->slug = Str::of($slugId.' planning '.$planning->month.' '.$planning->year)->slug('-');
+        if (empty($planning->slug)) {
+            $slugId = (string) Str::ulid();
+            $planning->slug = Str::of($slugId.' planning '.$planning->month.' '.$planning->year)->slug('-');
+        }
     }
 }

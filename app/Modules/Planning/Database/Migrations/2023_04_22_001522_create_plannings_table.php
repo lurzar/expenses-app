@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('plannings', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->ulid('user_id');
+            $table->id();
+            $table->ulid('planning_id')->unique();
+            $table->ulid('user_id')->index()->foreign()->references('user_id')->on('users')->onDelete('cascade');
             $table->string('month');
             $table->string('year');
             $table->float('salary');
