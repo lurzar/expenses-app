@@ -4,8 +4,8 @@ return [
     'releases' => [
         [
             'version' => '2.0.6',
-            'status' => 'In development',
-            'released_at' => null,
+            'status' => 'Released',
+            'released_at' => '2026-08-15',
             'changes' => [
                 [
                     'category' => 'Changed',
