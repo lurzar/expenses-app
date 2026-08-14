@@ -30,10 +30,10 @@ trait HasPublicId
 
     /**
      * Get the route key name for Laravel route model binding.
-     * Override in model to use slug or other field.
+     * Uses the public ID column (ULID) for routing.
      */
     public function getRouteKeyName(): string
     {
-        return 'slug';
+        return $this->publicIdColumn();
     }
 }

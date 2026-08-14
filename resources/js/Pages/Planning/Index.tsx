@@ -33,7 +33,7 @@ export default function Index({ auth, plannings }: PlanningIndexProps) {
                                     {plannings.map((planning) => (
                                         <Link
                                             key={planning.planning_id}
-                                            href={`/planning/${planning.slug}`}
+                                            href={`/planning/${planning.planning_id}`}
                                             className="block p-4 border rounded-lg hover:bg-gray-50 transition"
                                         >
                                             <div className="flex justify-between items-center">

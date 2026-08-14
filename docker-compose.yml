@@ -25,7 +25,9 @@ services:
             - pgsql
             - redis
     pgsql:
-        image: 'postgres:alpine'
+        # PostgreSQL 17-and-earlier data directories are not reused automatically.
+        # Follow docs/postgresql-18-upgrade.md before starting with existing data.
+        image: 'postgres:18.4-alpine'
         ports:
             - '${FORWARD_DB_PORT:-5432}:5432'
         environment:
@@ -50,7 +52,7 @@ services:
             retries: 3
             timeout: 5s
     redis:
-        image: 'redis:alpine'
+        image: 'redis:8.8.1-alpine'
         ports:
             - '${FORWARD_REDIS_PORT:-6379}:6379'
         volumes:
@@ -65,7 +67,7 @@ services:
             retries: 3
             timeout: 5s
     pgadmin:
-        image: dpage/pgadmin4:latest
+        image: dpage/pgadmin4:9.16
         ports:
             - '${PGADMIN_PORT:-8081}:80'
         environment:

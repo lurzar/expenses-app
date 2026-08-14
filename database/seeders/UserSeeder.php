@@ -12,12 +12,8 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->superAdmin()->hasPlannings(10, function (array $attributes, User $user) {
-            return ['user_id' => $user->user_id];
-        })->create();
+        User::factory()->superAdmin()->hasPlannings(10)->create();
         
-        User::factory(10)->unverified()->hasPlannings(10, function (array $attributes, User $user) {
-            return ['user_id' => $user->user_id];
-        })->create();
+        User::factory(10)->unverified()->hasPlannings(10)->create();
     }
 }

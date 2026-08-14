@@ -22,7 +22,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'slug',
         'user_id',
     ];
 
@@ -58,6 +57,6 @@ class User extends Authenticatable
      */
     public function plannings(): HasMany
     {
-        return $this->hasMany(Planning::class, 'user_id', 'user_id')->latest();
+        return $this->hasMany(Planning::class)->latest();
     }
 }

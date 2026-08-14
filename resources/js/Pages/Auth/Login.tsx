@@ -3,7 +3,23 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { route } from '@/utils/route';
 
-export default function Login() {
+interface ChangelogChange {
+    category: string;
+    description: string;
+}
+
+interface ChangelogRelease {
+    version: string;
+    status: string;
+    released_at: string | null;
+    changes: ChangelogChange[];
+}
+
+interface LoginProps {
+    changelog: ChangelogRelease | null;
+}
+
+export default function Login({ changelog }: LoginProps) {
     const { data, setData, post, processing, errors } = useForm({
         email: '',
         password: '',
@@ -87,6 +103,39 @@ export default function Login() {
                     </Link>
                 </div>
             </form>
+
+            {changelog && (
+                <section
+                    aria-labelledby="changelog-heading"
+                    className="mt-6 border-t border-gray-200 pt-5 dark:border-gray-700"
+                >
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                        <h2 id="changelog-heading" className="text-base font-semibold text-gray-900 dark:text-gray-100">
+                            What's new in v{changelog.version}
+                        </h2>
+                        <p className="text-xs font-medium uppercase tracking-wide text-indigo-600 dark:text-indigo-400">
+                            {changelog.status}
+                            {changelog.released_at && (
+                                <>
+                                    {' · '}
+                                    <time dateTime={changelog.released_at}>{changelog.released_at}</time>
+                                </>
+                            )}
+                        </p>
+                    </div>
+
+                    <ul className="mt-3 space-y-3">
+                        {changelog.changes.map((change, index) => (
+                            <li key={`${change.category}-${index}`} className="text-sm text-gray-600 dark:text-gray-300">
+                                <span className="mr-2 font-medium text-gray-900 dark:text-gray-100">
+                                    {change.category}:
+                                </span>
+                                {change.description}
+                            </li>
+                        ))}
+                    </ul>
+                </section>
+            )}
         </GuestLayout>
     );
 }
