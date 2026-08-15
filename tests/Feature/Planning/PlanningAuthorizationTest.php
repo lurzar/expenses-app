@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use App\Modules\Planning\Models\Planning;
+use App\Modules\Planning\Services\PlanningService;
 use Inertia\Testing\AssertableInertia as Assert;
 
 test('owners can view planning through its public id without numeric identifiers', function () {
@@ -40,9 +41,27 @@ test('owners can delete their planning through its public id', function () {
 
     $this->actingAs($owner)
         ->delete(route('planning.destroy', $planning->planning_id))
-        ->assertRedirect(route('planning.index'));
+        ->assertRedirect(route('planning.index'))
+        ->assertSessionHas('success', "{$planning->name} plan deleted.");
 
     expect($planning->fresh()->trashed())->toBeTrue();
+});
+
+test('a failed owner deletion returns to the plan with an announced error', function () {
+    $owner = User::factory()->create();
+    $planning = Planning::factory()->for($owner)->create();
+    $this->mock(PlanningService::class)
+        ->shouldReceive('delete')
+        ->once()
+        ->andThrow(new RuntimeException('database unavailable'));
+
+    $this->actingAs($owner)
+        ->from(route('planning.show', $planning->planning_id))
+        ->delete(route('planning.destroy', $planning->planning_id))
+        ->assertRedirect(route('planning.show', $planning->planning_id))
+        ->assertSessionHas('error', 'The plan could not be deleted. Try again.');
+
+    expect($planning->fresh()->trashed())->toBeFalse();
 });
 
 test('planning projections expose only owned records through public identifiers', function (string $routeName, string $component) {

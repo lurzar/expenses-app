@@ -99,6 +99,10 @@ body {
     .app-account-popover.inline-end { right: 0; }
     .app-skip-link { position: fixed; z-index: 100; left: 1rem; top: 1rem; transform: translateY(-160%); border-radius: .5rem; background: var(--app-brand-strong); color: var(--app-brand-foreground); padding: .65rem .9rem; font-weight: 700; }
     .app-skip-link:focus { transform: translateY(0); }
+    .app-flash-stack { position: fixed; z-index: 90; top: 1rem; right: 1rem; display: grid; width: min(26rem, calc(100vw - 2rem)); gap: .75rem; }
+    .app-flash-message { border: 1px solid var(--app-border-strong); border-radius: .75rem; background: var(--app-surface); padding: .85rem 1rem; box-shadow: 0 12px 32px rgb(9 20 19 / 20%); color: var(--app-text-primary); font-size: .875rem; font-weight: 600; }
+    .app-flash-success { border-left: .35rem solid var(--app-brand-strong); }
+    .app-flash-error { border-left: .35rem solid var(--app-danger); }
     .text-primary { color: var(--app-text-primary); }
     .text-secondary { color: var(--app-text-secondary); }
     .ui-surface { border: 1px solid var(--app-border-quiet); border-radius: 1rem; background: var(--app-surface); color: var(--app-text-primary); }
@@ -129,6 +133,8 @@ body {
     .chart-commitments, .chart-allocated { background: var(--chart-commitments); }
     .chart-others { background: repeating-linear-gradient(135deg, var(--chart-others) 0 7px, var(--app-surface) 7px 9px); }
     .chart-remaining { background: var(--chart-remaining); }
+    .income-bar.is-over-allocated { border: 2px solid var(--app-danger); }
+    .over-allocation-marker { display: inline-block; width: .65rem; height: 1.4rem; margin-top: .5rem; border-radius: 999px; background: var(--app-danger); }
     .magnitude-track { height: .4rem; overflow: hidden; border-radius: 999px; background: var(--app-surface-raised); }
     .magnitude-track span { display: block; height: 100%; border-radius: inherit; background: var(--app-brand-mid); }
     .trend-bars { display: flex; min-height: 13rem; align-items: end; justify-content: space-around; gap: 1rem; border-bottom: 1px solid var(--app-border-strong); }
@@ -139,6 +145,7 @@ body {
     .trend-income { background: var(--chart-savings); }
     .trend-allocated { background: var(--chart-commitments); }
     .trend-remaining { background: var(--chart-remaining); }
+    .trend-over-allocation { background: var(--app-danger); }
     .dialog-layer { position: fixed; z-index: 80; inset: 0; display: grid; place-items: center; padding: 1rem; }
     .dialog-backdrop { position: absolute; inset: 0; width: 100%; background: rgb(9 20 19 / 68%); }
     .delete-dialog { position: relative; width: min(100%, 30rem); border: 1px solid var(--app-border-quiet); border-radius: 1rem; background: var(--app-surface); padding: 1.5rem; box-shadow: 0 24px 60px rgb(9 20 19 / 35%); color: var(--app-text-primary); }

@@ -80,6 +80,24 @@ const zeroPlan: Planning = {
     },
 };
 
+const negativePlan: Planning = {
+    ...augustPlan,
+    planning_id: '01NEGATIVEPLAN',
+    totals: { ...augustPlan.totals, allocated: '5100.00', balance: '-100.00' },
+};
+
+const partialPlan: Planning = {
+    ...augustPlan,
+    planning_id: '01PARTIALPLAN',
+    totals: {
+        ...augustPlan.totals,
+        target_savings: 'unavailable',
+        savings: 'unavailable',
+        allocated: 'unavailable',
+        balance: 'unavailable',
+    },
+};
+
 const props = { auth: { user }, flash: { message: null, success: null, error: null } };
 
 afterEach(() => {
@@ -129,8 +147,11 @@ describe('banking-style Planning summaries', () => {
         expect(screen.getByRole('status').textContent).toContain('Deleting August 2026 plan');
         expect(screen.getByRole('button', { name: 'Deleting plan…' }).hasAttribute('disabled')).toBe(true);
 
-        const callbacks = deleteRequest.mock.calls[0][1] as { onError: () => void; onFinish: () => void };
-        act(() => { callbacks.onError(); callbacks.onFinish(); });
+        const callbacks = deleteRequest.mock.calls[0][1] as { onSuccess: (page: { props: { flash: { error: string } } }) => void; onFinish: () => void };
+        act(() => {
+            callbacks.onSuccess({ props: { flash: { error: 'The plan could not be deleted. Try again.' } } });
+            callbacks.onFinish();
+        });
 
         expect(screen.getByRole('alert').textContent).toContain('could not be deleted');
         expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Delete plan permanently' }));
@@ -172,7 +193,29 @@ describe('banking-style Planning summaries', () => {
         expect(screen.getByText('No allocations added')).not.toBeNull();
         expect(screen.getByText('No savings target set')).not.toBeNull();
         expect(screen.getAllByText('Percentage unavailable').length).toBeGreaterThan(0);
+        expect(screen.queryByRole('status')).toBeNull();
         expect(document.body.textContent).not.toMatch(/NaN|Infinity/);
+    });
+
+    it('shows partial legacy values as unavailable instead of inventing zero', () => {
+        render(<PlanningShow {...props} planning={partialPlan} />);
+
+        expect(screen.getByText('Allocation comparison unavailable.')).not.toBeNull();
+        expect(screen.getAllByText('Income comparison unavailable.').length).toBeGreaterThan(0);
+        expect(screen.getByText('Savings target comparison unavailable.')).not.toBeNull();
+        expect(screen.getAllByLabelText('Unavailable').length).toBeGreaterThan(0);
+        expect(screen.queryByText('Target difference')).toBeNull();
+    });
+
+    it('marks negative legacy remaining values as exact over-allocation in summaries and trends', () => {
+        const { rerender } = render(<PlanningShow {...props} planning={negativePlan} />);
+
+        expect(screen.getAllByText('Over allocated by RM 100.00').length).toBeGreaterThan(0);
+        expect(document.querySelector('.financial-hero.state-danger')).not.toBeNull();
+        expect(document.querySelector('.over-allocation-marker')).not.toBeNull();
+
+        rerender(<Dashboard {...props} plannings={[negativePlan, julyPlan]} />);
+        expect(document.querySelector('.trend-over-allocation')).not.toBeNull();
     });
 
     it('states the exact amount when savings exceed the target', () => {
@@ -186,10 +229,17 @@ describe('banking-style Planning summaries', () => {
         expect(screen.getByText('Above savings target by RM 200.00')).not.toBeNull();
     });
 
+    it('states the exact direction when savings remain below target', () => {
+        render(<PlanningShow {...props} planning={augustPlan} />);
+
+        expect(screen.getByText('Below savings target by RM 200.00')).not.toBeNull();
+    });
+
     it('keeps the exact-value fallback when a chart visual is unavailable', () => {
         render(<FinancialChartPanel title="Comparison" description="Exact fallback"><p>Exact values</p></FinancialChartPanel>);
 
-        expect(screen.getByRole('status').textContent).toContain('Visual unavailable');
+        expect(screen.getByText('Visual unavailable. Exact values remain below.')).not.toBeNull();
+        expect(screen.queryByRole('status')).toBeNull();
         expect(screen.getByText('Exact values')).not.toBeNull();
     });
 });

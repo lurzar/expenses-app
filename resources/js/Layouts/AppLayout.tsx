@@ -49,7 +49,7 @@ function AccountControls({ user, locale, common, compact = false }: { user: User
 
 export default function AppLayout({ user, header, children }: PropsWithChildren<AppLayoutProps>) {
     const page = usePage<AppPageProps>();
-    const { locale, translations } = page.props;
+    const { locale, translations, flash } = page.props;
     const common = translations?.common as Record<string, unknown> | undefined;
     const currentPath = page.url.split('?')[0];
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -61,6 +61,7 @@ export default function AppLayout({ user, header, children }: PropsWithChildren<
         { label: t(common, 'expenses', 'Expenses'), href: route('expenses.index'), match: '/expenses', icon: 'expenses' },
         { label: 'Profile', href: route('profile.edit'), match: '/profile', icon: 'profile' },
     ];
+    const notice = flash?.success ?? flash?.message;
 
     const closeDrawer = (focusMain = false) => {
         setDrawerOpen(false);
@@ -91,6 +92,10 @@ export default function AppLayout({ user, header, children }: PropsWithChildren<
 
     return <div className="app-shell min-h-screen">
         <a href="#main-content" className="app-skip-link">Skip to main content</a>
+        {(notice || flash?.error) && <div className="app-flash-stack">
+            {notice && <div role="status" aria-live="polite" className="app-flash-message app-flash-success">{notice}</div>}
+            {flash?.error && <div role="alert" aria-live="assertive" className="app-flash-message app-flash-error">{flash.error}</div>}
+        </div>}
         <aside data-testid="desktop-sidebar" className="app-sidebar fixed inset-y-0 left-0 z-30 hidden w-64 flex-col lg:flex" aria-label="Application navigation">
             <Link href={route('landing')} className="app-brand"><span className="app-brand-mark" aria-hidden="true">E</span><span>Expenses</span></Link>
             <nav className="mt-8 flex-1 space-y-2"><DestinationLinks destinations={destinations.slice(0, 3)} currentPath={currentPath} /></nav>

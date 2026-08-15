@@ -42,6 +42,10 @@ export default function DeletePlanDialog({ planningId, planningName }: { plannin
         setPending(true);
         setError(null);
         router.delete(`/planning/${planningId}`, {
+            onSuccess: (page) => {
+                const flash = page.props.flash as { error?: string | null } | undefined;
+                if (flash?.error) setError(flash.error);
+            },
             onError: () => setError('The plan could not be deleted. Try again.'),
             onFinish: () => setPending(false),
         });

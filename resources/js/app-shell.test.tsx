@@ -4,13 +4,21 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+const { pageState } = vi.hoisted(() => ({
+    pageState: {
+        locale: 'en',
+        translations: {},
+        flash: { message: null as string | null, success: null as string | null, error: null as string | null },
+    },
+}));
+
 vi.mock('@inertiajs/react', () => ({
     Link: ({ children, href, method: _method, as: _as, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement> & { method?: string; as?: string }) => (
         <a href={String(href)} {...props}>{children}</a>
     ),
     usePage: () => ({
         url: '/planning',
-        props: { locale: 'en', translations: {} },
+        props: pageState,
     }),
 }));
 
@@ -36,7 +44,10 @@ const user = {
     updated_at: '2026-08-16T00:00:00+08:00',
 };
 
-afterEach(() => cleanup());
+afterEach(() => {
+    cleanup();
+    pageState.flash = { message: null, success: null, error: null };
+});
 
 describe('authenticated financial application shell', () => {
     it('renders exact financial values through the shared metric primitive', () => {
@@ -53,6 +64,9 @@ describe('authenticated financial application shell', () => {
 
         rerender(<FinancialNumber value={null} unavailableLabel="Balance unavailable" />);
         expect(screen.getByLabelText('Balance unavailable').textContent).toBe('RM —');
+
+        rerender(<FinancialNumber value="legacy-invalid" />);
+        expect(screen.getByLabelText('Unavailable').textContent).toBe('RM —');
     });
 
     it('only announces state panels when the caller requests live feedback', () => {
@@ -63,6 +77,19 @@ describe('authenticated financial application shell', () => {
 
         rerender(<StatePanel title="Save failed" description="Try again." tone="danger" announce="assertive" />);
         expect(screen.getByRole('alert').getAttribute('aria-live')).toBe('assertive');
+    });
+
+    it('announces server-provided success and error results after navigation', () => {
+        pageState.flash.success = 'August 2026 plan deleted.';
+        const { unmount } = render(<AppLayout user={user}><p>Plan content</p></AppLayout>);
+
+        expect(screen.getByRole('status').textContent).toContain('August 2026 plan deleted.');
+
+        unmount();
+        pageState.flash.success = null;
+        pageState.flash.error = 'The plan could not be deleted. Try again.';
+        render(<AppLayout user={user}><p>Plan content</p></AppLayout>);
+        expect(screen.getByRole('alert').textContent).toContain('could not be deleted');
     });
 
     it('exposes the approved desktop, tablet, and mobile navigation models', () => {

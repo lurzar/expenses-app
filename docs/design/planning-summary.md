@@ -21,14 +21,15 @@ The initial summary flow provides period context, remaining planned balance, the
 
 ## Financial meaning boundary
 
-### Current v2.1.4 money behavior and remaining UI gaps
+### Implemented v2.1.4 money and presentation behavior
 
 - The server supplies exact decimal-string income, saving rate, sections, and canonical totals to every projection.
 - `Planning::spending` reads canonical commitments-plus-others spending.
-- Dashboard uses the first returned plan without a user-visible period-selection contract.
+- Dashboard explicitly labels the first server-returned record as the selected/latest available plan; there is no interactive period selector in v2.1.4.
 - The create page uses one BigInt/sen preview helper, excludes submitted totals, and persists server-authoritative values.
+- Dashboard, Planning detail, and Expenses projection share the same exact-value summary, accessible chart alternatives, unavailable/legacy states, and directional target/over-allocation language.
 
-The #63 values and formulas are authoritative. The remaining selection and presentation behaviors are current-state evidence for the UI work, not additional financial rules.
+The #63 values and formulas remain authoritative. The shared presentation layer computes only display ratios, differences, and visual magnitudes from that payload; it does not add financial rules.
 
 ### Authoritative values available to runtime implementation
 
@@ -250,7 +251,7 @@ Names the period, says the record is removed from Planning and its projections, 
 | --- | --- |
 | No plans | Explain monthly planning and offer `Create a plan`; show no zero-filled charts. |
 | Requested plan missing | Standard not-found behavior with route back to Planning; never expose another owner’s existence/data. |
-| Loading | Labelled skeletons reserve hero/cards/chart panels; no fake numbers. |
+| Loading | Current Inertia initial/full visits use the global progress indicator and do not mount the page before authoritative props arrive, so no fake figures are rendered. Labelled skeletons are required if later asynchronous panels render independently. |
 | Partial/legacy data | Show available exact values; mark target/comparison unavailable; do not infer missing values. |
 | Zero allocations | Income remains visible; remaining equals authoritative result; composition chart becomes a purposeful empty state. |
 | Negative remaining | For legacy/migration data or a pre-submit validation preview only, hero and income/allocated panel state exact over-allocation with text/icon/danger role; #63 rejects this as a new persisted target plan. |
