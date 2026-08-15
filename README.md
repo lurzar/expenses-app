@@ -20,7 +20,7 @@ The current Expenses view is a projection of monthly Planning data. It is not a 
 - Create, review, list, and delete monthly plans.
 - Organize planned amounts into savings, commitments, and other spending.
 - Review planning summaries through Dashboard and Expenses views.
-- Use shipped English and Malay interface dictionaries; the current switcher parameter repair is tracked in [#103](https://github.com/lurzar/expenses-app/issues/103).
+- Switch between the shipped English and Malay interface dictionaries from guest and authenticated layouts.
 - Run locally with Laravel Sail, PostgreSQL, Redis, and pgAdmin.
 
 ## Architecture
