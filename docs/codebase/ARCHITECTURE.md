@@ -55,7 +55,7 @@ For direct Planning display, Laravel resolves the public ULID through `HasPublic
 | Policy/Gate | `PlanningPolicy`; Planning/Expenses controllers | Enforce record ownership on direct access |
 | Database transaction | Planning, registration, profile lifecycle | Keep domain mutation and audit history atomic |
 | User-scoped cache-aside | `PlanningCache`; `PlanningService::getAllPlannings` | Reuse five-minute collection reads and invalidate after lifecycle changes |
-| Public ID trait | `HasPublicId` on `User`/`Planning` | Generate ULIDs and route-bind without exposing internal numeric IDs |
+| Public ID trait | `HasPublicId` on `User`/`Planning` | Generate ULIDs and use them as route keys while persistence continues using numeric keys |
 | Inertia shared props | `HandleInertiaRequests` | Provide auth, locale, dictionaries, and flash data consistently |
 
 ## Startup order
