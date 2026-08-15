@@ -10,6 +10,7 @@ test('the financial shell stylesheet contains the approved semantic and accessib
         ->toContain('--app-brand-strong: #B0E4CC')
         ->toContain('*:focus-visible')
         ->toContain('min-height: 2.75rem')
+        ->toContain('.app-language-link { display: inline-flex; min-width: 2.75rem; min-height: 2.75rem')
         ->toContain('.app-account-popover.inline-end')
         ->toContain('prefers-reduced-motion: reduce');
 });

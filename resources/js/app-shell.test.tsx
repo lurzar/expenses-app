@@ -110,5 +110,6 @@ describe('authenticated financial application shell', () => {
 
         expect(screen.queryByRole('dialog', { name: 'Application navigation' })).toBeNull();
         expect(document.body.style.overflow).toBe('');
+        expect(document.activeElement).toBe(screen.getByRole('main'));
     });
 });

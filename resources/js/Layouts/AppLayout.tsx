@@ -62,7 +62,11 @@ export default function AppLayout({ user, header, children }: PropsWithChildren<
         { label: 'Profile', href: route('profile.edit'), match: '/profile', icon: 'profile' },
     ];
 
-    const closeDrawer = () => { setDrawerOpen(false); drawerTrigger.current?.focus(); };
+    const closeDrawer = (focusMain = false) => {
+        setDrawerOpen(false);
+        if (focusMain) document.getElementById('main-content')?.focus();
+        else drawerTrigger.current?.focus();
+    };
 
     useEffect(() => {
         if (!drawerOpen) return;
@@ -70,7 +74,7 @@ export default function AppLayout({ user, header, children }: PropsWithChildren<
         document.body.style.overflow = 'hidden';
         drawer.current?.querySelector<HTMLElement>('[data-drawer-initial]')?.focus();
         const handleEscape = (event: globalThis.KeyboardEvent) => { if (event.key === 'Escape') closeDrawer(); };
-        const handleBreakpointChange = () => { if (window.innerWidth < 768 || window.innerWidth >= 1024) closeDrawer(); };
+        const handleBreakpointChange = () => { if (window.innerWidth < 768 || window.innerWidth >= 1024) closeDrawer(true); };
         document.addEventListener('keydown', handleEscape);
         window.addEventListener('resize', handleBreakpointChange);
         return () => { document.removeEventListener('keydown', handleEscape); window.removeEventListener('resize', handleBreakpointChange); document.body.style.overflow = previousOverflow; };
@@ -102,10 +106,10 @@ export default function AppLayout({ user, header, children }: PropsWithChildren<
             <details className="app-account-menu"><summary>Account</summary><div className="app-account-popover right-0"><AccountControls user={user} locale={locale} common={common} compact /></div></details>
         </header>
         {drawerOpen && <div className="fixed inset-0 z-40 hidden md:block lg:hidden">
-            <button type="button" className="absolute inset-0 bg-black/50" aria-label="Close navigation overlay" onClick={closeDrawer} />
+            <button type="button" className="absolute inset-0 bg-black/50" aria-label="Close navigation overlay" onClick={() => closeDrawer()} />
             <aside ref={drawer} role="dialog" aria-modal="true" aria-label="Application navigation" onKeyDown={trapDrawerFocus} className="app-drawer relative z-10 flex h-full w-[280px] flex-col p-5">
-                <div className="flex items-center justify-between"><span className="app-brand"><span className="app-brand-mark" aria-hidden="true">E</span><span>Expenses</span></span><button type="button" className="app-icon-button" aria-label="Close navigation" onClick={closeDrawer}>×</button></div>
-                <nav className="mt-8 flex-1 space-y-2"><DestinationLinks destinations={destinations.slice(0, 3)} currentPath={currentPath} onNavigate={closeDrawer} initialFocus /></nav>
+                <div className="flex items-center justify-between"><span className="app-brand"><span className="app-brand-mark" aria-hidden="true">E</span><span>Expenses</span></span><button type="button" className="app-icon-button" aria-label="Close navigation" onClick={() => closeDrawer()}>×</button></div>
+                <nav className="mt-8 flex-1 space-y-2"><DestinationLinks destinations={destinations.slice(0, 3)} currentPath={currentPath} onNavigate={() => closeDrawer()} initialFocus /></nav>
                 <AccountControls user={user} locale={locale} common={common} />
             </aside>
         </div>}
