@@ -44,7 +44,7 @@ class PlanningController extends Controller
 
     public function destroy(Planning $planning): RedirectResponse
     {
-        $planning->delete();
+        $this->service->delete($planning);
 
         return redirect()->route('planning.index');
     }

@@ -3,6 +3,25 @@
 return [
     'releases' => [
         [
+            'version' => '2.0.8',
+            'status' => 'Released',
+            'released_at' => '2026-08-15',
+            'changes' => [
+                [
+                    'category' => 'Added',
+                    'description' => 'Added durable activity history for key account and planning changes.',
+                ],
+                [
+                    'category' => 'Changed',
+                    'description' => 'Added automatic daily cleanup with configurable 365-day retention.',
+                ],
+                [
+                    'category' => 'Security',
+                    'description' => 'Limited activity records to public identifiers and allowlisted metadata.',
+                ],
+            ],
+        ],
+        [
             'version' => '2.0.7',
             'status' => 'Released',
             'released_at' => '2026-08-15',

@@ -6,6 +6,21 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [2.0.8] - 2026-08-15
+
+### Added
+
+- Added durable server-side activity history for account registration, profile updates, account deletion, and Planning creation and deletion.
+- Added an operator guide for activity-log inspection, retention, incident response, and rollback.
+
+### Changed
+
+- Added configurable daily pruning with a default retention period of 365 days.
+
+### Security
+
+- Limited activity entries to public identifiers and allowlisted metadata, and made capture atomic with each successful state change.
+
 ## [2.0.7] - 2026-08-15
 
 ### Added
@@ -37,6 +52,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Updated Composer and npm dependencies to remove known security advisories while remaining on the intended major versions.
 
-[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.0.7-dev...HEAD
+[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.0.8-dev...HEAD
+[2.0.8]: https://github.com/lurzar/expenses-app/compare/v2.0.7-dev...v2.0.8-dev
 [2.0.7]: https://github.com/lurzar/expenses-app/compare/v2.0.6-dev...v2.0.7-dev
 [2.0.6]: https://github.com/lurzar/expenses-app/compare/v2.0.5-dev...v2.0.6-dev
