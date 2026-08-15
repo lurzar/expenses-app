@@ -8,13 +8,14 @@ The summary must answer these questions in order:
 
 1. **What remains from this monthly plan?**
 2. **What income amount is this plan based on?**
-3. **How much is allocated in total?**
-4. **How is the allocation divided among savings, commitments, and others?**
-5. **How does the savings allocation compare with the approved target?**
-6. **How does this plan compare with other available periods?**
-7. **Which named allocations contribute most to each section?**
+3. **How much is allocated to savings, and how does it compare with the target?**
+4. **How much is allocated to commitments?**
+5. **How much is allocated to other purposes?**
+6. **How do those allocations compose the total and compare with income?**
+7. **How does this plan compare with other available periods?**
+8. **Which named allocations contribute most to each section?**
 
-The first screenful should provide period context, remaining planned balance, the principal figures, and at least one useful composition view. Detailed item lists follow; they do not compete with the headline figures.
+The initial summary flow provides period context, remaining planned balance, the principal figures in that order, and at least one useful composition view before detailed item lists. At desktop widths, the first viewport should include the period, hero, principal figures, and a useful composition view when normal text sizing permits it. Mobile, tablet, and 200% zoom do not have a first-screen constraint; readability and the approved order take priority.
 
 ## Financial meaning boundary
 
@@ -48,7 +49,7 @@ The UI may format and visualize those values but must not independently decide t
 | Concept | Primary label | Supporting explanation |
 | --- | --- | --- |
 | Plan period | Month and year, for example `August 2026` | Always visible near the page title and chart context |
-| Remaining | `Remaining planned balance` | Income minus all approved planned allocations; may be negative |
+| Remaining | `Remaining planned balance` | Income minus all approved planned allocations; a negative value is a defensive legacy, migration, or pre-submit validation state rather than an approved persisted target after #63 |
 | Income | `Monthly income` | Current product input labelled Salary may remain as supporting legacy copy during migration |
 | Total allocated | `Total planned allocation` | Savings plus commitments plus others |
 | Savings target | `Savings target` | Advisory target approved/calculated by #63 |
@@ -95,9 +96,11 @@ Expenses detail remains a read-only projection of Planning.
 Use these levels:
 
 1. **Hero figure:** Remaining planned balance, exact and un-compacted.
-2. **Primary supporting figures:** Monthly income and total planned allocation.
-3. **Allocation figures:** Savings allocation, commitments, and other allocations.
-4. **Context figures:** Savings target, planned spending, difference/percentage, and comparison period when authoritative.
+2. **First supporting figure:** Monthly income.
+3. **Second supporting figure:** Savings allocation, with savings target and its difference/percentage adjacent as context when authoritative.
+4. **Third supporting figure:** Commitments.
+5. **Fourth supporting figure:** Other allocations.
+6. **Roll-up/context figures:** Total planned allocation, planned spending, and comparison period when authoritative. These must not visually outrank or precede savings, commitments, or other allocations in the reading order.
 
 Each figure includes:
 
@@ -107,7 +110,7 @@ Each figure includes:
 - status text/icon when negative or over-allocated; and
 - no invented zero while data is loading/unavailable.
 
-Negative remaining is a clear “Over allocated by RM …” state. It uses danger semantics plus text and icon, not red alone.
+For legacy/migration data or a pre-submit form preview, negative remaining is a clear “Over allocated by RM …” error state. It uses danger semantics plus text and icon, not red alone. This defensive presentation does not approve persisting a negative target plan: #63 is expected to reject that target state.
 
 ## Approved visualizations
 
@@ -132,11 +135,15 @@ Negative remaining is a clear “Over allocated by RM …” state. It uses dang
 
 Exact income, allocated, remaining/overage, and percentage values are listed beside or below the bar.
 
+When monthly income is zero, the income-based percentage is unavailable and no division is attempted. Keep the exact `RM 0.00` income and exact allocation/remaining or overage visible. If allocation is also zero, label the comparison as not yet available; if allocation is greater than zero, show the exact over-allocation and explain that a percentage cannot be calculated from zero income.
+
 ### 3. Savings target progress
 
 **Form:** progress bar or compact radial progress, only after #63 provides target and allocation.
 
 Display exact target, allocation, difference, and percentage. Values above target may exceed 100% numerically; the visual track caps at 100% and shows an explicit above-target indicator rather than hiding the excess.
+
+When the savings target is zero, its percentage is unavailable and the track must not imply 0% or 100%. If allocation is also zero, show both exact zeros and “No savings target set”. If allocation is greater than zero, show the exact allocation/difference and “Target is zero; percentage unavailable”.
 
 ### 4. Multi-period planned trend
 
@@ -165,14 +172,19 @@ Order:
 
 1. compact page header and period;
 2. hero remaining figure;
-3. monthly income and total allocated in two columns when 320 px reflow remains readable, otherwise stacked;
-4. savings/commitments/other figures in a two-column grid with the last item full-width when necessary;
-5. allocation composition and exact legend;
-6. income-versus-allocated;
-7. savings target;
-8. trend chart when eligible;
-9. section item lists;
-10. secondary and destructive actions.
+3. monthly income;
+4. savings allocation with savings target context;
+5. commitments;
+6. other allocations;
+7. total planned allocation and other roll-up context;
+8. allocation composition and exact legend;
+9. income-versus-allocated;
+10. savings-target visualization;
+11. trend chart when eligible;
+12. section item lists;
+13. secondary and destructive actions.
+
+Supporting figures may use a two-column grid only when that visual placement preserves the same DOM/reading order and remains readable at 320 CSS px; otherwise they stack.
 
 Charts stack vertically and never require horizontal page scrolling. Bottom-nav safe-area padding remains reserved. Sticky financial cards are not required; avoid consuming scarce vertical space.
 
@@ -239,7 +251,7 @@ Names the period, says the record is removed from Planning and its projections, 
 | Loading | Labelled skeletons reserve hero/cards/chart panels; no fake numbers. |
 | Partial/legacy data | Show available exact values; mark target/comparison unavailable; do not infer missing values. |
 | Zero allocations | Income remains visible; remaining equals authoritative result; composition chart becomes a purposeful empty state. |
-| Negative remaining | Hero and income/allocated panel state exact over-allocation with text/icon/danger role. |
+| Negative remaining | For legacy/migration data or a pre-submit validation preview only, hero and income/allocated panel state exact over-allocation with text/icon/danger role; #63 rejects this as a new persisted target plan. |
 | One historical period | Hide trend visualization and explain that another plan is needed for comparison only when useful. |
 | Chart failure | Exact-value table/list remains visible; chart error does not hide financial data. |
 | Delete pending | Disable duplicate confirmation, announce progress, retain safe cancellation only if request is cancellable. |
