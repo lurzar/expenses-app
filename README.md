@@ -78,6 +78,6 @@ The repository is still establishing a deterministic quality baseline in [issue 
 - [Documentation map and ownership](docs/README.md)
 - [PostgreSQL 18 local-volume upgrade](docs/postgresql-18-upgrade.md)
 - [Release history](CHANGELOG.md)
-- [Version 2.0.7 plan](https://github.com/lurzar/expenses-app/issues/72)
+- [Version 2.0.8 plan](https://github.com/lurzar/expenses-app/issues/82)
 
 GitHub Issues hold planned work. Repository documentation describes approved, current behavior. When the two disagree, verify the source and update the stale issue or document.
