@@ -13,11 +13,13 @@ As of 2026-08-16:
 | `v2.1.x` | Temporary version-aggregation branch created from an exact approved `v2.x` commit and deleted after release preservation checks. |
 | `<type>/<issue>-<slug>` | Temporary issue branch. It targets the approved version branch, or the immediately lower branch when a genuine dependency requires a stack. |
 | `v2.1.x-dev` | Lightweight Git tag placed on the resulting `v2.x` merge commit after an approved patch release. |
-| GitHub Release | Published from each verified release tag with user-facing notes, known limitations, and rollback guidance. |
+| GitHub Release | Beginning with v2.1.0, published from each verified release tag with user-facing notes, known limitations, and rollback guidance. |
 
 PR #37 historically promoted the completed v2.1.0 milestone into `v2.x`. The source `v2.1` branch was deleted after its tree was proven identical to the merge commit and `v2.1.0-dev` tag. Do not recreate that branch as a second integration line.
 
 The broad `v2.1` label identifies the 2.1.x development series. Every approved issue also receives its exact target-version label, such as `v2.1.1`. A series label alone does not make an issue a blocker for every patch in that series.
+
+Tags `v2.0.1-dev` through `v2.0.9-dev` remain historical tag-only releases. Do not manufacture retroactive Release objects merely to make older artifacts match the convention adopted with v2.1.0.
 
 ## Tool and runtime matrix
 
@@ -277,7 +279,7 @@ An approved release tracker owns the version scope and decisions.
 
 The version PR body records the exact included PRs, validation, known baseline failures, deployment/rollback notes, and planned tag. It is not a substitute for either changelog.
 
-The current repository convention uses lightweight `-dev` tags plus matching GitHub Release objects. Create the Release only after the remote tag resolves to the approved `v2.x` merge commit. Mark the newest approved patch latest. Do not change SemVer, move a tag, or replace a published Release artifact; ship a corrective patch when post-release code must change.
+Beginning with v2.1.0, the repository convention uses lightweight `-dev` tags plus matching GitHub Release objects. Earlier v2.0.1-v2.0.9 tags remain historical tag-only artifacts. For current releases, create the Release only after the remote tag resolves to the approved `v2.x` merge commit. Mark the newest approved patch latest. Do not change SemVer, move a tag, replace a published Release artifact, or backfill historical Releases without a separate decision; ship a corrective patch when post-release code must change.
 
 Related foundation issues have separate ownership:
 
