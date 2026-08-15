@@ -2,7 +2,11 @@
 
 use App\Models\User;
 use App\Modules\Planning\Models\Planning;
+use App\Modules\Planning\Services\PlanningCache;
+use App\Modules\Planning\Services\PlanningService;
+use Illuminate\Contracts\Cache\Repository;
 use Inertia\Testing\AssertableInertia as Assert;
+use Mockery\MockInterface;
 
 test('owners can view planning through its public id without numeric identifiers', function () {
     $owner = User::factory()->create();
@@ -40,7 +44,46 @@ test('owners can delete their planning through its public id', function () {
 
     $this->actingAs($owner)
         ->delete(route('planning.destroy', $planning->planning_id))
-        ->assertRedirect(route('planning.index'));
+        ->assertRedirect(route('planning.index'))
+        ->assertSessionHas('success', "{$planning->name} plan deleted.");
+
+    expect($planning->fresh()->trashed())->toBeTrue();
+});
+
+test('a failed owner deletion returns to the plan with an announced error', function () {
+    $owner = User::factory()->create();
+    $planning = Planning::factory()->for($owner)->create();
+    $this->mock(PlanningService::class)
+        ->shouldReceive('delete')
+        ->once()
+        ->andThrow(new RuntimeException('database unavailable'));
+
+    $this->actingAs($owner)
+        ->from(route('planning.show', $planning->planning_id))
+        ->delete(route('planning.destroy', $planning->planning_id))
+        ->assertRedirect(route('planning.show', $planning->planning_id))
+        ->assertSessionHas('error', 'The plan could not be deleted. Try again.');
+
+    expect($planning->fresh()->trashed())->toBeFalse();
+});
+
+test('a cache failure after deletion reports the committed result without inviting a retry', function () {
+    $owner = User::factory()->create();
+    $planning = Planning::factory()->for($owner)->create();
+    $name = $planning->name;
+
+    $repository = $this->mock(Repository::class, function (MockInterface $mock): void {
+        $mock->shouldReceive('forget')
+            ->once()
+            ->andThrow(new RuntimeException('cache unavailable'));
+    });
+    $this->app->instance(PlanningCache::class, new PlanningCache($repository));
+
+    $this->actingAs($owner)
+        ->delete(route('planning.destroy', $planning->planning_id))
+        ->assertRedirect(route('planning.index'))
+        ->assertSessionHas('warning', "{$name} plan deleted. Planning lists may take up to five minutes to refresh.")
+        ->assertSessionMissing('error');
 
     expect($planning->fresh()->trashed())->toBeTrue();
 });

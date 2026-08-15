@@ -49,6 +49,7 @@ export interface PageProps {
     flash: {
         message: string | null;
         success: string | null;
+        warning: string | null;
         error: string | null;
     };
     locale?: string;
