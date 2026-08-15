@@ -250,7 +250,7 @@ Every data page defines these states before implementation:
 
 1. #63 establishes server-authoritative money values and stable frontend payload meaning.
 2. Create a focused UI-foundation issue for semantic tokens, focus restoration, responsive `AppShell`, and primitive components.
-3. Implement the #44 Planning summary using authoritative values and accessible chart alternatives.
+3. Implement the #44 [Planning summary specification](planning-summary.md) using authoritative values and accessible chart alternatives.
 4. Migrate Dashboard and Expenses projections to the shared summary/chart patterns.
 5. Migrate Auth/Profile/forms and remove remaining fixed light-only styles.
 
