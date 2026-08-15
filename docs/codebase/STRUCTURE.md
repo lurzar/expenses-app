@@ -16,7 +16,7 @@ This reference maps source-owned directories and entry points. Generated output,
 | `resources/css/` | Tailwind CSS entry and project CSS | `resources/css/app.css` |
 | `tests/` | Pest unit and Laravel feature suites | `tests/Pest.php`; `phpunit.xml` |
 | `docs/` | Canonical current project, development, operations, and architecture knowledge | `docs/README.md` |
-| `.github/` | GitHub Actions and thin tool-specific guidance | `.github/workflows/laravel.yml` |
+| `.github/` | GitHub metadata and thin tool-specific guidance | `.github/copilot-instructions.md` |
 | `public/` | HTTP entry point and static assets; built assets are generated | `public/index.php`; `.gitignore` |
 | `storage/` | Runtime logs, caches, sessions, and local diagnostics; not source | `.gitignore`; directory `.gitignore` files |
 

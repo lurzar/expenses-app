@@ -28,14 +28,14 @@ Tags `v2.0.1-dev` through `v2.0.9-dev` remain historical tag-only releases. Do n
 | Host PHP | PHP 8.4 | `README.md` and `composer.json` |
 | Composer platform | PHP 8.4.0 | `composer.json` |
 | Sail PHP | PHP 8.4 | `docker-compose.yml` build context |
-| Node.js | Node 22 | `README.md` and `.github/workflows/laravel.yml` |
+| Node.js | Node 22 | `README.md` |
 | PostgreSQL | 18.4 Alpine in Sail | `docker-compose.yml` |
 | Redis | 8.8.1 Alpine, optional for application cache | `docker-compose.yml` and `.env.example` |
 | pgAdmin | 9.16 | `docker-compose.yml` |
-| CI/test database | Forced SQLite in memory | `tests/bootstrap.php`, `phpunit.xml`, and `.github/workflows/laravel.yml` |
+| Test database | Forced SQLite in memory | `tests/bootstrap.php` and `phpunit.xml` |
 | Default application cache | File | `.env.example` and `config/cache.php` |
 
-The quality workflow runs for every pull request and for pushes to `main`, `v2.x`, and version branches. Separate mandatory jobs install committed locks and run PHP formatting, Larastan, isolated backend tests, frontend tests, TypeScript, build, and both audits. Actions are commit-pinned, checkout credentials are not persisted, and the token has only `contents: read`.
+GitHub-hosted Actions are intentionally not used under the approved zero-cost personal-account policy. Required checks remain mandatory: the release owner installs committed locks, runs `composer check` locally on every exact PR/release head, and records the evidence in the PR and tracker. A missing hosted check is not presented as CI evidence.
 
 ## Set up a clean checkout with Sail
 
@@ -71,7 +71,7 @@ Do not copy a real `.env`, database, cache payload, Telescope entry, activity re
 
 Use the host for Composer, frontend checks, and isolated SQLite tests when its PHP and Node versions match the matrix. The checked-in development database host is `pgsql`, a Sail service name that a host process usually cannot resolve.
 
-The committed test bootstrap force-selects isolated in-memory SQLite before Laravel loads, so the normal host command is safe even if the shell exports development-database variables:
+The committed test bootstrap clears `DATABASE_URL` and force-selects isolated in-memory SQLite before Laravel loads, so the normal host command is safe even if the shell exports development-database variables:
 
 ```bash
 composer test
@@ -277,7 +277,7 @@ Related foundation issues have separate ownership:
 
 - #33 completed the login-page changes summary backed by `config/changelog.php`; release work updates it but does not reopen or reimplement #33.
 - #59 completed the documentation source-of-truth map in `docs/README.md`; new canonical documents update that map rather than creating a competing index.
-- #65 established the deterministic quality pipeline; future changes update the scripts, workflow, and this guide together.
+- #65 established the deterministic local quality pipeline; future changes update the scripts and this guide together.
 
 ## Roll back and clean up
 

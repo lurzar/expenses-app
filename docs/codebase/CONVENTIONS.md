@@ -21,7 +21,7 @@ This reference records conventions visible in committed source and configuration
 - Laravel Pint is the PHP formatter. No project `pint.json` override exists, so the installed Laravel preset/default rules apply.
 - TypeScript uses `strict`, `isolatedModules`, `noEmit`, bundler resolution, and consistent filename casing in `tsconfig.json`.
 - No ESLint or Prettier configuration is committed. TypeScript checking and Vite compilation are the current frontend static gates.
-- Repository-wide Pint currently reports historical findings; #65 owns cleanup and mandatory enforcement. Changed PHP files must pass focused Pint before merge.
+- Repository-wide Pint is clean and enforced by the mandatory local exact-head gate. Changed PHP files must also pass focused Pint while work is in progress.
 
 ```bash
 vendor/bin/pint --test path/to/changed.php
