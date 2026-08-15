@@ -27,7 +27,7 @@ The current Expenses view is a projection of monthly Planning data. It is not a 
 
 Expenses App is a Laravel 12 modular monolith. Laravel modules own the web routes and server-side orchestration; Inertia 2 connects them to a React 19 and TypeScript frontend.
 
-Planning is the central stored aggregate. Dashboard and Expenses read Planning data through the Planning service. PostgreSQL stores application data, while Redis is available to the local stack for future cache and queue use.
+Planning is the central stored aggregate. Dashboard and Expenses read Planning data through the Planning service. PostgreSQL stores application data. Laravel's configured cache store accelerates each user's Planning collection reads; the file store remains the default, and Redis is optional.
 
 See the [documentation map](docs/README.md) for current references and issue-backed planned documentation.
 
