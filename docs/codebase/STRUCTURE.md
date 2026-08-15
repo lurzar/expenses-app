@@ -64,4 +64,3 @@ This reference maps source-owned directories and entry points. Generated output,
 - `resources/js/app.tsx`, `resources/views/app.blade.php`
 - `composer.json`, `tsconfig.json`, `vite.config.js`
 - `docs/README.md`
-

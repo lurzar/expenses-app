@@ -62,4 +62,3 @@ Sanctum's presence does not mean a public API exists. The route inventory has 28
 - `app/Providers/TelescopeServiceProvider.php`
 - `resources/js/bootstrap.ts`
 - `php artisan route:list --except-vendor --json` (28 web routes during this pass)
-
