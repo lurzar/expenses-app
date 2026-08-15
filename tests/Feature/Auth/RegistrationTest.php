@@ -1,6 +1,6 @@
 <?php
 
-use App\Providers\RouteServiceProvider;
+use App\Modules\Auth\Middleware\RedirectIfAuthenticated;
 
 test('registration screen can be rendered', function () {
     $response = $this->get('/register');
@@ -17,5 +17,5 @@ test('new users can register', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(RouteServiceProvider::HOME);
+    $response->assertRedirect(RedirectIfAuthenticated::HOME);
 });

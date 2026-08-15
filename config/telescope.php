@@ -62,7 +62,19 @@ return [
     |
     */
 
-    'enabled' => env('TELESCOPE_ENABLED', true),
+    'enabled' => filter_var(
+        env('TELESCOPE_ENABLED', false),
+        FILTER_VALIDATE_BOOLEAN,
+        FILTER_NULL_ON_FAILURE,
+    ) ?? false,
+
+    'authorized_emails' => env('TELESCOPE_AUTHORIZED_EMAILS', ''),
+
+    'prune_hours' => filter_var(
+        env('TELESCOPE_PRUNE_HOURS', 168),
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]],
+    ) ?: 168,
 
     /*
     |--------------------------------------------------------------------------

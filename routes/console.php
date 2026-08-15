@@ -1,7 +1,6 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +13,24 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+$activityRetentionDays = filter_var(
+    config('activity-log.retention_days', 365),
+    FILTER_VALIDATE_INT,
+    ['options' => ['min_range' => 1]],
+) ?: 365;
+
+Schedule::command("activity-log:prune --days={$activityRetentionDays}")
+    ->daily()
+    ->withoutOverlapping();
+
+if (app()->environment('local') || config('telescope.enabled') === true) {
+    $retentionHours = filter_var(
+        config('telescope.prune_hours', 168),
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]],
+    ) ?: 168;
+
+    Schedule::command("telescope:prune --hours={$retentionHours}")
+        ->daily()
+        ->withoutOverlapping();
+}

@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Modules\Dashboard\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Modules\Planning\Services\PlanningService;
+use Inertia\Inertia;
+use Inertia\Response;
+
+class DashboardController extends Controller
+{
+    public function __construct(
+        private readonly PlanningService $planningService,
+    ) {}
+
+    /**
+     * Display the dashboard.
+     */
+    public function index(): Response
+    {
+        return Inertia::render('Dashboard/Index', [
+            'plannings' => $this->planningService->getAllPlannings(),
+        ]);
+    }
+}
