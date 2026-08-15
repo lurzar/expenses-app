@@ -62,7 +62,7 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 - Backend: 79 tests passed with 319 assertions; no failures or deprecated PHPUnit schema warning.
 - Repository-wide Pint: clean.
 - Larastan/PHPStan: level 8, 77 application/database files, no errors, no baseline or ignored error.
-- Frontend tests: 13 passed.
+- Frontend tests: 18 passed across the theme and language-route contracts.
 - Strict TypeScript: passed.
 - Vite production build: passed, 803 modules transformed after the four Auth pages were added.
 - Composer audit: no advisories.

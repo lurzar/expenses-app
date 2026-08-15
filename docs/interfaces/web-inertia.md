@@ -7,7 +7,7 @@ This reference catalogs the current browser interface. It describes Laravel web 
 - Authentication uses Laravel's `web` guard, session cookies, CSRF protection, and redirects.
 - Read pages return Inertia responses rooted at `resources/views/app.blade.php` and resolved from `resources/js/Pages/**/*.tsx`.
 - Successful mutations redirect to a named web route. Validation errors and old input travel through the session/Inertia error bag.
-- Named routes are exposed to TypeScript through Ziggy and resolved by `resources/js/utils/route.ts`; the current language controls pass a stale parameter name and fail against fresh route metadata, as documented below.
+- Named routes are exposed to TypeScript through Ziggy and resolved by `resources/js/utils/route.ts`; generated route metadata and layout callers use the live Laravel parameter names.
 - `Planning` and `User` expose public ULIDs, but their current Inertia serialization also includes internal numeric `id`/`user_id` fields; #61 owns narrowing that boundary.
 - There is no content-negotiated JSON resource contract for these routes.
 
@@ -53,7 +53,7 @@ Verified with `php artisan route:list --except-vendor --json` on 2026-08-16: 28 
 | Method | URI | Name | Controller | Additional middleware/result |
 | --- | --- | --- | --- | --- |
 | GET | `/` | `landing` | `LandingController@index` | Inertia `Landing/Index` |
-| GET | `/language/{language}` | `language` | `LanguageController@index` | Direct route validates allowlisted locale, stores session locale, redirects back; current layout controls pass the wrong key |
+| GET | `/language/{language}` | `language` | `LanguageController@index` | Validates the allowlisted locale, stores it in session, and redirects back; both layouts generate this required parameter |
 
 ### Guest authentication routes
 
@@ -108,9 +108,7 @@ Every route in this group also uses `guest`/`RedirectIfAuthenticated`.
 
 ## Language route contract gap
 
-The live route and fresh `@routes` output require `{language}`. `AppLayout.tsx` and `GuestLayout.tsx` currently call `route('language', { lang: 'en' | 'my' })`, while the committed `resources/js/ziggy.js` still contains stale `{lang?}` metadata. With current generated Ziggy configuration, the controls throw that the `language` parameter is required instead of navigating.
-
-Issue #103 owns normalizing the Laravel/Ziggy/layout parameter, removing or regenerating stale metadata, and adding guest/authenticated regression coverage in v2.1.2.
+The live route, committed Ziggy metadata, and both layouts use the required `{language}` parameter. `resources/js/language-route.test.ts` proves EN/MY URL generation, missing-parameter rejection, and both layout call sites; `LanguageSecurityTest` proves the server allowlist and session redirect behavior.
 
 ## Change rules
 
