@@ -1,7 +1,8 @@
-import { PropsWithChildren, ReactNode, useState, useEffect } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { User, PageProps } from '@/types';
 import { route } from '@/utils/route';
+import { themeToggleLabel, useTheme } from '@/theme';
 
 interface AppLayoutProps {
     user: User;
@@ -26,26 +27,7 @@ export default function AppLayout({
 }: PropsWithChildren<AppLayoutProps>) {
     const { locale, translations } = usePage<AppPageProps>().props;
     const common = translations?.common as Record<string, string> | undefined;
-    const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-    // Load theme from localStorage on mount
-    useEffect(() => {
-        const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
-        if (savedTheme) {
-            setTheme(savedTheme);
-            document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            setTheme('dark');
-            document.documentElement.classList.add('dark');
-        }
-    }, []);
-
-    const toggleTheme = () => {
-        const newTheme = theme === 'light' ? 'dark' : 'light';
-        setTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
-        document.documentElement.classList.toggle('dark', newTheme === 'dark');
-    };
+    const { theme, toggleTheme } = useTheme();
 
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors">
@@ -115,7 +97,8 @@ export default function AppLayout({
                             <button
                                 onClick={toggleTheme}
                                 className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
-                                aria-label="Toggle theme"
+                                aria-label={themeToggleLabel(theme)}
+                                aria-pressed={theme === 'dark'}
                             >
                                 {theme === 'light' ? (
                                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -1,7 +1,8 @@
-import { PropsWithChildren, useState, useEffect } from 'react';
+import { PropsWithChildren } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import { route } from '@/utils/route';
+import { themeToggleLabel, useTheme } from '@/theme';
 
 interface GuestPageProps extends PageProps {
     locale?: string;
@@ -9,26 +10,7 @@ interface GuestPageProps extends PageProps {
 
 export default function GuestLayout({ children }: PropsWithChildren) {
     const { locale } = usePage<GuestPageProps>().props;
-    const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-    // Load theme from localStorage on mount
-    useEffect(() => {
-        const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
-        if (savedTheme) {
-            setTheme(savedTheme);
-            document.documentElement.classList.toggle('dark', savedTheme === 'dark');
-        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            setTheme('dark');
-            document.documentElement.classList.add('dark');
-        }
-    }, []);
-
-    const toggleTheme = () => {
-        const newTheme = theme === 'light' ? 'dark' : 'light';
-        setTheme(newTheme);
-        localStorage.setItem('theme', newTheme);
-        document.documentElement.classList.toggle('dark', newTheme === 'dark');
-    };
+    const { theme, toggleTheme } = useTheme();
 
     return (
         <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900 transition-colors">
@@ -60,7 +42,8 @@ export default function GuestLayout({ children }: PropsWithChildren) {
                 <button
                     onClick={toggleTheme}
                     className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
-                    aria-label="Toggle theme"
+                    aria-label={themeToggleLabel(theme)}
+                    aria-pressed={theme === 'dark'}
                 >
                     {theme === 'light' ? (
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
