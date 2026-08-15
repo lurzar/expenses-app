@@ -1,6 +1,6 @@
 # Dependency updates and audits
 
-This how-to defines the current dependency update, vulnerability-audit, and rollback flow for Composer, npm, and GitHub Actions.
+This how-to defines the current dependency update, vulnerability-audit, and rollback flow for Composer and npm.
 
 ## Required release gates
 
@@ -14,17 +14,16 @@ npm audit --package-lock-only
 composer check
 ```
 
-Do not replace `composer install` or `npm ci` with an unlocked update command in CI. Do not use `npm audit fix --force`, suppress an advisory, or regenerate an unrelated lock file merely to obtain a green check.
+Do not replace `composer install` or `npm ci` with an unlocked update command. Do not use `npm audit fix --force`, suppress an advisory, or regenerate an unrelated lock file merely to obtain a green check.
 
 ## Automated update policy
 
-`.github/dependabot.yml` checks Composer, npm, and GitHub Actions weekly on Monday morning in `Asia/Kuala_Lumpur` and targets the active `v2.x` integration line.
+`.github/dependabot.yml` checks Composer and npm weekly on Monday morning in `Asia/Kuala_Lumpur` and targets the active `v2.x` integration line. GitHub activates this file from the default branch, so the same reviewed configuration is installed on `main` through the focused companion PR for #60 and retained on `v2.x` as the active-line source of truth.
 
 - Composer and npm minor/patch updates are separated into runtime and development groups.
-- GitHub Actions minor/patch updates form one reviewable group; immutable SHA pins and version comments remain required.
 - Major updates stay separate and receive a 30-day cooldown.
 - Minor updates wait 7 days and patch updates wait 3 days, reducing early-release risk without delaying Dependabot security updates.
-- Open version-update PRs are capped at three for Composer, three for npm, and two for Actions.
+- Open version-update PRs are capped at three for Composer and three for npm.
 - Dependabot assigns `lurzar` and applies the `dependencies` and `System` labels.
 
 Because GitHub security updates target the default branch independently of a non-default `target-branch`, review any security PR against its actual base first. Port an applicable fix into `v2.x` through an issue-linked branch rather than assuming a default-branch PR reached the active release line.
@@ -48,7 +47,7 @@ Patch a fixable runtime/high-severity advisory first, in the smallest compatible
 - named owner; and
 - next review date.
 
-An unavailable GitHub Actions runner is not a passing audit. Run and record the local locked audits, retain the enabled CI gate, and restore external runner/account access before claiming hosted execution.
+Hosted GitHub Actions are intentionally not used. Run and record both local locked audits on every exact issue, stack, version, and release head; absence of hosted execution is never presented as audit evidence.
 
 ## Rollback
 
@@ -59,5 +58,4 @@ Revert one logical dependency-update PR at a time and restore both manifest and 
 - `composer.json`, `composer.lock`
 - `package.json`, `package-lock.json`
 - `.github/dependabot.yml`
-- `.github/workflows/laravel.yml`
 - `docs/codebase/TESTING.md`
