@@ -10,7 +10,7 @@ This reference is for maintainers and contributors who need the supported runtim
 | Backend framework | Laravel 12.66.0 | `composer.lock`; `composer show --locked --direct` |
 | Frontend language | TypeScript 5.9 with strict checking and React TSX | `package-lock.json`; `tsconfig.json` |
 | Frontend runtime | React 19.2.8 through Inertia 2.3.27 | `package-lock.json`; `resources/js/app.tsx` |
-| Supported Node.js | Node.js 22 | `README.md`; `.github/workflows/laravel.yml` |
+| Supported Node.js | Node.js 22 | `README.md` |
 | PHP package manager | Composer 2 with a committed lock | `composer.json`; `composer.lock` |
 | Frontend package manager | npm with lockfile version 3 | `package.json`; `package-lock.json` |
 | Build system | Vite 6.4.3 with Laravel and React plugins | `package-lock.json`; `vite.config.js` |
@@ -43,9 +43,9 @@ The host versions observed during this documentation pass were PHP 8.5.9 and Nod
 | Vite | Development server and production assets | `vite.config.js`; `package.json` |
 | Telescope | Conditional diagnostics and pruning | `composer.lock`; `app/Providers/TelescopeServiceProvider.php` |
 | Laravel Debugbar | Local request diagnostics | `composer.lock`; `config/debugbar.php` when vendor config is published |
-| GitHub Actions | Current build/test automation; expansion tracked by #65 | `.github/workflows/laravel.yml` |
+| Local quality gate | `composer check` runs formatting, level-8 Larastan, backend/frontend tests, TypeScript, build, and locked audits | `composer.json`; `docs/development/workflow.md` |
 
-No PHPStan/Larastan, ESLint, or Prettier configuration is committed at this point. Issue #65 owns the approved deterministic quality pipeline.
+Larastan/PHPStan is committed at level 8 without a baseline or ignored errors. No ESLint or Prettier configuration is committed. Hosted GitHub Actions are intentionally not used; issue #65 owns the approved deterministic local quality policy.
 
 ## Key commands
 
@@ -81,5 +81,5 @@ Do not commit `.env`, credentials, logs, caches, Debugbar payloads, Telescope en
 - `package.json`, `package-lock.json`
 - `tsconfig.json`, `vite.config.js`, `tailwind.config.js`
 - `.env.example`, `docker-compose.yml`
-- `.github/workflows/laravel.yml`
+- `tests/bootstrap.php`, `phpstan.neon`, `composer.json`
 - `bootstrap/app.php`, `resources/js/app.tsx`
