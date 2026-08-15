@@ -11,7 +11,6 @@ This register prioritizes verified current risks. It does not duplicate exploit 
 | High | Expenses direct owner access fails before the intended ownership check | `{expenses}` does not bind to `$expense`; isolated owner-path request returns 403 | Owners cannot open the detail projection; intended record authorization is not exercised | #61 |
 | Medium | Inertia payloads expose internal numeric `id`/`user_id` values alongside public ULIDs | `Planning`/`User` serialization; no API Resource or hidden fields | The public-identifier boundary is not enforced at the browser contract | #61 |
 | Medium | Supported PostgreSQL environment conflicts with MySQL config fallback when `DB_CONNECTION` is absent | `.env.example`; `config/database.php` | An incomplete environment can target the wrong engine | #65/setup validation |
-| Medium | Auth/Inertia page migration is incomplete | failing Auth feature tests; controllers returning removed Blade views | Verification/reset/confirmation pages return 500 | #65 or focused child issues |
 | Medium | Planning list payloads are unbounded | `getAllPlannings()->get()`; Dashboard/Planning/Expenses props | Database, cache, serialization, and browser cost grow with history | Add approved pagination/query limits |
 | Medium | Development mail configuration names a service absent from Compose | `.env.example`; `docker-compose.yml` | Verification/reset mail cannot work in a compose-only setup | Add/replace documented local mail service |
 
@@ -25,14 +24,14 @@ This register prioritizes verified current risks. It does not duplicate exploit 
 | Auth/Inertia route/page contracts | repaired Auth feature tests and Inertia pages | User-facing 500 responses if contracts drift | Preserve feature coverage in the local exact-head gate |
 | Repository formatting | repository-wide Pint cleanup and `composer format:test` | Review noise if the gate is skipped | Keep the local exact-head gate green |
 | Laravel-aware static analysis | Larastan/PHPStan level 8 without a baseline | Type/null/query regressions if skipped | Keep `composer analyse` in the local exact-head gate |
-| Scaffold tests/helpers remain | `tests/Feature/ExampleTest.php`; `tests/Unit/ExampleTest.php`; `tests/Pest.php::something` | Noise and misleading coverage | Remove or replace while repairing #65 baseline |
+| Scaffold tests/helpers remain | `tests/Feature/ExampleTest.php`; `tests/Unit/ExampleTest.php`; `tests/Pest.php::something` | Noise and misleading coverage | Remove or replace through a focused cleanup issue |
 | Workflow history uses squash aggregation | recent Git history | Per-file churn counts collapse into large release commits | Use issues/PRs plus file size/ownership as change-risk evidence |
 
 ## Security and data-integrity concerns
 
 | Risk | Category | Current mitigation | Gap |
 | --- | --- | --- | --- |
-| Cross-user Planning access | OWASP A01 Broken Access Control | `PlanningPolicy`, Gate calls, user-scoped collections, non-owner tests | Normalize binding and add owner-success/CI enforcement in #61 |
+| Cross-user Planning access | OWASP A01 Broken Access Control | `PlanningPolicy`, Gate calls, user-scoped collections, non-owner tests | Normalize binding and add owner-success/local-gate enforcement in #61 |
 | Financial tampering/precision | OWASP A04 Insecure Design / data integrity | Request shape validation only | Server authority, precision, rounding, uniqueness, migration in #63 |
 | Diagnostic data exposure | OWASP A09 Logging/Monitoring | Explicit non-local enablement, verified allowlist, redaction, pruning tests/docs | No external monitoring/alerting/SLO is configured |
 | Activity metadata privacy | N/A | Enum event contract, public ULIDs, allowlisted fields, atomic writes | Access/reporting interface and production retention ownership are not defined |
@@ -54,7 +53,7 @@ This register prioritizes verified current risks. It does not duplicate exploit 
 | Area | Why fragile | Signal | Safe change strategy |
 | --- | --- | --- | --- |
 | Planning create flow | Money meaning, dynamic arrays, and 416-line React component | Largest application source file | Decide domain/UI contracts first; add calculation and component tests |
-| Auth UI/controllers | Blade-to-Inertia migration is incomplete | Multiple verified feature failures | Fix one route/page contract per test-first issue |
+| Auth UI/controllers | Security-sensitive session, reset, verification, and confirmation flows span Laravel and Inertia | Multiple route/page contracts | Keep each route/page contract covered by focused feature, type, and build checks |
 | Telescope provider/tests | Security-sensitive filtering/redaction/retention | Provider ~199 lines, test file ~269 lines | Run focused security suite and diff review |
 | Activity history | Atomicity and privacy allowlist | Test file ~367 lines | Preserve event contract and transaction tests |
 | Release workflow/docs | Branch/release policy recently changed | Highest useful recent churn after excluding squashed metadata | Verify live GitHub state before every release edit |
