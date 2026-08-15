@@ -1,6 +1,7 @@
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import { PageProps, Planning } from '@/types';
+import { formatMYR } from '@/utils/money';
 
 interface DashboardProps extends PageProps {
     plannings: Planning[];
@@ -34,7 +35,7 @@ export default function Index({ auth, plannings }: DashboardProps) {
                                         This Month's Budget
                                     </h4>
                                     <p className="mt-2 text-3xl font-bold text-green-900 dark:text-green-100">
-                                        RM {plannings?.[0]?.salary?.toLocaleString() || '0'}
+                                        {plannings?.[0] ? formatMYR(plannings[0].salary) : 'RM —'}
                                     </p>
                                 </div>
 
@@ -43,7 +44,7 @@ export default function Index({ auth, plannings }: DashboardProps) {
                                         Savings Goal
                                     </h4>
                                     <p className="mt-2 text-3xl font-bold text-purple-900 dark:text-purple-100">
-                                        RM {plannings?.[0]?.totals?.savings?.toLocaleString() || '0'}
+                                        {plannings?.[0] ? formatMYR(plannings[0].totals.target_savings) : 'RM —'}
                                     </p>
                                 </div>
                             </div>

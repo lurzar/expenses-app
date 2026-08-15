@@ -22,7 +22,7 @@ Sanctum's presence does not mean a public API exists. The route inventory has 28
 
 | Store | Role | Access layer | Key risk | Evidence |
 | --- | --- | --- | --- | --- |
-| PostgreSQL | Authoritative relational data | Eloquent, migrations, Laravel DB transactions | Money currently uses float/JSON and needs #63 migration decisions | Planning migration/model/service |
+| PostgreSQL | Authoritative relational data | Eloquent, migrations, Laravel DB transactions | Fixed-precision Planning migration and partial unique index require PostgreSQL-aware deployment review | Planning migration/model/service/ADR 0001 |
 | File cache | Default collection cache | Laravel cache repository through `PlanningCache` | Shared filesystem/permission behavior differs across deployments | `config/cache.php`; `PlanningCache.php` |
 | Redis | Optional cache connection | Laravel cache/Redis configuration | Operational behavior depends on selected store and persistence | `config/cache.php`; `config/database.php` |
 | Filesystem storage | Logs, sessions, local diagnostics, generated/runtime files | Laravel filesystem/session/logging | Runtime artifacts may contain sensitive data and must remain untracked | `config/filesystems.php`; `.gitignore`; operations docs |

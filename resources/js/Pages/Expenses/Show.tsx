@@ -1,22 +1,13 @@
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
-import { PageProps, Planning, SectionItem } from '@/types';
+import { PageProps, Planning } from '@/types';
+import { formatMYR } from '@/utils/money';
 
 interface ShowProps extends PageProps {
     planning: Planning;
 }
 
 export default function Show({ auth, planning }: ShowProps) {
-    const calculateSectionTotal = (items?: SectionItem[]) => {
-        if (!items || !Array.isArray(items)) return 0;
-        return items.reduce((sum, item) => sum + (parseFloat(item.amount) || 0), 0);
-    };
-
-    const totalSpending =
-        calculateSectionTotal(planning.sections?.savings) +
-        calculateSectionTotal(planning.sections?.commitments) +
-        calculateSectionTotal(planning.sections?.others);
-
     const planningName = planning.name || `${planning.month}, ${planning.year}`;
 
     return (
@@ -40,19 +31,19 @@ export default function Show({ auth, planning }: ShowProps) {
                                 <div className="bg-blue-50 rounded-lg p-4">
                                     <p className="text-sm text-blue-600">Salary</p>
                                     <p className="text-2xl font-bold text-blue-900">
-                                        RM {planning.salary?.toLocaleString() || '0'}
+                                        {formatMYR(planning.salary)}
                                     </p>
                                 </div>
                                 <div className="bg-red-50 rounded-lg p-4">
                                     <p className="text-sm text-red-600">Total Spending</p>
                                     <p className="text-2xl font-bold text-red-900">
-                                        RM {totalSpending.toLocaleString()}
+                                        {formatMYR(planning.totals.spending)}
                                     </p>
                                 </div>
                                 <div className="bg-green-50 rounded-lg p-4">
                                     <p className="text-sm text-green-600">Remaining</p>
                                     <p className="text-2xl font-bold text-green-900">
-                                        RM {((planning.salary || 0) - totalSpending).toLocaleString()}
+                                        {formatMYR(planning.totals.balance)}
                                     </p>
                                 </div>
                             </div>
