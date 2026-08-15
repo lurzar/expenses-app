@@ -3,6 +3,25 @@
 return [
     'releases' => [
         [
+            'version' => '2.1.1',
+            'status' => 'Released',
+            'released_at' => '2026-08-16',
+            'changes' => [
+                [
+                    'category' => 'Fixed',
+                    'description' => 'Kept theme colors and controls consistent across sign-in, account pages, and refreshes.',
+                ],
+                [
+                    'category' => 'Added',
+                    'description' => 'Added clearer technical, planning-domain, and interface documentation for safer future development.',
+                ],
+                [
+                    'category' => 'Changed',
+                    'description' => 'Improved release traceability and removed tracked operating-system metadata.',
+                ],
+            ],
+        ],
+        [
             'version' => '2.1.0',
             'status' => 'Released',
             'released_at' => '2026-08-16',

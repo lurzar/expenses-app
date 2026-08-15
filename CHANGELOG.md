@@ -6,6 +6,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [2.1.1] - 2026-08-16
+
+### Added
+
+- Added evidence-backed references for the current stack, architecture, module boundaries, integrations, testing baseline, and verified concerns.
+- Added canonical expense-planning vocabulary, current calculation/data flow, web/Inertia route and prop catalogs, and contract-first governance for a future API.
+- Added focused frontend coverage for theme resolution, persistence, DOM state, layout wiring, storage failures, and pre-render initialization.
+
+### Changed
+
+- Updated the v2.x patch-release workflow to distinguish temporary version/issue branches, the v2.1.0 GitHub Release boundary, and bottom-up stacked-PR cleanup.
+- Removed tracked macOS Finder metadata and made all seven codebase references directly navigable from the documentation map.
+
+### Fixed
+
+- Synchronized guest and authenticated theme controls through one shared component and deterministic preference path.
+- Preserved operating-system theme fallback until a user explicitly selects a mode, applied saved modes before frontend rendering, and exposed a stable accessible toggle state.
+
 ## [2.1.0] - 2026-08-16
 
 ### Added
@@ -83,7 +101,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Updated Composer and npm dependencies to remove known security advisories while remaining on the intended major versions.
 
-[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.1.0-dev...HEAD
+[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.1.1-dev...HEAD
+[2.1.1]: https://github.com/lurzar/expenses-app/compare/v2.1.0-dev...v2.1.1-dev
 [2.1.0]: https://github.com/lurzar/expenses-app/compare/v2.0.9-dev...v2.1.0-dev
 [2.0.9]: https://github.com/lurzar/expenses-app/compare/v2.0.8-dev...v2.0.9-dev
 [2.0.8]: https://github.com/lurzar/expenses-app/compare/v2.0.7-dev...v2.0.8-dev
