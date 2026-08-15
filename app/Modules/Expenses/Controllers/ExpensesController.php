@@ -5,6 +5,7 @@ namespace App\Modules\Expenses\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Planning\Models\Planning;
 use App\Modules\Planning\Services\PlanningService;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -23,6 +24,8 @@ class ExpensesController extends Controller
 
     public function show(Planning $expense): Response
     {
+        Gate::authorize('view', $expense);
+
         return Inertia::render('Expenses/Show', [
             'planning' => $expense,
         ]);

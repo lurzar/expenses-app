@@ -4,8 +4,10 @@ namespace App\Modules\Planning;
 
 use App\Modules\ActivityLog\Services\ActivityRecorder;
 use App\Modules\Planning\Models\Planning;
+use App\Modules\Planning\Policies\PlanningPolicy;
 use App\Modules\Planning\Services\PlanningCache;
 use App\Modules\Planning\Services\PlanningService;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class PlanningServiceProvider extends ServiceProvider
@@ -29,6 +31,8 @@ class PlanningServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::policy(Planning::class, PlanningPolicy::class);
+
         $this->loadRoutesFrom(__DIR__.'/routes.php');
         $this->loadMigrationsFrom(__DIR__.'/Database/Migrations');
     }

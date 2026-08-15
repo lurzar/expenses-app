@@ -20,7 +20,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Security
 
-- Removed known dependency advisories, restricted non-local diagnostics, minimized activity metadata, and isolated cached Planning collections by authenticated user.
+- Removed known dependency advisories, restricted non-local diagnostics, minimized activity metadata, isolated Planning records by authenticated user, enforced trusted hosts, and constrained locale selection to shipped translations.
 
 ## [2.0.9] - 2026-08-15
 

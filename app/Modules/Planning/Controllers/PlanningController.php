@@ -7,6 +7,7 @@ use App\Modules\Planning\Models\Planning;
 use App\Modules\Planning\Requests\PlanningStoreRequest as StoreRequest;
 use App\Modules\Planning\Services\PlanningService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -37,6 +38,8 @@ class PlanningController extends Controller
 
     public function show(Planning $planning): Response
     {
+        Gate::authorize('view', $planning);
+
         return Inertia::render('Planning/Show', [
             'planning' => $planning,
         ]);
@@ -44,6 +47,8 @@ class PlanningController extends Controller
 
     public function destroy(Planning $planning): RedirectResponse
     {
+        Gate::authorize('delete', $planning);
+
         $this->service->delete($planning);
 
         return redirect()->route('planning.index');

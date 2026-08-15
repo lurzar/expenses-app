@@ -17,7 +17,7 @@ return [
                 ],
                 [
                     'category' => 'Security',
-                    'description' => 'Strengthened dependencies, diagnostics, activity history, and account-isolated planning caches.',
+                    'description' => 'Strengthened dependencies, diagnostics, activity history, trusted hosts, locale selection, and account-isolated planning access.',
                 ],
             ],
         ],

@@ -12,11 +12,11 @@ class LanguageController extends Controller
     /**
      * Change the application locale language.
      */
-    public function index(?string $language = null): RedirectResponse
+    public function index(string $language): RedirectResponse
     {
         App::setLocale($language);
         Session::put('locale', $language);
-  
+
         return redirect()->back();
     }
 }
