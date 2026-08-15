@@ -5,12 +5,12 @@ namespace App\Providers;
 use App\Models\User;
 use App\Observers\UserObserver;
 use App\Providers\TelescopeServiceProvider as AppTelescopeServiceProvider;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Laravel\Telescope\TelescopeServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,7 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        if ($this->app->environment('local') && class_exists(TelescopeServiceProvider::class)) {
+        $telescopeEnabled = $this->app->environment('local') || config('telescope.enabled') === true;
+
+        if ($telescopeEnabled && class_exists(TelescopeServiceProvider::class)) {
             $this->app->register(TelescopeServiceProvider::class);
             $this->app->register(AppTelescopeServiceProvider::class);
         }
@@ -52,12 +54,14 @@ class AppServiceProvider extends ServiceProvider
             if (str_contains($modelName, 'App\\Modules\\')) {
                 $moduleNamespace = Str::before($modelName, 'Models\\');
                 $modelBasename = class_basename($modelName);
-                return $moduleNamespace . 'Database\\Factories\\' . $modelBasename . 'Factory';
+
+                return $moduleNamespace.'Database\\Factories\\'.$modelBasename.'Factory';
             }
 
             $modelName = Str::afterLast($modelName, '\\');
-            return 'Database\\Factories\\' . $modelName . 'Factory';
-        });   
+
+            return 'Database\\Factories\\'.$modelName.'Factory';
+        });
     }
 
     /**
@@ -76,10 +80,11 @@ class AppServiceProvider extends ServiceProvider
 
             if (str_contains(get_class($factory), 'App\\Modules\\')) {
                 $moduleNamespace = Str::before(get_class($factory), 'Database\\Factories\\');
-                return $moduleNamespace . 'Models\\' . $factoryBasename;
+
+                return $moduleNamespace.'Models\\'.$factoryBasename;
             }
 
-            return 'App\\Models\\' . $factoryBasename;
+            return 'App\\Models\\'.$factoryBasename;
         });
     }
 }

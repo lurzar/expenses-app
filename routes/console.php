@@ -13,4 +13,14 @@ use Illuminate\Support\Facades\Schedule;
 |
 */
 
-Schedule::command('telescope:prune --hours=1')->everyThreeMinutes();
+if (app()->environment('local') || config('telescope.enabled') === true) {
+    $retentionHours = filter_var(
+        config('telescope.prune_hours', 168),
+        FILTER_VALIDATE_INT,
+        ['options' => ['min_range' => 1]],
+    ) ?: 168;
+
+    Schedule::command("telescope:prune --hours={$retentionHours}")
+        ->daily()
+        ->withoutOverlapping();
+}
