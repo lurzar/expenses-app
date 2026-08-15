@@ -23,10 +23,10 @@ function NavigationIcon({ name }: { name: Destination['icon'] }) {
     return <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">{paths[name]}</svg>;
 }
 
-function DestinationLinks({ destinations, currentPath, onNavigate, mobile = false }: { destinations: Destination[]; currentPath: string; onNavigate?: () => void; mobile?: boolean; }) {
-    return destinations.map((destination) => {
+function DestinationLinks({ destinations, currentPath, onNavigate, mobile = false, initialFocus = false }: { destinations: Destination[]; currentPath: string; onNavigate?: () => void; mobile?: boolean; initialFocus?: boolean; }) {
+    return destinations.map((destination, index) => {
         const active = currentPath === destination.match || currentPath.startsWith(`${destination.match}/`);
-        return <Link key={destination.label} href={destination.href} onClick={onNavigate} aria-current={active ? 'page' : undefined} className={mobile ? `app-bottom-link ${active ? 'is-active' : ''}` : `app-nav-link ${active ? 'is-active' : ''}`}>
+        return <Link key={destination.label} href={destination.href} onClick={onNavigate} data-drawer-initial={initialFocus && index === 0 ? true : undefined} aria-current={active ? 'page' : undefined} className={mobile ? `app-bottom-link ${active ? 'is-active' : ''}` : `app-nav-link ${active ? 'is-active' : ''}`}>
             <NavigationIcon name={destination.icon} /><span>{destination.label}</span>
         </Link>;
     });
@@ -70,8 +70,10 @@ export default function AppLayout({ user, header, children }: PropsWithChildren<
         document.body.style.overflow = 'hidden';
         drawer.current?.querySelector<HTMLElement>('[data-drawer-initial]')?.focus();
         const handleEscape = (event: globalThis.KeyboardEvent) => { if (event.key === 'Escape') closeDrawer(); };
+        const handleBreakpointChange = () => { if (window.innerWidth < 768 || window.innerWidth >= 1024) closeDrawer(); };
         document.addEventListener('keydown', handleEscape);
-        return () => { document.removeEventListener('keydown', handleEscape); document.body.style.overflow = previousOverflow; };
+        window.addEventListener('resize', handleBreakpointChange);
+        return () => { document.removeEventListener('keydown', handleEscape); window.removeEventListener('resize', handleBreakpointChange); document.body.style.overflow = previousOverflow; };
     }, [drawerOpen]);
 
     const trapDrawerFocus = (event: KeyboardEvent<HTMLElement>) => {
@@ -93,7 +95,7 @@ export default function AppLayout({ user, header, children }: PropsWithChildren<
         <header data-testid="tablet-header" className="app-topbar hidden h-16 items-center gap-4 px-5 md:flex lg:hidden">
             <button ref={drawerTrigger} type="button" className="app-icon-button" aria-label="Open navigation" aria-expanded={drawerOpen} onClick={() => setDrawerOpen(true)}><svg aria-hidden="true" viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg></button>
             <Link href={route('landing')} className="app-brand compact"><span className="app-brand-mark" aria-hidden="true">E</span><span>Expenses</span></Link>
-            <details className="app-account-menu ml-auto"><summary>Account</summary><div className="app-account-popover"><AccountControls user={user} locale={locale} common={common} compact /></div></details>
+            <details className="app-account-menu ml-auto"><summary>Account</summary><div className="app-account-popover inline-end"><AccountControls user={user} locale={locale} common={common} compact /></div></details>
         </header>
         <header className="app-topbar flex h-14 items-center justify-between px-4 md:hidden">
             <Link href={route('landing')} className="app-brand compact"><span className="app-brand-mark" aria-hidden="true">E</span><span>Expenses</span></Link>
@@ -102,8 +104,8 @@ export default function AppLayout({ user, header, children }: PropsWithChildren<
         {drawerOpen && <div className="fixed inset-0 z-40 hidden md:block lg:hidden">
             <button type="button" className="absolute inset-0 bg-black/50" aria-label="Close navigation overlay" onClick={closeDrawer} />
             <aside ref={drawer} role="dialog" aria-modal="true" aria-label="Application navigation" onKeyDown={trapDrawerFocus} className="app-drawer relative z-10 flex h-full w-[280px] flex-col p-5">
-                <div className="flex items-center justify-between"><span className="app-brand"><span className="app-brand-mark" aria-hidden="true">E</span><span>Expenses</span></span><button data-drawer-initial type="button" className="app-icon-button" aria-label="Close navigation" onClick={closeDrawer}>×</button></div>
-                <nav className="mt-8 flex-1 space-y-2"><DestinationLinks destinations={destinations.slice(0, 3)} currentPath={currentPath} onNavigate={closeDrawer} /></nav>
+                <div className="flex items-center justify-between"><span className="app-brand"><span className="app-brand-mark" aria-hidden="true">E</span><span>Expenses</span></span><button type="button" className="app-icon-button" aria-label="Close navigation" onClick={closeDrawer}>×</button></div>
+                <nav className="mt-8 flex-1 space-y-2"><DestinationLinks destinations={destinations.slice(0, 3)} currentPath={currentPath} onNavigate={closeDrawer} initialFocus /></nav>
                 <AccountControls user={user} locale={locale} common={common} />
             </aside>
         </div>}
