@@ -1,5 +1,4 @@
 export interface User {
-    id: number;
     user_id: string;
     name: string;
     email: string;
@@ -26,9 +25,7 @@ export interface PlanningTotals {
 }
 
 export interface Planning {
-    id: number;
     planning_id: string;
-    user_id: number;
     month: string;
     year: string;
     salary: number;

@@ -73,7 +73,7 @@ export default function AppLayout({
                             {/* Language Switcher */}
                             <div className="flex items-center gap-1">
                                 <a
-                                    href={route('language', { lang: 'en' })}
+                                    href={route('language', { language: 'en' })}
                                     className={`px-2 py-1 text-xs rounded ${locale === 'en'
                                         ? 'bg-indigo-600 text-white'
                                         : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
@@ -82,7 +82,7 @@ export default function AppLayout({
                                     EN
                                 </a>
                                 <a
-                                    href={route('language', { lang: 'my' })}
+                                    href={route('language', { language: 'my' })}
                                     className={`px-2 py-1 text-xs rounded ${locale === 'my'
                                         ? 'bg-indigo-600 text-white'
                                         : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'

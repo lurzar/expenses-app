@@ -8,14 +8,20 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Modules\Planning\Models\Planning>
+ * @extends Factory<Planning>
  */
 class PlanningFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return array{
+     *     month: mixed,
+     *     year: mixed,
+     *     salary: int,
+     *     sections: array<string, list<array{item: string, amount: int}>>,
+     *     totals: array<string, string>
+     * }
      */
     public function definition(): array
     {
@@ -26,21 +32,21 @@ class PlanningFactory extends Factory
             'sections' => [
                 'savings' => [
                     [
-                    'item' => Str::random(5),
-                    'amount' => fake()->randomNumber(4),
-                    ]
+                        'item' => Str::random(5),
+                        'amount' => fake()->randomNumber(4),
+                    ],
                 ],
                 'commitments' => [
                     [
-                    'item' => Str::random(5),
-                    'amount' => fake()->randomNumber(4),
-                    ]
+                        'item' => Str::random(5),
+                        'amount' => fake()->randomNumber(4),
+                    ],
                 ],
                 'others' => [
                     [
-                    'item' => Str::random(5),
-                    'amount' => fake()->randomNumber(4),
-                    ]
+                        'item' => Str::random(5),
+                        'amount' => fake()->randomNumber(4),
+                    ],
                 ],
             ],
             'totals' => [

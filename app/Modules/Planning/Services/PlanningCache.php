@@ -2,6 +2,7 @@
 
 namespace App\Modules\Planning\Services;
 
+use App\Modules\Planning\Models\Planning;
 use Closure;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\Collection;
@@ -19,8 +20,8 @@ final class PlanningCache
     /**
      * Return the cached Planning collection for one authenticated user.
      *
-     * @param  Closure(): Collection<int, mixed>  $load
-     * @return Collection<int, mixed>
+     * @param  Closure(): Collection<int, Planning>  $load
+     * @return Collection<int, Planning>
      */
     public function rememberIndex(int $userId, Closure $load): Collection
     {

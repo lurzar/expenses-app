@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Inertia\Testing\AssertableInertia as Assert;
 
 test('profile page is displayed', function () {
     $user = User::factory()->create();
@@ -9,7 +10,8 @@ test('profile page is displayed', function () {
         ->actingAs($user)
         ->get('/profile');
 
-    $response->assertOk();
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('Profile/Edit'));
 });
 
 test('profile information can be updated', function () {
@@ -64,7 +66,7 @@ test('user can delete their account', function () {
         ->assertRedirect('/');
 
     $this->assertGuest();
-    $this->assertNull($user->fresh());
+    $this->assertSoftDeleted($user);
 });
 
 test('correct password must be provided to delete account', function () {

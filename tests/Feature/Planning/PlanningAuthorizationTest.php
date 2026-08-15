@@ -2,6 +2,69 @@
 
 use App\Models\User;
 use App\Modules\Planning\Models\Planning;
+use Inertia\Testing\AssertableInertia as Assert;
+
+test('owners can view planning through its public id without numeric identifiers', function () {
+    $owner = User::factory()->create();
+    $planning = Planning::factory()->for($owner)->create();
+
+    $this->actingAs($owner)
+        ->get(route('planning.show', $planning->planning_id))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Planning/Show')
+            ->where('auth.user.user_id', $owner->user_id)
+            ->missing('auth.user.id')
+            ->where('planning.planning_id', $planning->planning_id)
+            ->missing('planning.id')
+            ->missing('planning.user_id'));
+});
+
+test('owners can view expenses through the planning public id', function () {
+    $owner = User::factory()->create();
+    $planning = Planning::factory()->for($owner)->create();
+
+    $this->actingAs($owner)
+        ->get(route('expenses.show', $planning->planning_id))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Expenses/Show')
+            ->where('planning.planning_id', $planning->planning_id)
+            ->missing('planning.id')
+            ->missing('planning.user_id'));
+});
+
+test('owners can delete their planning through its public id', function () {
+    $owner = User::factory()->create();
+    $planning = Planning::factory()->for($owner)->create();
+
+    $this->actingAs($owner)
+        ->delete(route('planning.destroy', $planning->planning_id))
+        ->assertRedirect(route('planning.index'));
+
+    expect($planning->fresh()->trashed())->toBeTrue();
+});
+
+test('planning projections expose only owned records through public identifiers', function (string $routeName, string $component) {
+    $owner = User::factory()->create();
+    $otherUser = User::factory()->create();
+    $planning = Planning::factory()->for($owner)->create();
+    Planning::factory()->for($otherUser)->create();
+
+    $this->actingAs($owner)
+        ->get(route($routeName))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component($component)
+            ->has('plannings', 1)
+            ->where('plannings.0.planning_id', $planning->planning_id)
+            ->missing('plannings.0.id')
+            ->missing('plannings.0.user_id'));
+})->with([
+    'Planning' => ['planning.index', 'Planning/Index'],
+    'Expenses' => ['expenses.index', 'Expenses/Index'],
+    'Dashboard' => ['dashboard', 'Dashboard/Index'],
+]);
 
 test('users cannot view another users planning', function () {
     $owner = User::factory()->create();

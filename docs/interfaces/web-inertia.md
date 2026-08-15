@@ -7,8 +7,8 @@ This reference catalogs the current browser interface. It describes Laravel web 
 - Authentication uses Laravel's `web` guard, session cookies, CSRF protection, and redirects.
 - Read pages return Inertia responses rooted at `resources/views/app.blade.php` and resolved from `resources/js/Pages/**/*.tsx`.
 - Successful mutations redirect to a named web route. Validation errors and old input travel through the session/Inertia error bag.
-- Named routes are exposed to TypeScript through Ziggy and resolved by `resources/js/utils/route.ts`; the current language controls pass a stale parameter name and fail against fresh route metadata, as documented below.
-- `Planning` and `User` expose public ULIDs, but their current Inertia serialization also includes internal numeric `id`/`user_id` fields; #61 owns narrowing that boundary.
+- Named routes are exposed to TypeScript through Ziggy and resolved by `resources/js/utils/route.ts`; generated route metadata and layout callers use the live Laravel parameter names.
+- Planning pages receive explicit `PlanningData` payloads keyed by public `planning_id`; internal numeric Planning and owner IDs are not serialized. Shared authentication uses `AuthenticatedUserData` keyed by public `user_id` and omits the numeric user primary key.
 - There is no content-negotiated JSON resource contract for these routes.
 
 ## Shared Inertia props
@@ -17,7 +17,7 @@ This reference catalogs the current browser interface. It describes Laravel web 
 
 | Prop | Shape | Source/notes |
 | --- | --- | --- |
-| `auth.user` | serialized `User` or `null` | Current session user |
+| `auth.user` | explicit user payload or `null` | Public `user_id`, name, email, verification timestamp, and record timestamps; no numeric primary key |
 | `locale` | string | Active Laravel locale |
 | `translations` | record keyed by translation filename | Every PHP dictionary under the active `lang/<locale>` directory |
 | `flash.message` | string or `null` | Session `message` |
@@ -34,15 +34,19 @@ This reference catalogs the current browser interface. It describes Laravel web 
 | `landing` | `Landing/Index` | Shared props only |
 | `login` | `Auth/Login` | `changelog`: newest configured release summary or `null` |
 | `register` | `Auth/Register` | Shared props only |
+| `password.request` | `Auth/ForgotPassword` | `status` |
+| `password.reset` | `Auth/ResetPassword` | reset token and email |
+| `verification.notice` | `Auth/VerifyEmail` | `status` |
+| `password.confirm` | `Auth/ConfirmPassword` | Shared props only |
 | `dashboard` | `Dashboard/Index` | `plannings`: all authenticated-user Planning records |
 | `planning.index` | `Planning/Index` | `plannings`: cached authenticated-user Planning records |
 | `planning.create` | `Planning/Create` | Shared props only |
-| `planning.show` | `Planning/Show` | `planning`: authorized bound Planning record |
+| `planning.show` | `Planning/Show` | `planning`: authorized public-ID Planning payload |
 | `expenses.index` | `Expenses/Index` | `plannings`: authenticated-user Planning records |
-| `expenses.show` | `Expenses/Show` | Intended `planning` projection; an owner request currently returns 403 because binding fails |
+| `expenses.show` | `Expenses/Show` | `planning`: authorized public-ID Planning payload |
 | `profile.edit` | `Profile/Edit` | `mustVerifyEmail`, `status` |
 
-Only these ten TSX pages exist. Password reset, password confirmation, and email-verification prompt controllers still call removed `auth.*` Blade views and are known failing paths owned by #65.
+These fourteen TSX pages cover the current rendered route contracts.
 
 ## Route catalog
 
@@ -53,7 +57,7 @@ Verified with `php artisan route:list --except-vendor --json` on 2026-08-16: 28 
 | Method | URI | Name | Controller | Additional middleware/result |
 | --- | --- | --- | --- | --- |
 | GET | `/` | `landing` | `LandingController@index` | Inertia `Landing/Index` |
-| GET | `/language/{language}` | `language` | `LanguageController@index` | Direct route validates allowlisted locale, stores session locale, redirects back; current layout controls pass the wrong key |
+| GET | `/language/{language}` | `language` | `LanguageController@index` | Validates the allowlisted locale, stores it in session, and redirects back; both layouts generate this required parameter |
 
 ### Guest authentication routes
 
@@ -63,9 +67,9 @@ Verified with `php artisan route:list --except-vendor --json` on 2026-08-16: 28 
 | POST | `/register` | — | `RegisteredUserController@store` | Creates/logs in user, redirects |
 | GET | `/login` | `login` | `AuthenticatedSessionController@create` | Inertia `Auth/Login` |
 | POST | `/login` | — | `AuthenticatedSessionController@store` | Authenticates/regenerates session, redirects |
-| GET | `/forgot-password` | `password.request` | `PasswordResetLinkController@create` | Removed Blade view; known failing path |
+| GET | `/forgot-password` | `password.request` | `PasswordResetLinkController@create` | Inertia `Auth/ForgotPassword` |
 | POST | `/forgot-password` | `password.email` | `PasswordResetLinkController@store` | Sends configured reset link, redirects back |
-| GET | `/reset-password/{token}` | `password.reset` | `NewPasswordController@create` | Removed Blade view; known failing path |
+| GET | `/reset-password/{token}` | `password.reset` | `NewPasswordController@create` | Inertia `Auth/ResetPassword` |
 | POST | `/reset-password` | `password.store` | `NewPasswordController@store` | Resets password, redirects to login |
 
 Every route in this group also uses `guest`/`RedirectIfAuthenticated`.
@@ -74,10 +78,10 @@ Every route in this group also uses `guest`/`RedirectIfAuthenticated`.
 
 | Method | URI | Name | Controller/action | Additional middleware/result |
 | --- | --- | --- | --- | --- |
-| GET | `/verify-email` | `verification.notice` | `EmailVerificationPromptController` | Removed Blade view unless already verified |
+| GET | `/verify-email` | `verification.notice` | `EmailVerificationPromptController` | Inertia `Auth/VerifyEmail` unless already verified |
 | GET | `/verify-email/{id}/{hash}` | `verification.verify` | `VerifyEmailController` | `signed`, `throttle:6,1`; verifies/redirects |
 | POST | `/email/verification-notification` | `verification.send` | `EmailVerificationNotificationController@store` | `throttle:6,1`; sends/redirects |
-| GET | `/confirm-password` | `password.confirm` | `ConfirmablePasswordController@show` | Removed Blade view |
+| GET | `/confirm-password` | `password.confirm` | `ConfirmablePasswordController@show` | Inertia `Auth/ConfirmPassword` |
 | POST | `/confirm-password` | — | `ConfirmablePasswordController@store` | Validates password, records session timestamp |
 | PUT | `/password` | `password.update` | `PasswordController@update` | Updates password, redirects |
 | POST | `/logout` | `logout` | `AuthenticatedSessionController@destroy` | Invalidates session, redirects |
@@ -96,21 +100,20 @@ Every route in this group also uses `guest`/`RedirectIfAuthenticated`.
 | GET | `/planning/{planning}` | `planning.show` | `PlanningController@show` | Public-ULID binding plus `PlanningPolicy::view` |
 | DELETE | `/planning/{planning}` | `planning.destroy` | `PlanningController@destroy` | Public-ULID binding plus `PlanningPolicy::delete` |
 | GET | `/expenses` | `expenses.index` | `ExpensesController@index` | User-scoped Planning projection |
-| GET | `/expenses/{expenses}` | `expenses.show` | `ExpensesController@show` | Currently fails owner access with 403 before the intended projection |
+| GET | `/expenses/{expense}` | `expenses.show` | `ExpensesController@show` | Public-ULID binding plus `PlanningPolicy::view` |
 
 ## Binding and authorization constraints
 
 - `Planning::getRouteKeyName()` resolves to the public `planning_id` through `HasPublicId`; URLs must not expose the internal numeric primary key.
 - Planning collection queries scope by `Auth::id()`.
 - Direct Planning show/delete actions call the registered policy.
-- The Expenses detail route parameter is `{expenses}` while the controller expects `Planning $expense`. Laravel does not inject the requested bound record into that argument; the policy receives an unbound model and an isolated owner-path request returns 403. #61 owns normalization and owner/non-owner success/failure coverage.
+- Expenses uses the same singular route/controller argument name, public-ULID binding, and `PlanningPolicy::view` owner check as Planning detail.
+- Planning, Expenses, and Dashboard serialize Planning through `PlanningData`; direct Eloquent model serialization is not an Inertia contract.
 - Session authentication is not sufficient authorization for a specific Planning record; every new direct-record route must call a policy or use scoped binding.
 
 ## Language route contract gap
 
-The live route and fresh `@routes` output require `{language}`. `AppLayout.tsx` and `GuestLayout.tsx` currently call `route('language', { lang: 'en' | 'my' })`, while the committed `resources/js/ziggy.js` still contains stale `{lang?}` metadata. With current generated Ziggy configuration, the controls throw that the `language` parameter is required instead of navigating.
-
-Issue #103 owns normalizing the Laravel/Ziggy/layout parameter, removing or regenerating stale metadata, and adding guest/authenticated regression coverage in v2.1.2.
+The live route, committed Ziggy metadata, and both layouts use the required `{language}` parameter. `resources/js/language-route.test.ts` proves EN/MY URL generation, missing-parameter rejection, and both layout call sites; `LanguageSecurityTest` proves the server allowlist and session redirect behavior.
 
 ## Change rules
 

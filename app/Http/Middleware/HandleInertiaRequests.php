@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Data\AuthenticatedUserData;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -25,10 +26,12 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user ? AuthenticatedUserData::fromModel($user) : null,
             ],
             'locale' => app()->getLocale(),
             'translations' => $this->getTranslations(),
@@ -42,6 +45,8 @@ class HandleInertiaRequests extends Middleware
 
     /**
      * Get translations for the current locale.
+     *
+     * @return array<string, mixed>
      */
     protected function getTranslations(): array
     {
@@ -50,7 +55,7 @@ class HandleInertiaRequests extends Middleware
         $translations = [];
 
         if (is_dir($langPath)) {
-            foreach (glob($langPath . '/*.php') as $file) {
+            foreach (glob($langPath.'/*.php') ?: [] as $file) {
                 $key = basename($file, '.php');
                 $translations[$key] = __($key);
             }

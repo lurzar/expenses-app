@@ -1,0 +1,78 @@
+version: 2
+
+updates:
+  - package-ecosystem: composer
+    directory: /
+    target-branch: v2.x
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Asia/Kuala_Lumpur
+    open-pull-requests-limit: 3
+    versioning-strategy: increase-if-necessary
+    cooldown:
+      semver-major-days: 30
+      semver-minor-days: 7
+      semver-patch-days: 3
+      include:
+        - '*'
+    groups:
+      composer-development-minor-patch:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+      composer-runtime-minor-patch:
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+    assignees:
+      - lurzar
+    labels:
+      - dependencies
+      - System
+    commit-message:
+      prefix: chore(deps)
+      prefix-development: chore(deps-dev)
+    pull-request-branch-name:
+      separator: '-'
+
+  - package-ecosystem: npm
+    directory: /
+    target-branch: v2.x
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:15'
+      timezone: Asia/Kuala_Lumpur
+    open-pull-requests-limit: 3
+    versioning-strategy: increase-if-necessary
+    cooldown:
+      semver-major-days: 30
+      semver-minor-days: 7
+      semver-patch-days: 3
+      include:
+        - '*'
+    groups:
+      npm-development-minor-patch:
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+      npm-runtime-minor-patch:
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+    assignees:
+      - lurzar
+    labels:
+      - dependencies
+      - System
+    commit-message:
+      prefix: chore(deps)
+      prefix-development: chore(deps-dev)
+    pull-request-branch-name:
+      separator: '-'

@@ -4,8 +4,19 @@ namespace App\Modules\ActivityLog\Models;
 
 use App\Traits\HasPublicId;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use LogicException;
 
+/**
+ * @property int $id
+ * @property string $activity_id
+ * @property string $event
+ * @property string|null $actor_id
+ * @property string $subject_type
+ * @property string $subject_id
+ * @property array{changed_fields: list<string>}|null $metadata
+ * @property Carbon $created_at
+ */
 class ActivityLog extends Model
 {
     use HasPublicId;

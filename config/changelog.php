@@ -3,6 +3,25 @@
 return [
     'releases' => [
         [
+            'version' => '2.1.2',
+            'status' => 'Released',
+            'released_at' => '2026-08-16',
+            'changes' => [
+                [
+                    'category' => 'Fixed',
+                    'description' => 'Fixed language switching, account recovery pages, and owner access to planning expense summaries.',
+                ],
+                [
+                    'category' => 'Changed',
+                    'description' => 'Made development checks and dependency maintenance more reliable without requiring a paid hosted runner.',
+                ],
+                [
+                    'category' => 'Security',
+                    'description' => 'Kept internal account and planning identifiers out of browser data and strengthened isolated test-database protection.',
+                ],
+            ],
+        ],
+        [
             'version' => '2.1.1',
             'status' => 'Released',
             'released_at' => '2026-08-16',
