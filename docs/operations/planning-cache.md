@@ -143,4 +143,3 @@ The operational contract belongs to:
 - `app/Modules/Planning/Services/PlanningService.php` for reads and Planning mutations;
 - `app/Modules/Profile/Controllers/ProfileController.php` for profile account deletion; and
 - `app/Observers/UserObserver.php` for account restoration.
-
