@@ -1,15 +1,26 @@
 <?php
 
+use App\Modules\ActivityLog\ActivityLogServiceProvider;
+use App\Modules\Auth\AuthServiceProvider;
+use App\Modules\Dashboard\DashboardServiceProvider;
+use App\Modules\Expenses\ExpensesServiceProvider;
+use App\Modules\Landing\LandingServiceProvider;
+use App\Modules\Language\LanguageServiceProvider;
+use App\Modules\Planning\PlanningServiceProvider;
+use App\Modules\Profile\ProfileServiceProvider;
+use App\Providers\AppServiceProvider;
+
 return [
     // Core Service Providers
-    App\Providers\AppServiceProvider::class,
+    AppServiceProvider::class,
 
     // Module Service Providers
-    App\Modules\Auth\AuthServiceProvider::class,
-    App\Modules\Landing\LandingServiceProvider::class,
-    App\Modules\Planning\PlanningServiceProvider::class,
-    App\Modules\Expenses\ExpensesServiceProvider::class,
-    App\Modules\Dashboard\DashboardServiceProvider::class,
-    App\Modules\Profile\ProfileServiceProvider::class,
-    App\Modules\Language\LanguageServiceProvider::class,
+    ActivityLogServiceProvider::class,
+    AuthServiceProvider::class,
+    LandingServiceProvider::class,
+    PlanningServiceProvider::class,
+    ExpensesServiceProvider::class,
+    DashboardServiceProvider::class,
+    ProfileServiceProvider::class,
+    LanguageServiceProvider::class,
 ];
