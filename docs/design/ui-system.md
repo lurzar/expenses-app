@@ -28,6 +28,10 @@ As of `v2.1.2-dev`:
 - No canonical loading, skeleton, error summary, offline, destructive dialog, reduced-motion, or responsive navigation pattern exists.
 - No chart component or chart dependency exists.
 
+## v2.1.4 implementation status
+
+Issue #123 implements the authenticated foundation: exact light/dark semantic tokens, restored global focus visibility, reduced-motion behavior, desktop sidebar, tablet overlay drawer with focus containment/return, four-destination mobile bottom navigation, account/language/theme/logout access at every breakpoint, and shared page/surface/metric/state/financial-number primitives. Issue #124 applies those primitives and the visualization contracts to Dashboard, Planning, and Expenses. The verified v2.1.2 audit above remains historical evidence for why the migration was required.
+
 These are audit facts, not reasons to preserve the current presentation.
 
 ## Information architecture
