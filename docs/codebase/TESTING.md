@@ -14,7 +14,7 @@ This reference describes the configured test stack and the verified baseline on 
 
 ```bash
 DB_CONNECTION=sqlite DB_DATABASE=:memory: php artisan test
-php artisan test --filter=PlanningAuthorization
+DB_CONNECTION=sqlite DB_DATABASE=:memory: php artisan test --filter=PlanningAuthorization
 npm test
 vendor/bin/pint --test
 npx tsc --noEmit

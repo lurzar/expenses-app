@@ -8,7 +8,8 @@ This register prioritizes verified current risks. It does not duplicate exploit 
 | --- | --- | --- | --- | --- |
 | High | Persisted money trusts browser totals and uses binary float salary | `PlanningService::store`; `Planning::casts`; Planning migration | Tampered or rounded values can become authoritative | #57 decisions, then #63 implementation |
 | High | Quality results depend on database/asset setup and CI does not cover active release branches | `phpunit.xml`; `.github/workflows/laravel.yml`; verified test runs | False confidence or release regressions | #65 |
-| High | Planning ownership enforcement is partial at the route/coverage boundary | Expenses `{expenses}` versus `$expense`; #61 current scope | Binding ambiguity and incomplete owner-success proof | #61 |
+| High | Expenses direct owner access fails before the intended ownership check | `{expenses}` does not bind to `$expense`; isolated owner-path request returns 403 | Owners cannot open the detail projection; intended record authorization is not exercised | #61 |
+| Medium | Inertia payloads expose internal numeric `id`/`user_id` values alongside public ULIDs | `Planning`/`User` serialization; no API Resource or hidden fields | The public-identifier boundary is not enforced at the browser contract | #61 |
 | Medium | Supported PostgreSQL environment conflicts with MySQL config fallback when `DB_CONNECTION` is absent | `.env.example`; `config/database.php` | An incomplete environment can target the wrong engine | #65/setup validation |
 | Medium | Auth/Inertia page migration is incomplete | failing Auth feature tests; controllers returning removed Blade views | Verification/reset/confirmation pages return 500 | #65 or focused child issues |
 | Medium | Planning list payloads are unbounded | `getAllPlannings()->get()`; Dashboard/Planning/Expenses props | Database, cache, serialization, and browser cost grow with history | Add approved pagination/query limits |
@@ -80,4 +81,3 @@ These questions are recorded for their owning issues and do not block publishing
 - `phpunit.xml`, `.github/workflows/laravel.yml`
 - `.env.example`, `docker-compose.yml`, `config/database.php`
 - Verified route, test, Pint, TypeScript, build, and audit commands from 2026-08-16
-

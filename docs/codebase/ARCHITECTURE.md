@@ -10,7 +10,7 @@ Primary constraints:
 
 - Planning is the only stored monthly-plan aggregate; Dashboard and Expenses project it.
 - Server middleware, validation, authorization, and transactions define trust boundaries; React is a presentation/client-preview layer.
-- Internal numeric IDs stay in the database while public ULIDs are used for route binding and activity identifiers.
+- Public ULIDs are used for route binding and activity identifiers, but current Inertia serialization also exposes internal numeric `id`/`user_id` fields because no explicit resource transform hides them; #61 owns narrowing that boundary.
 - There is no implemented public REST API or separate transaction ledger.
 
 ## System flow
@@ -30,7 +30,7 @@ For Planning creation:
 5. After commit, `PlanningCache` invalidates the authenticated user's collection key.
 6. The redirect returns to the Planning index, whose Inertia props come from the cached user-scoped collection.
 
-For direct Planning/Expenses display, Laravel resolves the public ULID through `HasPublicId`; controllers call the registered `PlanningPolicy` before returning an Inertia page. The Expenses route currently names its parameter `{expenses}` while the controller expects `$expense`; issue #61 owns normalization and complete owner-path coverage.
+For direct Planning display, Laravel resolves the public ULID through `HasPublicId` and the controller calls `PlanningPolicy` before returning an Inertia page. Expenses intends the same flow, but its `{expenses}` route parameter does not match controller argument `$expense`; the requested record is not injected and an isolated owner-path request returns 403. Issue #61 owns binding normalization, response serialization, and complete owner/non-owner coverage.
 
 ## Layer and module responsibilities
 
@@ -81,4 +81,3 @@ For direct Planning/Expenses display, Laravel resolves the public ULID through `
 - `app/Modules/Expenses/Controllers/ExpensesController.php`
 - `app/Http/Middleware/HandleInertiaRequests.php`
 - `resources/js/app.tsx`, `resources/js/Pages/Planning/Create.tsx`
-
