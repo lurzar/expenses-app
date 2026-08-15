@@ -7,6 +7,7 @@ This reference describes the configured test stack and the verified baseline on 
 - Backend framework: Pest 3.8.7 with Pest Laravel plugin 3.2.0 and PHPUnit underneath.
 - Assertions: Pest expectations, PHPUnit assertions, Laravel HTTP/database/session assertions, and Inertia `AssertableInertia`.
 - Mocking: Mockery 1.6.12 through Laravel's container-aware `$this->mock()`.
+- Frontend: Vitest 4.1.1, React Testing Library 16.3.2, and jsdom 27.4.0.
 - Database isolation: `RefreshDatabase` applies to every `tests/Feature` test through `tests/Pest.php`.
 - Static/build checks: Pint, strict TypeScript, Vite build, Composer/npm audits.
 - Static analysis: no PHPStan/Larastan configuration exists yet.
@@ -14,6 +15,7 @@ This reference describes the configured test stack and the verified baseline on 
 ```bash
 DB_CONNECTION=sqlite DB_DATABASE=:memory: php artisan test
 php artisan test --filter=PlanningAuthorization
+npm test
 vendor/bin/pint --test
 npx tsc --noEmit
 npm run build
@@ -40,7 +42,7 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 | Unit | Minimal | Example scaffold | Domain calculations do not yet have dedicated unit coverage |
 | Laravel feature/integration | Yes | Auth, profile, Planning cache/policy, activity, Telescope, language, trusted hosts | Real routes, middleware, Eloquent, SQLite, Inertia assertions |
 | PostgreSQL-specific integration | No automated gate | Future money/index/migration behavior | Required for #63 where SQLite semantics are insufficient |
-| Frontend unit/component | Not configured on this branch | React layouts/pages | #49 introduces the first focused runner/tests in a separate v2.1.1 PR |
+| Frontend unit/component | Focused | Theme resolver/hook, root DOM state, storage failures, shared toggle, layout wiring, pre-Vite bootstrap | `resources/js/theme.test.tsx`; expand under #65 and feature issues |
 | Browser/E2E | No | Full user journeys | No Playwright/Cypress configuration found |
 
 ## Isolation and mocking
@@ -64,7 +66,8 @@ With explicit in-memory SQLite:
 Other gates on the same branch:
 
 - TypeScript: passed.
-- Vite production build: passed, 797 modules transformed.
+- Frontend tests: 12 passed in one focused theme suite.
+- Vite production build: passed, 799 modules transformed.
 - Composer audit: no advisories (cache-directory warning did not change the audit result).
 - npm audit: zero vulnerabilities.
 - Repository-wide Pint: 31 files reported formatting findings.
@@ -77,7 +80,7 @@ These are baseline findings, not accepted passing gates. #65 owns deterministic 
 - CI runs only for `main`, uses `npm install`, builds assets, and runs Pest against a SQLite file. It does not run the full documented matrix or active `v2.x`/version-branch PRs.
 - Planning persistence validation/calculation paths lack authoritative money/tampering tests; #63 owns them after #57 records domain decisions.
 - Owner-success paths and route-binding normalization remain for #61.
-- Browser and frontend component coverage are absent until the relevant approved issues land.
+- Browser/E2E coverage remains absent; frontend component coverage currently protects only the theme flow.
 
 ## Evidence
 
@@ -86,5 +89,5 @@ These are baseline findings, not accepted passing gates. #65 owns deterministic 
 - `tests/Feature/Planning/PlanningCacheTest.php`
 - `tests/Feature/System/ActivityLoggingTest.php`
 - `.github/workflows/laravel.yml`
+- `resources/js/theme.test.tsx`
 - Verified commands listed above, run on 2026-08-16
-

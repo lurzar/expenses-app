@@ -37,6 +37,7 @@ The host versions observed during this documentation pass were PHP 8.5.9 and Nod
 | Laravel Sail | PHP 8.4/Docker development runtime | `composer.lock`; `docker-compose.yml` |
 | Pest 3.8.7 + Laravel plugin 3.2.0 | Backend unit and feature tests | `composer.lock`; `tests/Pest.php` |
 | Mockery 1.6.12 | Focused dependency mocks | `composer.lock`; `tests/Feature/System/ActivityLoggingTest.php` |
+| Vitest 4.1.1 + Testing Library 16.3.2 + jsdom 27.4.0 | Frontend theme hook, DOM, component, and integration-source regression tests | `package-lock.json`; `resources/js/theme.test.tsx` |
 | Laravel Pint 1.30.5 | PHP formatting | `composer.lock`; `AGENTS.md` |
 | TypeScript | Strict static type checking without emission | `tsconfig.json`; `AGENTS.md` |
 | Vite | Development server and production assets | `vite.config.js`; `package.json` |
@@ -53,6 +54,7 @@ composer install
 npm ci
 composer validate --strict
 DB_CONNECTION=sqlite DB_DATABASE=:memory: php artisan test
+npm test
 vendor/bin/pint --test
 npx tsc --noEmit
 npm run build
@@ -81,4 +83,3 @@ Do not commit `.env`, credentials, logs, caches, Debugbar payloads, Telescope en
 - `.env.example`, `docker-compose.yml`
 - `.github/workflows/laravel.yml`
 - `bootstrap/app.php`, `resources/js/app.tsx`
-
