@@ -10,12 +10,12 @@ There is no expense-entry model, cleared/pending state, merchant, transaction da
 
 ## Canonical vocabulary
 
-| Term | Canonical meaning | Current representation | Target rule for #63 |
+| Term | Canonical meaning | Current representation | Proposed rule for #63 |
 | --- | --- | --- | --- |
-| User | The authenticated owner of a monthly plan | `users.id` is the relation key; `user_id` is the public ULID | Every read and mutation remains owner-scoped |
+| User | The authenticated owner of a monthly plan | `plannings.user_id` references numeric `users.id`; `users.user_id` is the public ULID | Every read and mutation remains owner-scoped |
 | Planning / monthly plan | One user's allocation plan for one calendar month | One `plannings` row with month/year strings | At most one active plan per user and calendar month |
-| Monthly income | Money available to allocate in the plan; the UI currently labels it Salary | `salary` float submitted as a string | MYR decimal input, converted to integer sen for calculation |
-| Saving rate | Percentage used to calculate a target, not an allocation itself | Browser input defaults to 20; server accepts any string | A number from 0 through 100; round its target once to the nearest sen, half up |
+| Monthly income | Money available to allocate in the plan; the UI currently labels it Salary | `salary` float submitted as a string | MYR decimal input converted to integer sen for calculation and persisted without a float |
+| Saving rate | Percentage used to calculate a target, not an allocation itself | Browser input defaults to 20; server accepts any string | Decimal percentage from 0.00 through 100.00 with at most two fractional digits |
 | Target savings | Advisory amount implied by income and saving rate | Calculated in React and submitted as `totals.saving` | `round(income × rate / 100)`; derived by the server |
 | Savings item | Named amount allocated to retained money, such as an emergency fund | `{item, amount}` inside `sections.savings` JSON | Non-empty name and non-negative MYR amount with at most two decimals |
 | Commitment item | Named expected contractual/recurring outflow | `{item, amount}` inside `sections.commitments` JSON | Same validation and precision as a savings item |
@@ -26,7 +26,7 @@ There is no expense-entry model, cleared/pending state, merchant, transaction da
 | Balance | Unallocated income remaining after every section | Browser-submitted `totals.balance` and display recomputation | `income - total allocated` |
 | Expenses projection | Planning data presented through `/expenses` | Reads `Planning`; no separate persistence | Remains a plan projection until a ledger issue is approved |
 
-Unless a future multi-currency issue changes the contract, all monetary examples and persisted amounts are Malaysian Ringgit (MYR). Display uses `RM`; calculations use sen so binary floating-point cannot change financial results.
+All current examples are Malaysian Ringgit (MYR). The #63 proposal keeps `RM` for display and uses integer sen during calculation so binary floating-point cannot change financial results; current React/PHP/database behavior does not yet provide that guarantee.
 
 ## Current lifecycle
 
@@ -49,7 +49,7 @@ flowchart LR
 3. Submission includes the raw section items and a browser-built `totals` object.
 4. `PlanningStoreRequest` validates only broad string/array shape. It does not enforce financial precision, bounds, valid calendar values, or uniqueness.
 5. `PlanningService` renames the three `*_values` arrays into `sections`, discards `saving_rate`, trusts `salary` and `totals`, and persists within an activity-recording transaction.
-6. Dashboard and Expenses query the same user-owned Planning collection. Planning/Expenses detail routes authorize the bound record with `PlanningPolicy`.
+6. Dashboard and Expenses query the same user-owned Planning collection. Planning detail binds the public ULID and authorizes the record. Expenses detail intends the same flow, but `{expenses}` does not match controller argument `$expense`; the requested record is not injected and an isolated owner request returns 403. #61 owns the fix and complete owner/non-owner coverage.
 
 ## Current formulas and divergences
 
@@ -97,19 +97,19 @@ For RM 5,000 income, a 20% saving rate, RM 800 of savings items, RM 2,000 of com
 | Total allocated | RM 3,500.00 |
 | Balance | RM 1,500.00 |
 
-The browser currently persists `saving=1000`, `balance=1500`, `commitment=2000`, and `other=700`. `Planning::spending` sums those fields to RM 5,200.00, while Planning/Expenses detail recomputes RM 3,500.00 and labels it spending. The target contract instead calls RM 2,700.00 spending and RM 3,500.00 total allocated.
+The browser currently persists `saving=1000`, `balance=1500`, `commitment=2000`, and `other=700`. `Planning::spending` sums those fields to RM 5,200.00, while Planning/Expenses detail recomputes RM 3,500.00 and labels it spending. The proposed target contract instead calls RM 2,700.00 spending and RM 3,500.00 total allocated.
 
-## Authoritative target contract for #63
+## Proposed authoritative target contract for #63
 
-The approved v2.1.4 implementation should use these invariants:
+The following is the concrete recommended contract for v2.1.4, not current or owner-approved behavior. Issue #63 must record approval or revision of the `[ASK USER]` decisions below before this proposal becomes authoritative.
 
 1. The server is authoritative. It accepts raw income, rate, and items; it never accepts client totals as truth.
-2. Parse each MYR value as a decimal with at most two fractional digits, calculate in integer sen, and reject scientific notation, `NaN`, infinity, negatives, or excessive precision.
-3. Round only the percentage-derived target savings, once, half up to the nearest sen. Section sums and balance require no intermediate rounding after normalization to sen.
+2. Parse each MYR value as a decimal with at most two fractional digits, calculate in integer sen, and reject scientific notation, `NaN`, infinity, negatives, or excessive precision. The proposed persistence uses fixed `DECIMAL(14,2)` for income and canonical two-decimal strings for section/total JSON amounts; model casts must not convert money to float.
+3. Parse saving rate from 0.00 through 100.00 with at most two fractional digits into integer basis points (0 through 10,000). Round only `income_sen × rate_basis_points / 10,000`, once, half up to the nearest sen. Section sums and balance require no intermediate rounding after normalization to sen.
 4. Persist or derive one consistent total contract: `target_savings`, `savings`, `commitments`, `others`, `spending`, `allocated`, and `balance`.
 5. `spending = commitments + others`; `allocated = savings + spending`; `balance = income - allocated`.
 6. Reject a negative balance. A target-savings shortfall may be shown, but it does not silently change actual savings.
-7. Store calendar month as 1 through 12 and year as a bounded integer; enforce one non-deleted plan per user/month/year at both request and database boundaries.
+7. Store calendar month as an integer from 1 through 12 and year from 2000 through 2100. Enforce one non-deleted plan per user/month/year at request and PostgreSQL partial-unique-index boundaries.
 8. Preserve owner scoping, transaction/activity atomicity, public ULID routing, and post-commit cache invalidation.
 9. Return validation errors through the existing Inertia form flow; do not add an API or ledger as part of #63.
 
@@ -117,7 +117,7 @@ The browser may calculate a preview for responsiveness, but it must render the n
 
 ## Current versus future behavior
 
-| Capability | Current | Approved target / owner |
+| Capability | Current | Proposed target / owner |
 | --- | --- | --- |
 | Monthly allocation plan | Implemented | Preserve and harden in #63 |
 | Server-authoritative totals | Not implemented | #63 |
@@ -129,12 +129,15 @@ The browser may calculate a preview for responsiveness, but it must render the n
 
 ## Open product decisions
 
-These do not change the v2.1.4 integrity defaults above, but must be answered before expanding the product:
+The first three choices gate #63; the remaining product choices gate later expansion:
 
-1. `[ASK USER]` Should Monthly income mean net take-home salary only, or may it combine salary and other income sources?
-2. `[ASK USER]` Should a savings allocation below target be informational, a warning requiring acknowledgement, or a blocking validation error?
-3. `[ASK USER]` When a ledger exists, should commitments become recurring templates, planned transactions, or remain plan-only categories?
-4. `[ASK USER]` What maximum plan history should the three collection screens show before pagination or period filtering is mandatory?
+1. `[ASK USER]` Approve or revise fixed `DECIMAL(14,2)` income plus canonical two-decimal JSON strings at rest, with integer-sen server calculation.
+2. `[ASK USER]` Approve or revise saving-rate precision (two decimals), integer basis-point normalization, and half-up target rounding.
+3. `[ASK USER]` Approve or revise one active plan per user/month, integer month 1-12, and year bounds 2000-2100.
+4. `[ASK USER]` Should Monthly income mean net take-home salary only, or may it combine salary and other income sources?
+5. `[ASK USER]` Should a savings allocation below target be informational, a warning requiring acknowledgement, or a blocking validation error?
+6. `[ASK USER]` When a ledger exists, should commitments become recurring templates, planned transactions, or remain plan-only categories?
+7. `[ASK USER]` What maximum plan history should the three collection screens show before pagination or period filtering is mandatory?
 
 ## Evidence
 
