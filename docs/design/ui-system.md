@@ -48,7 +48,7 @@ Language, theme, and logout are account utilities, not primary destinations. New
 | Width | Approved shell behavior |
 | --- | --- |
 | `< 768px` (`md`) | Compact top context bar plus fixed bottom navigation. Show Dashboard, Planning, Expenses, and Profile with icon, visible text label, current state, and at least a 44×44 px target. Keep content clear of safe areas and the bottom bar. |
-| `768–1023px` | Compact left rail or dismissible labelled drawer plus top context bar. Preserve keyboard access and return focus to the opening control when the drawer closes. |
+| `768–1023px` | Top context bar plus a closed-by-default 280 px labelled overlay drawer. A visible menu button opens it; focus moves to its heading/first destination, stays within the drawer, and returns to the menu button on close. Escape, overlay click, close button, or destination selection closes it. Drawer state is not persisted across page loads. |
 | `>= 1024px` (`lg`) | Persistent 240–256 px labelled left sidebar plus compact top context bar. Main content uses the remaining width; sidebar collapse is optional, not required for first delivery. |
 
 The top context bar owns page title/period, optional breadcrumbs, language, theme, and account menu. Only one navigation landmark and one main landmark should be exposed at a time. Add a keyboard-visible “Skip to main content” link before navigation.
@@ -66,25 +66,38 @@ The product owner supplied `#091413`, `#285A48`, `#408A71`, and `#B0E4CC` as a p
 
 ### Color roles
 
-| Token | Light target | Dark target | Approved use |
+| Token | Light value / approved foreground | Dark value / approved foreground | Approved use |
 | --- | --- | --- | --- |
-| `canvas` | very light cool neutral such as `#F5FAF8` | `#091413` | Application background |
-| `surface` | white | deep raised green-neutral distinct from `#091413` | Cards, panels, menus |
-| `text-primary` | `#091413` | near-white cool neutral | Headings, exact figures, body text |
-| `text-secondary` | WCAG-compliant muted green-neutral | muted light green-neutral | Supporting labels; never essential information alone |
-| `border` | quiet green-neutral | visible green-neutral | Separation without shadow dependence |
-| `brand-strong` | `#285A48` | `#B0E4CC` | Primary actions, active navigation, key focus accents |
-| `brand-mid` | `#408A71` | `#408A71` | Charts, progress, selected decoration, large controls |
-| `brand-soft` | `#B0E4CC` | translucent/quiet green surface | Selected rows, positive tint, chart background |
-| `danger` | separate accessible red role | accessible light red role | Destructive actions/errors only |
-| `warning` | separate accessible amber role | accessible light amber role | Warnings/attention only |
+| `canvas` | `#F5FAF8` / `#091413` | `#091413` / `#F5FAF8` | Application background and default text pair |
+| `surface` | `#FFFFFF` / `#091413` | `#10211D` / `#F5FAF8` | Cards and primary panels |
+| `surface-raised` | `#E8F3EF` / `#091413` | `#17312B` / `#F5FAF8` | Menus, selected panels, secondary cards |
+| `text-primary` | `#091413` | `#F5FAF8` | Headings, exact figures, body text on approved surfaces |
+| `text-secondary` | `#3E5B52` | `#B0C8BF` | Supporting labels on approved canvas/surfaces |
+| `border-quiet` | `#C7D8D2` | `#285A48` | Non-essential grouping/separation only |
+| `border-strong` | `#5F7E74` | `#408A71` | Form/control/chart boundaries that must remain perceptible |
+| `brand-strong` | `#285A48` / `#FFFFFF` | `#B0E4CC` / `#091413` | Primary actions and strong selected state |
+| `brand-hover` | `#1F493B` / `#FFFFFF` | `#C5EFE0` / `#091413` | Primary-action hover/pressed direction |
+| `brand-mid` | `#408A71` / `#091413` | `#408A71` / `#091413` | Charts, progress, and large selected decoration; not white normal text |
+| `brand-soft` | `#B0E4CC` / `#091413` | `#173B31` / `#B0E4CC` | Active navigation tint, selected rows, chart background |
+| `danger-strong` | `#B42318` / `#FFFFFF` | `#FFB4AB` / `#091413` | Destructive buttons and high-emphasis errors |
+| `danger-soft` | `#FDECEA` / `#7A271A` | `#4A1714` / `#FFDAD6` | Error panels and negative financial states |
+| `warning-strong` | `#8A4B00` / `#FFFFFF` | `#FFD18B` / `#091413` | High-emphasis warning controls/badges |
+| `warning-soft` | `#FFF1CC` / `#5C3A00` | `#412B00` / `#FFE2B8` | Warning panels and attention states |
+| `focus-ring` | `#285A48` | `#B0E4CC` | Two-pixel-or-greater visible focus indicator with an offset from the control |
 
-Verified contrast ratios:
+Measured text-pair contrast ratios include:
 
+- `#091413` on `#F5FAF8`: 17.76:1;
+- `#3E5B52` on white: 7.44:1;
+- `#B0C8BF` on `#10211D`: 9.43:1;
 - white on `#285A48`: 7.94:1;
 - `#B0E4CC` on `#091413`: 13.22:1;
-- `#091413` on `#408A71`: 4.54:1; and
-- white on `#408A71`: 4.12:1, so this pairing is not approved for normal-size text.
+- `#B0E4CC` on `#173B31`: 8.68:1;
+- white on `#B42318`: 6.57:1 and `#FFDAD6` on `#4A1714`: 11.41:1;
+- white on `#8A4B00`: 6.80:1 and `#FFE2B8` on `#412B00`: 10.71:1; and
+- `#091413` on `#408A71`: 4.54:1, while white on `#408A71` is only 4.12:1 and is not approved for normal-size text.
+
+`border-quiet` may only reinforce spacing/grouping that remains understandable without the line. Form inputs, chart axes that encode meaning, and other necessary UI boundaries use `border-strong` or a stronger measured pair.
 
 All final token combinations must meet WCAG 2.2 AA: at least 4.5:1 for normal text, 3:1 for large text and meaningful UI boundaries. Color never carries status, selection, or chart meaning alone.
 
