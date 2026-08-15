@@ -6,6 +6,30 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [2.1.2] - 2026-08-16
+
+### Added
+
+- Added deterministic exact-head local quality commands covering formatting, level-8 Larastan, backend/frontend tests, TypeScript, production builds, and locked dependency audits.
+- Added the missing Inertia pages for password reset, password confirmation, and email verification, plus focused route and authorization regressions.
+- Added bounded Composer/npm Dependabot updates targeting `v2.x` while keeping repository Actions disabled under the approved zero-cost policy.
+
+### Changed
+
+- Replaced implicit Planning/User model serialization with explicit public-ULID Inertia payloads across Dashboard, Planning, Expenses, and shared authentication.
+- Documented locked dependency review, clean-checkout validation, test-database isolation, and the local-only release evidence policy.
+
+### Fixed
+
+- Fixed language controls to use Laravel's required `{language}` parameter in both layouts and regenerated Ziggy metadata.
+- Fixed Expenses detail binding so owners can open their public-ULID plan projection while non-owners remain denied.
+- Removed backend test dependence on pre-existing Vite assets and repaired inherited Auth/Profile rendering expectations.
+
+### Security
+
+- Cleared `DATABASE_URL` before tests so hostile shell configuration cannot redirect destructive test setup to an external database.
+- Removed internal numeric Planning and user identifiers from Inertia props while preserving owner-scoped queries and policy checks.
+
 ## [2.1.1] - 2026-08-16
 
 ### Added
@@ -101,7 +125,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Updated Composer and npm dependencies to remove known security advisories while remaining on the intended major versions.
 
-[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.1.1-dev...HEAD
+[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.1.2-dev...HEAD
+[2.1.2]: https://github.com/lurzar/expenses-app/compare/v2.1.1-dev...v2.1.2-dev
 [2.1.1]: https://github.com/lurzar/expenses-app/compare/v2.1.0-dev...v2.1.1-dev
 [2.1.0]: https://github.com/lurzar/expenses-app/compare/v2.0.9-dev...v2.1.0-dev
 [2.0.9]: https://github.com/lurzar/expenses-app/compare/v2.0.8-dev...v2.0.9-dev
