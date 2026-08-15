@@ -14,6 +14,7 @@ class PlanningService
     public function __construct(
         private Planning $model,
         private ActivityRecorder $activityRecorder,
+        private PlanningCache $cache,
     ) {}
 
     /**
@@ -21,7 +22,7 @@ class PlanningService
      */
     public function store(Collection $planning): Planning
     {
-        return DB::transaction(function () use ($planning): Planning {
+        $storedPlanning = DB::transaction(function () use ($planning): Planning {
             $this->handleRequest($planning);
 
             $this->model->user_id = Auth::id();
@@ -41,6 +42,10 @@ class PlanningService
 
             return $this->model;
         });
+
+        $this->cache->forgetIndex((int) $storedPlanning->user_id);
+
+        return $storedPlanning;
     }
 
     /**
@@ -48,6 +53,8 @@ class PlanningService
      */
     public function delete(Planning $planning): void
     {
+        $userId = (int) $planning->user_id;
+
         DB::transaction(function () use ($planning): void {
             $planning->delete();
 
@@ -58,6 +65,8 @@ class PlanningService
                 $planning->planning_id,
             );
         });
+
+        $this->cache->forgetIndex($userId);
     }
 
     /**
@@ -65,10 +74,19 @@ class PlanningService
      */
     public function getAllPlannings(): Collection
     {
-        return $this->model
-            ->where('user_id', Auth::id())
-            ->latest()
-            ->get();
+        $userId = Auth::id();
+
+        if ($userId === null) {
+            return collect();
+        }
+
+        return $this->cache->rememberIndex(
+            $userId,
+            fn (): Collection => $this->model
+                ->where('user_id', $userId)
+                ->latest()
+                ->get(),
+        );
     }
 
     /**

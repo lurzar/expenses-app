@@ -5,6 +5,7 @@ namespace App\Modules\Profile\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\ActivityLog\ActivityEvent;
 use App\Modules\ActivityLog\Services\ActivityRecorder;
+use App\Modules\Planning\Services\PlanningCache;
 use App\Modules\Profile\Requests\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -19,6 +20,7 @@ class ProfileController extends Controller
 {
     public function __construct(
         private readonly ActivityRecorder $activityRecorder,
+        private readonly PlanningCache $planningCache,
     ) {}
 
     /**
@@ -86,6 +88,8 @@ class ProfileController extends Controller
                 $user->user_id,
             );
         });
+
+        $this->planningCache->forgetIndex((int) $user->getKey());
 
         Auth::logout();
 
