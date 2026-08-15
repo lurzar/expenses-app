@@ -29,7 +29,7 @@ Planning previously stored monthly income as a binary float, accepted browser-bu
 
 ## Deployment and rollback
 
-The migration accepts exact English month names or integer month values from 1 through 12. Ambiguous numeric forms such as decimals or scientific notation stop the migration and identify the Planning public ID for operator resolution. A legacy target-savings value above income, including a nonzero target with zero income, also stops with the affected public ID instead of being silently clamped or rewritten.
+The migration accepts exact English month names or integer month values from 1 through 12. Ambiguous numeric forms such as decimals or scientific notation stop the migration and identify the Planning public ID for operator resolution. A legacy target-savings value above income, including a nonzero target with zero income, also stops with the affected public ID instead of being silently clamped or rewritten. After deriving the nearest two-decimal saving rate, the migration recomputes the target and requires exact sen equality; targets that cannot be represented without loss stop for operator resolution.
 
 Back up `plannings` before migration and compare row counts, public IDs, owner IDs, periods, section names/amounts, and canonical totals afterward. The migration is reversible to the former string-period/float-income schema, although canonical totals/sections remain normalized. A rollback therefore restores schema compatibility, not lost binary-float artifacts. If the duplicate-period preflight fails, resolve the owner/period conflict from a verified backup before retrying.
 

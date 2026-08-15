@@ -21,7 +21,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Fixed
 
-- Fixed client-submitted totals, floating-point persistence, and duplicated period records so server-calculated income, savings, commitments, other allocations, spending, allocated total, and balance remain authoritative.
+- Fixed client-submitted totals and floating-point persistence so server-calculated income, savings, commitments, other allocations, spending, allocated total, and balance remain authoritative; new active duplicate periods are prevented, while existing duplicates stop migration for operator resolution.
 - Fixed negative, partial, zero-denominator, and over-target presentation so graphs never invent percentages or exact values and always retain a readable tabular alternative.
 
 ### Security

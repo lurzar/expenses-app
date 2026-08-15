@@ -94,10 +94,23 @@ test('legacy target savings above income stop the migration instead of being cla
     'nonzero target with zero income' => [0.0, 1],
 ]);
 
+test('legacy target savings that a two-decimal rate cannot reproduce stop the migration', function () {
+    $migration = require base_path('app/Modules/Planning/Database/Migrations/2026_08_16_000000_enforce_planning_money_integrity.php');
+    $migration->down();
+
+    $planningId = insertLegacyPlanningForMoneyMigration(
+        income: 1000.0,
+        target: 333.33,
+    );
+
+    expect(fn () => $migration->up())
+        ->toThrow(RuntimeException::class, "Planning {$planningId} has legacy target savings that cannot be represented exactly by a two-decimal saving rate");
+});
+
 function insertLegacyPlanningForMoneyMigration(
     string $month = 'August',
     float $income = 5000.0,
-    int $target = 1000,
+    int|float $target = 1000,
 ): string {
     $user = User::factory()->create();
     $planningId = (string) Str::ulid();

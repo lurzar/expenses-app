@@ -38,6 +38,15 @@ return new class extends Migration
             $rateBasisPoints = $incomeSen === 0
                 ? 0
                 : intdiv(($targetSen * 10_000) + intdiv($incomeSen, 2), $incomeSen);
+            $normalizedTargetSen = Money::savingTarget($incomeSen, $rateBasisPoints);
+
+            if ($normalizedTargetSen !== $targetSen) {
+                throw new RuntimeException(sprintf(
+                    'Planning %s has legacy target savings that cannot be represented exactly by a two-decimal saving rate and must be resolved before migration.',
+                    $row->planning_id,
+                ));
+            }
+
             $spending = $sectionTotals['commitments'] + $sectionTotals['others'];
             $allocated = $sectionTotals['savings'] + $spending;
 
@@ -48,7 +57,7 @@ return new class extends Migration
                 'saving_rate' => Money::formatRate($rateBasisPoints),
                 'sections' => json_encode($sections, JSON_THROW_ON_ERROR),
                 'totals' => json_encode([
-                    'target_savings' => Money::format(Money::savingTarget($incomeSen, $rateBasisPoints)),
+                    'target_savings' => Money::format($normalizedTargetSen),
                     'savings' => Money::format($sectionTotals['savings']),
                     'commitments' => Money::format($sectionTotals['commitments']),
                     'others' => Money::format($sectionTotals['others']),
