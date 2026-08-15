@@ -94,12 +94,13 @@ describe('useTheme', () => {
         window.localStorage.setItem('theme', 'light');
         const classToggle = vi.spyOn(document.documentElement.classList, 'toggle');
         const storageWrite = vi.spyOn(storage, 'setItem');
+        storageWrite.mockClear();
         const { result } = renderHook(() => useTheme(), {
             wrapper: StrictMode,
         });
 
+        expect(storageWrite).not.toHaveBeenCalled();
         classToggle.mockClear();
-        storageWrite.mockClear();
 
         act(() => result.current.toggleTheme());
 
@@ -109,6 +110,24 @@ describe('useTheme', () => {
         expect(storageWrite).toHaveBeenCalledOnce();
         expect(storageWrite).toHaveBeenCalledWith('theme', 'dark');
         expect(document.documentElement.style.colorScheme).toBe('dark');
+    });
+
+    it('does not save the operating-system fallback during mount', () => {
+        useSystemTheme(true);
+        const storageWrite = vi.spyOn(storage, 'setItem');
+        const { result, unmount } = renderHook(() => useTheme(), {
+            wrapper: StrictMode,
+        });
+
+        expect(result.current.theme).toBe('dark');
+        expect(storageWrite).not.toHaveBeenCalled();
+
+        unmount();
+        useSystemTheme(false);
+        const nextMount = renderHook(() => useTheme());
+
+        expect(nextMount.result.current.theme).toBe('light');
+        expect(storageWrite).not.toHaveBeenCalled();
     });
 
     it('falls back to the system theme when storage cannot be read', () => {

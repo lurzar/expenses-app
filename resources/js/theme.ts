@@ -65,12 +65,14 @@ export function useTheme(): {
 
     useEffect(() => {
         applyTheme(theme);
-        persistTheme(theme);
     }, [theme]);
 
     const toggleTheme = useCallback(() => {
-        setTheme(nextTheme);
-    }, []);
+        const updatedTheme = nextTheme(theme);
+
+        persistTheme(updatedTheme);
+        setTheme(updatedTheme);
+    }, [theme]);
 
     return { theme, toggleTheme };
 }
