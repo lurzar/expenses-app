@@ -67,3 +67,57 @@ test('legacy planning rows normalize deterministically and the schema rollback r
 
     $migration->up();
 });
+
+test('ambiguous numeric legacy months stop the migration without changing the period', function (string $month) {
+    $migration = require base_path('app/Modules/Planning/Database/Migrations/2026_08_16_000000_enforce_planning_money_integrity.php');
+    $migration->down();
+
+    $planningId = insertLegacyPlanningForMoneyMigration(month: $month);
+
+    expect(fn () => $migration->up())
+        ->toThrow(RuntimeException::class, "Planning {$planningId} contains invalid legacy month");
+})->with(['8.5', '8e0', '12.9']);
+
+test('legacy target savings above income stop the migration instead of being clamped', function (float $income, int $target) {
+    $migration = require base_path('app/Modules/Planning/Database/Migrations/2026_08_16_000000_enforce_planning_money_integrity.php');
+    $migration->down();
+
+    $planningId = insertLegacyPlanningForMoneyMigration(
+        income: $income,
+        target: $target,
+    );
+
+    expect(fn () => $migration->up())
+        ->toThrow(RuntimeException::class, "Planning {$planningId} has legacy target savings above income");
+})->with([
+    'target exceeds positive income' => [100.0, 200],
+    'nonzero target with zero income' => [0.0, 1],
+]);
+
+function insertLegacyPlanningForMoneyMigration(
+    string $month = 'August',
+    float $income = 5000.0,
+    int $target = 1000,
+): string {
+    $user = User::factory()->create();
+    $planningId = (string) Str::ulid();
+
+    DB::table('plannings')->insert([
+        'planning_id' => $planningId,
+        'user_id' => $user->getKey(),
+        'month' => $month,
+        'year' => '2026',
+        'salary' => $income,
+        'sections' => json_encode([
+            'savings' => [],
+            'commitments' => [],
+            'others' => [],
+        ], JSON_THROW_ON_ERROR),
+        'totals' => json_encode(['saving' => $target], JSON_THROW_ON_ERROR),
+        'created_at' => now(),
+        'updated_at' => now(),
+        'deleted_at' => null,
+    ]);
+
+    return $planningId;
+}

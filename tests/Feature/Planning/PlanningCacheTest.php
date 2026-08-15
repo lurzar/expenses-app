@@ -13,6 +13,13 @@ beforeEach(function (): void {
     Cache::flush();
 });
 
+test('planning collection cache uses the fixed-decimal payload namespace', function () {
+    $key = app(PlanningCache::class)->indexKey(42);
+
+    expect($key)->toBe('planning:index:v2:user:42')
+        ->and($key)->not->toContain('planning:index:v1:');
+});
+
 test('repeated planning collection reads use the cached result', function () {
     $user = User::factory()->create();
     $original = Planning::factory()->for($user)->create();

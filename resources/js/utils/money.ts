@@ -45,7 +45,9 @@ export function formatSen(sen: bigint): string {
     return `${sign}${absolute / 100n}.${(absolute % 100n).toString().padStart(2, '0')}`;
 }
 
-export function formatMYR(value: string): string {
+export function formatMYR(value: string | null | undefined): string {
+    if (typeof value !== 'string') return 'RM —';
+
     const negative = value.startsWith('-');
     const unsigned = negative ? value.slice(1) : value;
     const sen = parseMoney(unsigned);

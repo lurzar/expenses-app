@@ -8,6 +8,8 @@ describe('money helpers', () => {
         expect(parseMoney('12.34')).toBe(1234n);
         expect(parseMoney('1e3')).toBeNull();
         expect(formatMYR('1234567.80')).toBe('RM 1,234,567.80');
+        expect(formatMYR(undefined)).toBe('RM —');
+        expect(formatMYR(null)).toBe('RM —');
     });
 
     it('matches the server-authoritative worked example and half-up boundary', () => {

@@ -29,6 +29,8 @@ Planning previously stored monthly income as a binary float, accepted browser-bu
 
 ## Deployment and rollback
 
+The migration accepts exact English month names or integer month values from 1 through 12. Ambiguous numeric forms such as decimals or scientific notation stop the migration and identify the Planning public ID for operator resolution. A legacy target-savings value above income, including a nonzero target with zero income, also stops with the affected public ID instead of being silently clamped or rewritten.
+
 Back up `plannings` before migration and compare row counts, public IDs, owner IDs, periods, section names/amounts, and canonical totals afterward. The migration is reversible to the former string-period/float-income schema, although canonical totals/sections remain normalized. A rollback therefore restores schema compatibility, not lost binary-float artifacts. If the duplicate-period preflight fails, resolve the owner/period conflict from a verified backup before retrying.
 
 Run the exact-head test suite, representative migration up/down test, PostgreSQL SQL review, and application smoke validation before release. After an immutable release tag is published, correct defects in a new patch rather than moving the tag.

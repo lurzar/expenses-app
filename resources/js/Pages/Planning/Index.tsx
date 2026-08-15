@@ -40,10 +40,10 @@ export default function Index({ auth, plannings }: PlanningIndexProps) {
                                             <div className="flex justify-between items-center">
                                                 <div>
                                                     <h3 className="font-semibold text-lg">
-                                                        {planning.name || `${planning.month}, ${planning.year}`}
+                                                        {planning.name}
                                                     </h3>
                                                     <p className="text-sm text-gray-500">
-                                                        {planning.month} {planning.year}
+                                                        {planning.name}
                                                     </p>
                                                 </div>
                                                 <div className="text-right">

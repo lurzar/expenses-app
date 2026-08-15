@@ -24,10 +24,12 @@ The implementation deliberately excludes:
 The key format is:
 
 ```text
-planning:index:v1:user:<internal-user-id>
+planning:index:v2:user:<internal-user-id>
 ```
 
-For example, internal user ID `42` uses `planning:index:v1:user:42`. Laravel may prepend `CACHE_PREFIX` when the selected store supports prefixes.
+For example, internal user ID `42` uses `planning:index:v2:user:42`. Laravel may prepend `CACHE_PREFIX` when the selected store supports prefixes.
+
+Version `v2` begins with the v2.1.4 fixed-decimal Planning payload. Deployments must not reuse `v1` entries because those serialized models can contain the legacy month, salary, and totals shape. The namespace change makes old entries unreachable; they may expire naturally without a global cache flush.
 
 The entry lives for 300 seconds. The application also invalidates it after successful mutations, so the five-minute lifetime is a recovery boundary rather than the primary consistency mechanism. Empty collections use the same key and lifetime.
 
@@ -68,7 +70,7 @@ $key;
 cache()->has($key);
 ```
 
-The expected synthetic key is `planning:index:v1:user:42`. A `true` presence result confirms only that the configured store contains an entry. It does not confirm ownership, freshness, or database persistence.
+The expected synthetic key is `planning:index:v2:user:42`. A `true` presence result confirms only that the configured store contains an entry. It does not confirm ownership, freshness, or database persistence.
 
 Never dump the cached value, serialized file, Redis payload, salary, sections, totals, production key inventory, credentials, or connection configuration into a terminal transcript, issue, pull request, log, or incident channel.
 

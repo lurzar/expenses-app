@@ -48,7 +48,7 @@ export default function Show({ auth, planning }: ShowProps) {
                             {/* Actions */}
                             <div className="mb-6 flex justify-between items-center">
                                 <p className="text-sm text-gray-500">
-                                    {planning.month} {planning.year}
+                                    {planning.name}
                                 </p>
                                 <div className="flex gap-2">
                                     <Link

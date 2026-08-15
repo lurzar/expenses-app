@@ -27,14 +27,22 @@ return new class extends Migration
             $targetSen = $this->legacyMoneyToSen(
                 $legacyTotals['target_savings'] ?? $legacyTotals['saving'] ?? 0,
             );
+
+            if ($targetSen > $incomeSen) {
+                throw new RuntimeException(sprintf(
+                    'Planning %s has legacy target savings above income and must be resolved before migration.',
+                    $row->planning_id,
+                ));
+            }
+
             $rateBasisPoints = $incomeSen === 0
                 ? 0
-                : min(10_000, intdiv(($targetSen * 10_000) + intdiv($incomeSen, 2), $incomeSen));
+                : intdiv(($targetSen * 10_000) + intdiv($incomeSen, 2), $incomeSen);
             $spending = $sectionTotals['commitments'] + $sectionTotals['others'];
             $allocated = $sectionTotals['savings'] + $spending;
 
             DB::table('plannings')->where('id', $row->id)->update([
-                'month_number' => $this->monthNumber($row->month),
+                'month_number' => $this->monthNumber($row->month, (string) $row->planning_id),
                 'year_number' => $this->yearNumber($row->year),
                 'salary_decimal' => Money::format($incomeSen),
                 'saving_rate' => Money::formatRate($rateBasisPoints),
@@ -130,19 +138,33 @@ return new class extends Migration
         });
     }
 
-    private function monthNumber(mixed $month): int
+    private function monthNumber(mixed $month, string $planningId): int
     {
-        if (is_numeric($month) && (int) $month >= 1 && (int) $month <= 12) {
-            return (int) $month;
+        $value = trim((string) $month);
+
+        if (preg_match('/^(?:0?[1-9]|1[0-2])$/D', $value) === 1) {
+            return (int) $value;
         }
 
-        $date = DateTimeImmutable::createFromFormat('!F', trim((string) $month));
-
-        if ($date === false) {
-            throw new RuntimeException('Planning contains an invalid legacy month.');
-        }
-
-        return (int) $date->format('n');
+        return match ($value) {
+            'January' => 1,
+            'February' => 2,
+            'March' => 3,
+            'April' => 4,
+            'May' => 5,
+            'June' => 6,
+            'July' => 7,
+            'August' => 8,
+            'September' => 9,
+            'October' => 10,
+            'November' => 11,
+            'December' => 12,
+            default => throw new RuntimeException(sprintf(
+                'Planning %s contains invalid legacy month "%s" and must be resolved before migration.',
+                $planningId,
+                $value,
+            )),
+        };
     }
 
     private function yearNumber(mixed $year): int

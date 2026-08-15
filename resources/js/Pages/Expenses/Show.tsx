@@ -8,7 +8,7 @@ interface ShowProps extends PageProps {
 }
 
 export default function Show({ auth, planning }: ShowProps) {
-    const planningName = planning.name || `${planning.month}, ${planning.year}`;
+    const planningName = planning.name;
 
     return (
         <AppLayout user={auth.user!} header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Expenses - {planningName}</h2>}>
@@ -23,7 +23,7 @@ export default function Show({ auth, planning }: ShowProps) {
                                     {planningName}
                                 </h3>
                                 <p className="text-sm text-gray-500">
-                                    {planning.month} {planning.year}
+                                    {planning.name}
                                 </p>
                             </div>
 

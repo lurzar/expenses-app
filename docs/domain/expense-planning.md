@@ -104,7 +104,7 @@ The server persists target savings `1000.00`, savings `800.00`, commitments `200
 The following contract is approved and implemented by #63 for v2.1.4.
 
 1. The server is authoritative. It accepts raw income, rate, and items; it never accepts client totals as truth.
-2. Parse each MYR value as a decimal with at most two fractional digits, calculate in integer sen, and reject scientific notation, `NaN`, infinity, negatives, or excessive precision. The proposed persistence uses fixed `DECIMAL(14,2)` for income and canonical two-decimal strings for section/total JSON amounts; model casts must not convert money to float.
+2. Parse each MYR value as a decimal with at most two fractional digits, calculate in integer sen, and reject scientific notation, `NaN`, infinity, negatives, or excessive precision. Persistence uses fixed `DECIMAL(14,2)` for income and canonical two-decimal strings for section/total JSON amounts; model casts must not convert money to float.
 3. Parse saving rate from 0.00 through 100.00 with at most two fractional digits into integer basis points (0 through 10,000). Round only `income_sen × rate_basis_points / 10,000`, once, half up to the nearest sen. Section sums and balance require no intermediate rounding after normalization to sen.
 4. Persist or derive one consistent total contract: `target_savings`, `savings`, `commitments`, `others`, `spending`, `allocated`, and `balance`.
 5. `spending = commitments + others`; `allocated = savings + spending`; `balance = income - allocated`.

@@ -26,7 +26,7 @@ The initial summary flow provides period context, remaining planned balance, the
 - Dashboard uses the first returned plan without a user-visible period-selection contract.
 - The create page uses one BigInt/sen preview helper, excludes submitted totals, and persists server-authoritative values.
 
-These behaviors are evidence, not approved target formulas.
+The #63 values and formulas are authoritative. The remaining selection and presentation behaviors are current-state evidence for the UI work, not additional financial rules.
 
 ### Authoritative values available to runtime implementation
 
