@@ -7,7 +7,7 @@ This reference catalogs the current browser interface. It describes Laravel web 
 - Authentication uses Laravel's `web` guard, session cookies, CSRF protection, and redirects.
 - Read pages return Inertia responses rooted at `resources/views/app.blade.php` and resolved from `resources/js/Pages/**/*.tsx`.
 - Successful mutations redirect to a named web route. Validation errors and old input travel through the session/Inertia error bag.
-- Named routes are exposed to TypeScript through Ziggy and resolved by `resources/js/utils/route.ts`.
+- Named routes are exposed to TypeScript through Ziggy and resolved by `resources/js/utils/route.ts`; the current language controls pass a stale parameter name and fail against fresh route metadata, as documented below.
 - `Planning` and `User` expose public ULIDs, but their current Inertia serialization also includes internal numeric `id`/`user_id` fields; #61 owns narrowing that boundary.
 - There is no content-negotiated JSON resource contract for these routes.
 
@@ -32,7 +32,7 @@ This reference catalogs the current browser interface. It describes Laravel web 
 | Route | Inertia page | Page-specific props |
 | --- | --- | --- |
 | `landing` | `Landing/Index` | Shared props only |
-| `login` | `Auth/Login` | `canResetPassword`, `status` |
+| `login` | `Auth/Login` | `changelog`: newest configured release summary or `null` |
 | `register` | `Auth/Register` | Shared props only |
 | `dashboard` | `Dashboard/Index` | `plannings`: all authenticated-user Planning records |
 | `planning.index` | `Planning/Index` | `plannings`: cached authenticated-user Planning records |
@@ -53,7 +53,7 @@ Verified with `php artisan route:list --except-vendor --json` on 2026-08-16: 28 
 | Method | URI | Name | Controller | Additional middleware/result |
 | --- | --- | --- | --- | --- |
 | GET | `/` | `landing` | `LandingController@index` | Inertia `Landing/Index` |
-| GET | `/language/{language}` | `language` | `LanguageController@index` | Validates allowlisted locale, stores session locale, redirects back |
+| GET | `/language/{language}` | `language` | `LanguageController@index` | Direct route validates allowlisted locale, stores session locale, redirects back; current layout controls pass the wrong key |
 
 ### Guest authentication routes
 
@@ -105,6 +105,12 @@ Every route in this group also uses `guest`/`RedirectIfAuthenticated`.
 - Direct Planning show/delete actions call the registered policy.
 - The Expenses detail route parameter is `{expenses}` while the controller expects `Planning $expense`. Laravel does not inject the requested bound record into that argument; the policy receives an unbound model and an isolated owner-path request returns 403. #61 owns normalization and owner/non-owner success/failure coverage.
 - Session authentication is not sufficient authorization for a specific Planning record; every new direct-record route must call a policy or use scoped binding.
+
+## Language route contract gap
+
+The live route and fresh `@routes` output require `{language}`. `AppLayout.tsx` and `GuestLayout.tsx` currently call `route('language', { lang: 'en' | 'my' })`, while the committed `resources/js/ziggy.js` still contains stale `{lang?}` metadata. With current generated Ziggy configuration, the controls throw that the `language` parameter is required instead of navigating.
+
+Issue #103 owns normalizing the Laravel/Ziggy/layout parameter, removing or regenerating stale metadata, and adding guest/authenticated regression coverage in v2.1.2.
 
 ## Change rules
 
