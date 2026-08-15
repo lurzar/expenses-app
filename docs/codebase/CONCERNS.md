@@ -63,8 +63,8 @@ Recent 90-day churn is distorted by squash release commits: most migrated files 
 
 ## `[ASK USER]` questions
 
-1. [ASK USER] What authoritative RM representation, rounding rule, saving-rate rule, and user/month uniqueness should #57 record for #63?
-2. [ASK USER] Is a public API actually intended; if so, who is the first consumer and what authentication/compatibility contract should #58 approve?
+1. [ASK USER] Approve or revise the RM representation, rounding, saving-rate, and user/month uniqueness proposal recorded by #57 before #63 changes persistence.
+2. [ASK USER] Is a public API actually intended; if so, who is the first consumer and what authentication/compatibility contract should its implementation issue approve under #58 governance?
 3. [ASK USER] What production deployment platform, secret store, database backup/restore owner, and recovery objective are supported?
 4. [ASK USER] Which production mail provider and asynchronous queue/worker model, if any, should replace the current local/synchronous placeholders?
 5. [ASK USER] What maximum Planning history/payload should list, Dashboard, and Expenses views support before pagination is required?

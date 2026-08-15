@@ -20,7 +20,7 @@ The current Expenses view is a projection of monthly Planning data. It is not a 
 - Create, review, list, and delete monthly plans.
 - Organize planned amounts into savings, commitments, and other spending.
 - Review planning summaries through Dashboard and Expenses views.
-- Switch between English and Malay interface dictionaries.
+- Use shipped English and Malay interface dictionaries; the current switcher parameter repair is tracked in [#103](https://github.com/lurzar/expenses-app/issues/103).
 - Run locally with Laravel Sail, PostgreSQL, Redis, and pgAdmin.
 
 ## Architecture
@@ -76,9 +76,11 @@ The repository is still establishing a deterministic quality baseline in [issue 
 ## Documentation
 
 - [Documentation map and ownership](docs/README.md)
+- [Current codebase architecture](docs/codebase/ARCHITECTURE.md)
+- [Expense-planning domain and data flow](docs/domain/expense-planning.md)
+- [Web/Inertia interfaces and future API governance](docs/interfaces/web-inertia.md)
 - [Development and release workflow](docs/development/workflow.md)
 - [PostgreSQL 18 local-volume upgrade](docs/postgresql-18-upgrade.md)
 - [Release history](CHANGELOG.md)
-- [Version 2.1.0 plan](https://github.com/lurzar/expenses-app/issues/39)
 
 GitHub Issues hold planned work. Repository documentation describes approved, current behavior. When the two disagree, verify the source and update the stale issue or document.
