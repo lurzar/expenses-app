@@ -34,8 +34,8 @@ test('creating a planning records one minimized server-side activity', function 
 
     $this->actingAs($user)
         ->post('/planning', [
-            'month' => 'August',
-            'year' => '2026',
+            'month' => 8,
+            'year' => 2026,
             'salary' => '5000.00',
             'saving_rate' => '10',
             'totals' => [
@@ -164,8 +164,8 @@ test('disabled activity logging records no activity', function () {
     $user = User::factory()->create();
 
     $this->actingAs($user)->post('/planning', [
-        'month' => 'August',
-        'year' => '2026',
+        'month' => 8,
+        'year' => 2026,
         'salary' => '5000.00',
         'saving_rate' => '10',
         'totals' => [],
@@ -188,8 +188,8 @@ test('a recorder failure rolls back the owning planning mutation', function () {
     $this->withoutExceptionHandling();
 
     expect(fn () => $this->actingAs($user)->post('/planning', [
-        'month' => 'August',
-        'year' => '2026',
+        'month' => 8,
+        'year' => 2026,
         'salary' => '5000.00',
         'saving_rate' => '10',
         'totals' => [],

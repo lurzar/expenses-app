@@ -18,9 +18,10 @@ use Illuminate\Support\Collection;
  * @property int $id
  * @property string $planning_id
  * @property int $user_id
- * @property string $month
- * @property string $year
- * @property float $salary
+ * @property int $month
+ * @property int $year
+ * @property string $salary
+ * @property string $saving_rate
  * @property Collection<string, mixed>|null $sections
  * @property Collection<string, float|int|string>|null $totals
  * @property-read string $name
@@ -47,6 +48,7 @@ class Planning extends Model
         'month',
         'year',
         'salary',
+        'saving_rate',
         'sections',
         'totals',
     ];
@@ -62,7 +64,10 @@ class Planning extends Model
     protected function casts(): array
     {
         return [
-            'salary' => 'float',
+            'month' => 'integer',
+            'year' => 'integer',
+            'salary' => 'decimal:2',
+            'saving_rate' => 'decimal:2',
             'sections' => AsCollection::class,
             'totals' => AsCollection::class,
         ];
@@ -85,17 +90,29 @@ class Planning extends Model
     protected function name(): Attribute
     {
         return new Attribute(
-            get: fn () => $this->month.', '.$this->year,
+            get: fn () => match ($this->month) {
+                1 => 'January',
+                2 => 'February',
+                3 => 'March',
+                4 => 'April',
+                5 => 'May',
+                6 => 'June',
+                7 => 'July',
+                8 => 'August',
+                9 => 'September',
+                10 => 'October',
+                11 => 'November',
+                12 => 'December',
+                default => 'Invalid month',
+            }.', '.$this->year,
         );
     }
 
     /** @return Attribute<string, never> */
     protected function spending(): Attribute
     {
-        $value = $this->totals ? $this->totals->sum() : 0.00;
-
         return new Attribute(
-            get: fn () => number_format($value, 2),
+            get: fn () => (string) ($this->totals?->get('spending') ?? '0.00'),
         );
     }
 
@@ -114,6 +131,6 @@ class Planning extends Model
      */
     protected function scopeThisMonth(Builder $query): Builder
     {
-        return $query->where('month', getCurrentMonthName());
+        return $query->where('month', (int) now()->format('n'));
     }
 }

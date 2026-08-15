@@ -24,9 +24,9 @@ Browser -> Laravel web middleware/route -> controller + policy/FormRequest
 For Planning creation:
 
 1. `app/Modules/Planning/routes.php` sends authenticated `POST /planning` requests to `PlanningController::store`.
-2. `PlanningStoreRequest` validates the submitted shape; its current rules remain broad string/array validation.
+2. `PlanningStoreRequest` validates exact decimal/period/item bounds, negative balance, and active owner/period uniqueness while excluding browser totals.
 3. The controller passes validated data to `PlanningService::store`.
-4. The service reshapes section arrays, assigns the authenticated internal user ID, and persists Planning plus an allowlisted activity entry inside a database transaction.
+4. `PlanningCalculator` normalizes the sections and derives every canonical total through integer sen; the service assigns the authenticated internal user ID and persists Planning plus an allowlisted activity entry inside a database transaction.
 5. After commit, `PlanningCache` invalidates the authenticated user's collection key.
 6. The redirect returns to the Planning index, whose Inertia props come from the cached user-scoped collection.
 
@@ -65,10 +65,8 @@ For direct Planning and Expenses display, Laravel resolves the public ULID throu
 
 ## Known architectural risks
 
-- `PlanningService::store` persists browser-supplied totals and `Planning` casts salary as binary float. #57 documents meaning; #63 owns authoritative calculations, precision, constraints, and migration.
-- Planning validation does not enforce numeric boundaries, period uniqueness, or deterministic rounding. See #63.
 - Collection reads load every plan without pagination. The cache reduces repeated queries but does not bound payload growth.
-- `PlanningService` is registered as a singleton with a mutable injected `Planning` instance. Current HTTP store flow calls it once, but reusable multi-create flows would need a fresh model boundary.
+- `PlanningService` is registered as a singleton but creates a fresh model instance for every store operation; preserve the multi-create regression coverage when changing its persistence boundary.
 
 ## Evidence
 

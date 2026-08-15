@@ -5,6 +5,7 @@ namespace App\Modules\Planning\Services;
 use App\Modules\ActivityLog\ActivityEvent;
 use App\Modules\ActivityLog\Services\ActivityRecorder;
 use App\Modules\Planning\Models\Planning;
+use App\Modules\Planning\Support\PlanningCalculator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,7 @@ class PlanningService
         private Planning $model,
         private ActivityRecorder $activityRecorder,
         private PlanningCache $cache,
+        private PlanningCalculator $calculator,
     ) {}
 
     /**
@@ -28,24 +30,30 @@ class PlanningService
         abort_unless(is_int($userId), 401);
 
         $storedPlanning = DB::transaction(function () use ($planning, $userId): Planning {
-            $this->handleRequest($planning);
+            $calculation = $this->calculator->calculate(
+                income: (string) $planning->get('salary'),
+                savingRate: (string) $planning->get('saving_rate'),
+                sections: $this->sectionsFromRequest($planning),
+            );
 
-            $this->model->user_id = $userId;
-            $this->model->month = $planning->get('month');
-            $this->model->year = $planning->get('year');
-            $this->model->salary = $planning->get('salary');
-            $this->model->sections = $planning->get('sections');
-            $this->model->totals = $planning->get('totals');
-            $this->model->save();
+            $storedPlanning = $this->model->newInstance();
+            $storedPlanning->user_id = $userId;
+            $storedPlanning->month = (int) $planning->get('month');
+            $storedPlanning->year = (int) $planning->get('year');
+            $storedPlanning->salary = $calculation->income;
+            $storedPlanning->saving_rate = $calculation->savingRate;
+            $storedPlanning->setAttribute('sections', $calculation->sections);
+            $storedPlanning->setAttribute('totals', $calculation->totals);
+            $storedPlanning->save();
 
             $this->activityRecorder->record(
                 ActivityEvent::PlanningCreated,
                 Auth::user()?->user_id,
                 'planning',
-                $this->model->planning_id,
+                $storedPlanning->planning_id,
             );
 
-            return $this->model;
+            return $storedPlanning;
         });
 
         $this->cache->forgetIndex((int) $storedPlanning->user_id);
@@ -118,25 +126,15 @@ class PlanningService
     }
 
     /**
-     * Handle and transform the request data.
-     *
      * @param  Collection<string, mixed>  $planning
-     * @return Collection<string, mixed>
+     * @return array{savings: mixed, commitments: mixed, others: mixed}
      */
-    private function handleRequest(Collection $planning): Collection
+    private function sectionsFromRequest(Collection $planning): array
     {
-        $sections = [
+        return [
             'savings' => $planning->get('savings_values') ?? [],
             'commitments' => $planning->get('commitments_values') ?? [],
             'others' => $planning->get('others_values') ?? [],
         ];
-
-        $planning->put('sections', $sections);
-        $planning->forget('savings_values');
-        $planning->forget('commitments_values');
-        $planning->forget('others_values');
-        $planning->forget('saving_rate');
-
-        return $planning;
     }
 }

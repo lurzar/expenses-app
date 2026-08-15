@@ -8,9 +8,10 @@ use DateTimeInterface;
 /**
  * @phpstan-type PlanningPayload array{
  *     planning_id: string,
- *     month: string,
- *     year: string,
- *     salary: float,
+ *     month: int,
+ *     year: int,
+ *     salary: string,
+ *     saving_rate: string,
  *     sections: array<string, mixed>,
  *     totals: array<string, float|int|string>,
  *     name: string,
@@ -29,6 +30,7 @@ final class PlanningData
             'month' => $planning->month,
             'year' => $planning->year,
             'salary' => $planning->salary,
+            'saving_rate' => $planning->saving_rate,
             'sections' => $planning->sections?->all() ?? [],
             'totals' => $planning->totals?->all() ?? [],
             'name' => $planning->name,

@@ -2,6 +2,7 @@ import { FormEventHandler, useMemo } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import { PageProps } from '@/types';
+import { calculatePlanningPreview, formatMYR, formatSen, parseMoney } from '@/utils/money';
 
 interface SectionItem {
     item: string;
@@ -9,55 +10,39 @@ interface SectionItem {
 }
 
 export default function Create({ auth }: PageProps) {
-    const { data, setData, post, processing, errors, transform } = useForm({
-        month: getCurrentMonthName(),
+    const { data, setData, post, processing, errors } = useForm({
+        month: (new Date().getMonth() + 1).toString(),
         year: new Date().getFullYear().toString(),
         salary: '',
         saving_rate: '20',
         savings_values: [{ item: '', amount: '' }] as SectionItem[],
         commitments_values: [{ item: '', amount: '' }] as SectionItem[],
         others_values: [{ item: '', amount: '' }] as SectionItem[],
-        totals: {} as Record<string, number>,
+        calculation: '',
     });
 
-    // Calculate totals with cascading balances (matching Livewire logic exactly)
     const calculations = useMemo(() => {
-        const salary = parseFloat(data.salary) || 0;
-        const savingRate = parseFloat(data.saving_rate) || 0;
-
-        // Saving Section: total_savings based on saving rate, balance_after_saving_rates
-        const totalSavings = (salary * savingRate) / 100;
-        const balanceAfterSavingRates = salary - totalSavings;
-
-        // Sum of savings items (for display, but not used in cascade)
-        const savingsItemsTotal = data.savings_values.reduce(
-            (sum, item) => sum + (parseFloat(item.amount) || 0), 0
-        );
-
-        // Commitment Section: total_commitment, balance_after_savings
-        const balanceAfterSavings = salary - savingsItemsTotal;
-        const commitmentsTotal = data.commitments_values.reduce(
-            (sum, item) => sum + (parseFloat(item.amount) || 0), 0
-        );
-
-        // Other Section: total_other, balance_after_commitments
-        const balanceAfterCommitments = balanceAfterSavings - commitmentsTotal;
-        const othersTotal = data.others_values.reduce(
-            (sum, item) => sum + (parseFloat(item.amount) || 0), 0
-        );
-
-        // Final balance
-        const totalBalance = balanceAfterCommitments - othersTotal;
+        const preview = calculatePlanningPreview({
+            income: data.salary,
+            savingRate: data.saving_rate,
+            savings: data.savings_values.map((item) => item.amount),
+            commitments: data.commitments_values.map((item) => item.amount),
+            others: data.others_values.map((item) => item.amount),
+        });
+        const income = parseMoney(data.salary) ?? 0n;
+        const target = parseMoney(preview.targetSavings) ?? 0n;
+        const savings = parseMoney(preview.savings) ?? 0n;
+        const commitments = parseMoney(preview.commitments) ?? 0n;
 
         return {
-            totalSavings,
-            balanceAfterSavingRates,
-            savingsItemsTotal,
-            balanceAfterSavings,
-            commitmentsTotal,
-            balanceAfterCommitments,
-            othersTotal,
-            totalBalance,
+            totalSavings: preview.targetSavings,
+            balanceAfterSavingRates: formatSen(income - target),
+            savingsItemsTotal: preview.savings,
+            balanceAfterSavings: formatSen(income - savings),
+            commitmentsTotal: preview.commitments,
+            balanceAfterCommitments: formatSen(income - savings - commitments),
+            othersTotal: preview.others,
+            totalBalance: preview.balance,
         };
     }, [data.salary, data.saving_rate, data.savings_values, data.commitments_values, data.others_values]);
 
@@ -85,20 +70,6 @@ export default function Create({ auth }: PageProps) {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        // Build totals object matching Livewire structure
-        const totals = {
-            saving: calculations.totalSavings,
-            balance: calculations.totalBalance,
-            commitment: calculations.commitmentsTotal,
-            other: calculations.othersTotal,
-        };
-
-        // Use transform to include totals in the submission
-        transform((formData) => ({
-            ...formData,
-            totals,
-        }));
-
         post('/planning');
     };
 
@@ -121,7 +92,7 @@ export default function Create({ auth }: PageProps) {
                                             id="current_month"
                                             name="current_month"
                                             type="text"
-                                            value={data.month}
+                                            value={new Intl.DateTimeFormat('en-MY', { month: 'long' }).format(new Date(2026, Number(data.month) - 1, 1))}
                                             disabled
                                             className="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm"
                                         />
@@ -150,7 +121,7 @@ export default function Create({ auth }: PageProps) {
                                             value={data.salary}
                                             onChange={(e) => setData('salary', e.target.value)}
                                             min="0"
-                                            step="any"
+                                            step="0.01"
                                             placeholder="0.00"
                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                             required
@@ -166,9 +137,9 @@ export default function Create({ auth }: PageProps) {
                                             type="number"
                                             value={data.saving_rate}
                                             onChange={(e) => setData('saving_rate', e.target.value)}
-                                            min="20"
+                                            min="0"
                                             max="100"
-                                            step="5"
+                                            step="0.01"
                                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                             required
                                         />
@@ -182,8 +153,8 @@ export default function Create({ auth }: PageProps) {
                                 <div className="flex justify-between items-center mb-4">
                                     <h3 className="font-semibold text-lg">🏦 Savings</h3>
                                     <div className="text-right text-sm">
-                                        <div>Target Savings: <span className="font-medium text-green-700">RM {calculations.totalSavings.toLocaleString()}</span></div>
-                                        <div className="text-gray-500">Balance After Rate: RM {calculations.balanceAfterSavingRates.toLocaleString()}</div>
+                                        <div>Target Savings: <span className="font-medium text-green-700">{formatMYR(calculations.totalSavings)}</span></div>
+                                        <div className="text-gray-500">Balance After Rate: {formatMYR(calculations.balanceAfterSavingRates)}</div>
                                     </div>
                                 </div>
 
@@ -206,8 +177,8 @@ export default function Create({ auth }: PageProps) {
                                                 name={`savings_values[${index}][amount]`}
                                                 type="number"
                                                 placeholder="0.00"
-                                                min="1"
-                                                step="any"
+                                                min="0"
+                                                step="0.01"
                                                 value={item.amount}
                                                 onChange={(e) => updateItem('savings_values', index, 'amount', e.target.value)}
                                                 className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
@@ -241,8 +212,8 @@ export default function Create({ auth }: PageProps) {
                                 <div className="flex justify-between items-center mb-4">
                                     <h3 className="font-semibold text-lg">📋 Commitments</h3>
                                     <div className="text-right text-sm">
-                                        <div>Total: <span className="font-medium text-yellow-700">RM {calculations.commitmentsTotal.toLocaleString()}</span></div>
-                                        <div className="text-gray-500">Balance After Savings: RM {calculations.balanceAfterSavings.toLocaleString()}</div>
+                                        <div>Total: <span className="font-medium text-yellow-700">{formatMYR(calculations.commitmentsTotal)}</span></div>
+                                        <div className="text-gray-500">Balance After Savings: {formatMYR(calculations.balanceAfterSavings)}</div>
                                     </div>
                                 </div>
 
@@ -265,8 +236,8 @@ export default function Create({ auth }: PageProps) {
                                                 name={`commitments_values[${index}][amount]`}
                                                 type="number"
                                                 placeholder="0.00"
-                                                min="1"
-                                                step="any"
+                                                min="0"
+                                                step="0.01"
                                                 value={item.amount}
                                                 onChange={(e) => updateItem('commitments_values', index, 'amount', e.target.value)}
                                                 className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
@@ -300,8 +271,8 @@ export default function Create({ auth }: PageProps) {
                                 <div className="flex justify-between items-center mb-4">
                                     <h3 className="font-semibold text-lg">📦 Others</h3>
                                     <div className="text-right text-sm">
-                                        <div>Total: <span className="font-medium text-gray-700">RM {calculations.othersTotal.toLocaleString()}</span></div>
-                                        <div className="text-gray-500">Balance After Commitments: RM {calculations.balanceAfterCommitments.toLocaleString()}</div>
+                                        <div>Total: <span className="font-medium text-gray-700">{formatMYR(calculations.othersTotal)}</span></div>
+                                        <div className="text-gray-500">Balance After Commitments: {formatMYR(calculations.balanceAfterCommitments)}</div>
                                     </div>
                                 </div>
 
@@ -324,8 +295,8 @@ export default function Create({ auth }: PageProps) {
                                                 name={`others_values[${index}][amount]`}
                                                 type="number"
                                                 placeholder="0.00"
-                                                min="1"
-                                                step="any"
+                                                min="0"
+                                                step="0.01"
                                                 value={item.amount}
                                                 onChange={(e) => updateItem('others_values', index, 'amount', e.target.value)}
                                                 className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
@@ -357,6 +328,7 @@ export default function Create({ auth }: PageProps) {
                             {/* Summary */}
                             <div className="border rounded-lg p-4 bg-indigo-50">
                                 <h3 className="font-semibold text-lg mb-4">📊 Planning Summary</h3>
+                                {errors.calculation && <p className="mb-4 text-sm text-red-700" role="alert">{errors.calculation}</p>}
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label htmlFor="total_savings" className="block text-sm font-medium text-gray-700">Total Savings (from rate)</label>
@@ -364,7 +336,7 @@ export default function Create({ auth }: PageProps) {
                                             id="total_savings"
                                             name="total_savings"
                                             type="text"
-                                            value={`RM ${calculations.totalSavings.toLocaleString()}`}
+                                            value={formatMYR(calculations.totalSavings)}
                                             disabled
                                             className="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 shadow-sm"
                                         />
@@ -375,9 +347,9 @@ export default function Create({ auth }: PageProps) {
                                             id="total_balance"
                                             name="total_balance"
                                             type="text"
-                                            value={`RM ${calculations.totalBalance.toLocaleString()}`}
+                                            value={formatMYR(calculations.totalBalance)}
                                             disabled
-                                            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm ${calculations.totalBalance < 0 ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
+                                            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm ${calculations.totalBalance.startsWith('-') ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
                                                 }`}
                                         />
                                     </div>

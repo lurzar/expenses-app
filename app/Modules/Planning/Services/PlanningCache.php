@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 
 final class PlanningCache
 {
-    private const INDEX_KEY_VERSION = 'v1';
+    private const INDEX_KEY_VERSION = 'v2';
 
     private const INDEX_TTL_SECONDS = 300;
 

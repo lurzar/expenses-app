@@ -19,16 +19,21 @@ export interface PlanningSection {
 }
 
 export interface PlanningTotals {
-    savings?: number;
-    commitments?: number;
-    others?: number;
+    target_savings: string;
+    savings: string;
+    commitments: string;
+    others: string;
+    spending: string;
+    allocated: string;
+    balance: string;
 }
 
 export interface Planning {
     planning_id: string;
-    month: string;
-    year: string;
-    salary: number;
+    month: number;
+    year: number;
+    salary: string;
+    saving_rate: string;
     sections: PlanningSection;
     totals: PlanningTotals;
     name: string;      // computed attribute

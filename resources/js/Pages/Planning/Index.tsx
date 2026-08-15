@@ -1,6 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import { PageProps, Planning } from '@/types';
+import { formatMYR } from '@/utils/money';
 
 interface PlanningIndexProps extends PageProps {
     plannings: Planning[];
@@ -39,19 +40,16 @@ export default function Index({ auth, plannings }: PlanningIndexProps) {
                                             <div className="flex justify-between items-center">
                                                 <div>
                                                     <h3 className="font-semibold text-lg">
-                                                        {planning.name || `${planning.month}, ${planning.year}`}
+                                                        {planning.name}
                                                     </h3>
-                                                    <p className="text-sm text-gray-500">
-                                                        {planning.month} {planning.year}
-                                                    </p>
                                                 </div>
                                                 <div className="text-right">
                                                     <p className="text-sm text-gray-500">Salary</p>
                                                     <p className="font-semibold text-indigo-600">
-                                                        RM {planning.salary?.toLocaleString() || '0'}
+                                                        {formatMYR(planning.salary)}
                                                     </p>
                                                     <p className="text-sm text-gray-400">
-                                                        Spending: {planning.spending || 'RM 0'}
+                                                        Planned spending: {formatMYR(planning.spending)}
                                                     </p>
                                                 </div>
                                             </div>

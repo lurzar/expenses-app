@@ -19,18 +19,18 @@ The initial summary flow provides period context, remaining planned balance, the
 
 ## Financial meaning boundary
 
-### Current v2.1.2 behavior
+### Current v2.1.4 money behavior and remaining UI gaps
 
-- Browser pages recompute values from section items.
-- `Planning::spending` sums the current totals collection, which conflicts with the domain target meaning of spending.
+- The server supplies exact decimal-string income, saving rate, sections, and canonical totals to every projection.
+- `Planning::spending` reads canonical commitments-plus-others spending.
 - Dashboard uses the first returned plan without a user-visible period-selection contract.
-- Salary is a float and submitted totals are not server-authoritative.
+- The create page uses one BigInt/sen preview helper, excludes submitted totals, and persists server-authoritative values.
 
-These behaviors are evidence, not approved target formulas.
+The #63 values and formulas are authoritative. The remaining selection and presentation behaviors are current-state evidence for the UI work, not additional financial rules.
 
-### Required authority before runtime implementation
+### Authoritative values available to runtime implementation
 
-Issue #63 must provide server-authoritative values and documented rounding for:
+Issue #63 provides server-authoritative values and documented rounding for:
 
 - monthly income;
 - savings target;
@@ -42,7 +42,7 @@ Issue #63 must provide server-authoritative values and documented rounding for:
 - remaining planned balance; and
 - any percentages/deltas used by the interface.
 
-The UI may format and visualize those values but must not independently decide their financial meaning. Until #63 lands, a UI-foundation PR may build shell/primitives, but the final financial summary must not ship with duplicated client formulas.
+The UI may format and visualize those values but must not independently decide their financial meaning. The financial summary consumes the shared exact payload and may convert only at the tested graph-geometry boundary.
 
 ## Canonical labels
 
@@ -56,7 +56,7 @@ The UI may format and visualize those values but must not independently decide t
 | Savings allocated | `Savings allocation` | Sum of named savings items |
 | Commitments | `Commitments` | Planned contractual/recurring outflow |
 | Others | `Other allocations` | Planned discretionary/uncategorized outflow |
-| Spending | `Planned spending` | Commitments plus others only after #63 enforces this meaning |
+| Spending | `Planned spending` | Commitments plus others, enforced by #63 |
 
 Never use `Actual spending`, `Transactions`, `Paid`, `Cleared`, `Statement balance`, or `Bank balance` for Planning data.
 
@@ -139,7 +139,7 @@ When monthly income is zero, the income-based percentage is unavailable and no d
 
 ### 3. Savings target progress
 
-**Form:** progress bar or compact radial progress, only after #63 provides target and allocation.
+**Form:** progress bar or compact radial progress using the target and allocation provided by #63.
 
 Display exact target, allocation, difference, and percentage. Values above target may exceed 100% numerically; the visual track caps at 100% and shows an explicit above-target indicator rather than hiding the excess.
 
@@ -269,16 +269,16 @@ Names the period, says the record is removed from Planning and its projections, 
 - Focus is visible, logical, and restored after dialogs/menus.
 - Language expansion, 200% zoom, dark mode, reduced motion, and 320 CSS px reflow are required review states.
 
-## Data and formatting contract expected from #63
+## Data and formatting contract supplied by #63
 
-The implementation issue should expose a presentation payload that contains authoritative decimal strings or an equally precise transport form for the canonical values. The UI converts only for chart geometry through one tested boundary and retains exact display strings. It must not parse arbitrary persisted floats independently in each component.
+The presentation payload contains authoritative decimal strings for the canonical values. The UI converts only for chart geometry through one tested boundary and retains exact display strings. It does not parse persisted floats independently in each component.
 
 The payload should identify the plan by public ULID and include an explicit period. Named item amounts remain tied to their section. Any percentage/delta required by charts is either server-provided or calculated through one approved shared client helper from authoritative integer/fixed-precision values.
 
 ## Implementation and review slices
 
-1. **Money authority (#63):** persistence, validation, calculations, migration, and stable presentation values.
-2. **UI foundation:** semantic tokens, focus restoration, responsive application shell, primitives, number formatter, and chart accessibility wrapper.
+1. **Money authority (#63, complete):** persistence, validation, calculations, migration, and stable presentation values.
+2. **UI foundation (#123):** semantic tokens, focus restoration, responsive application shell, primitives, number formatter, and chart accessibility wrapper.
 3. **Planning summary:** hero, metrics, single-period charts, sections, states, and delete dialog.
 4. **Dashboard:** explicit selected period and eligible multi-period trend.
 5. **Expenses projection:** reuse summary components with accurate projection language and no destructive controls.
