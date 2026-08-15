@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Modules\Planning\Models\Planning;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -12,8 +14,18 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->superAdmin()->hasPlannings(10)->create();
+        $superAdmin = User::factory()->superAdmin()->create();
+        $users = User::factory(10)->unverified()->create();
 
-        User::factory(10)->unverified()->hasPlannings(10)->create();
+        $users->prepend($superAdmin)->each(function (User $user): void {
+            Planning::factory()
+                ->count(10)
+                ->for($user)
+                ->sequence(fn (Sequence $sequence): array => [
+                    'month' => $sequence->index + 1,
+                    'year' => 2026,
+                ])
+                ->create();
+        });
     }
 }

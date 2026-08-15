@@ -3,6 +3,25 @@
 return [
     'releases' => [
         [
+            'version' => '2.1.4',
+            'status' => 'Released',
+            'released_at' => '2026-08-16',
+            'changes' => [
+                [
+                    'category' => 'Changed',
+                    'description' => 'Made monthly plan figures exact and server-calculated so changed browser totals cannot alter saved results.',
+                ],
+                [
+                    'category' => 'Added',
+                    'description' => 'Added a banking-style green experience with responsive navigation, clearer figures, useful graphs, and exact accessible alternatives.',
+                ],
+                [
+                    'category' => 'Fixed',
+                    'description' => 'Improved plan deletion feedback, including a clear warning when a completed deletion may take up to five minutes to disappear from cached lists.',
+                ],
+            ],
+        ],
+        [
             'version' => '2.1.3',
             'status' => 'Released',
             'released_at' => '2026-08-16',

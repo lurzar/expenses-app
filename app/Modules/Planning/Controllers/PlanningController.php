@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use Throwable;
 
 class PlanningController extends Controller
 {
@@ -50,8 +51,23 @@ class PlanningController extends Controller
     {
         Gate::authorize('delete', $planning);
 
-        $this->service->delete($planning);
+        $name = $planning->name;
 
-        return redirect()->route('planning.index');
+        try {
+            $cacheInvalidated = $this->service->delete($planning);
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return back()->with('error', 'The plan could not be deleted. Try again.');
+        }
+
+        if (! $cacheInvalidated) {
+            return redirect()->route('planning.index')->with(
+                'warning',
+                "{$name} plan deleted. Planning lists may take up to five minutes to refresh.",
+            );
+        }
+
+        return redirect()->route('planning.index')->with('success', "{$name} plan deleted.");
     }
 }

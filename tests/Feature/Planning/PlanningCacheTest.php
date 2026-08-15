@@ -13,6 +13,13 @@ beforeEach(function (): void {
     Cache::flush();
 });
 
+test('planning collection cache uses the fixed-decimal payload namespace', function () {
+    $key = app(PlanningCache::class)->indexKey(42);
+
+    expect($key)->toBe('planning:index:v2:user:42')
+        ->and($key)->not->toContain('planning:index:v1:');
+});
+
 test('repeated planning collection reads use the cached result', function () {
     $user = User::factory()->create();
     $original = Planning::factory()->for($user)->create();
@@ -20,7 +27,7 @@ test('repeated planning collection reads use the cached result', function () {
     $this->actingAs($user);
 
     $firstRead = app(PlanningService::class)->getAllPlannings();
-    Planning::factory()->for($user)->create();
+    Planning::factory()->for($user)->create(['month' => 9]);
     $secondRead = app(PlanningService::class)->getAllPlannings();
 
     expect($firstRead->modelKeys())->toBe([$original->getKey()])
@@ -64,7 +71,7 @@ test('planning collection cache expires after five minutes', function () {
     expect(app(PlanningService::class)->getAllPlannings()->modelKeys())
         ->toBe([$original->getKey()]);
 
-    $newPlanning = Planning::factory()->for($user)->create();
+    $newPlanning = Planning::factory()->for($user)->create(['month' => 9]);
 
     expect(app(PlanningService::class)->getAllPlannings()->modelKeys())
         ->toBe([$original->getKey()]);
@@ -191,8 +198,8 @@ test('a rolled back planning mutation retains the existing cache entry', functio
 function validPlanningCachePayload(): array
 {
     return [
-        'month' => 'August',
-        'year' => '2026',
+        'month' => 9,
+        'year' => 2026,
         'salary' => '5000.00',
         'saving_rate' => '10',
         'totals' => [

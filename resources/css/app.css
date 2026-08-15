@@ -6,11 +6,161 @@
 
 body {
     font-family: 'Inter', sans-serif;
+    background: var(--app-canvas);
+    color: var(--app-text-primary);
 }
 
-/* Form input focus styles */
-input:focus,
-select:focus,
-textarea:focus {
-    outline: none;
+:root {
+    --app-canvas: #F5FAF8;
+    --app-surface: #FFFFFF;
+    --app-surface-raised: #E8F3EF;
+    --app-text-primary: #091413;
+    --app-text-secondary: #3E5B52;
+    --app-border-quiet: #C7D8D2;
+    --app-border-strong: #5F7E74;
+    --app-brand-strong: #285A48;
+    --app-brand-foreground: #FFFFFF;
+    --app-brand-hover: #1F493B;
+    --app-brand-mid: #408A71;
+    --app-brand-soft: #B0E4CC;
+    --app-brand-soft-foreground: #091413;
+    --app-danger: #B42318;
+    --app-danger-foreground: #FFFFFF;
+    --app-warning: #8A4B00;
+    --app-warning-foreground: #FFFFFF;
+    --app-focus: #285A48;
+    --chart-savings: #285A48;
+    --chart-commitments: #408A71;
+    --chart-others: #83BDA8;
+    --chart-remaining: #B0E4CC;
+}
+
+.dark {
+    --app-canvas: #091413;
+    --app-surface: #10211D;
+    --app-surface-raised: #17312B;
+    --app-text-primary: #F5FAF8;
+    --app-text-secondary: #B0C8BF;
+    --app-border-quiet: #285A48;
+    --app-border-strong: #408A71;
+    --app-brand-strong: #B0E4CC;
+    --app-brand-foreground: #091413;
+    --app-brand-hover: #C5EFE0;
+    --app-brand-mid: #408A71;
+    --app-brand-soft: #173B31;
+    --app-brand-soft-foreground: #B0E4CC;
+    --app-danger: #FFB4AB;
+    --app-danger-foreground: #091413;
+    --app-warning: #FFD18B;
+    --app-warning-foreground: #091413;
+    --app-focus: #B0E4CC;
+    --chart-savings: #B0E4CC;
+    --chart-commitments: #65A990;
+    --chart-others: #408A71;
+    --chart-remaining: #285A48;
+}
+
+*:focus-visible {
+    outline: 2px solid var(--app-focus);
+    outline-offset: 3px;
+}
+
+@layer components {
+    .app-shell { background: var(--app-canvas); color: var(--app-text-primary); }
+    .app-sidebar, .app-drawer, .app-topbar, .app-bottom-nav, .app-account-popover, .app-page-header { background: var(--app-surface); border-color: var(--app-border-quiet); }
+    .app-sidebar { padding: 1.25rem; border-right-width: 1px; }
+    .app-drawer { border-right-width: 1px; box-shadow: 0 24px 48px rgb(9 20 19 / 28%); }
+    .app-topbar { border-bottom-width: 1px; }
+    .app-page-header { border-bottom-width: 1px; }
+    .app-page-header h1, .app-page-header h2 { color: var(--app-text-primary); }
+    .app-page-container { width: min(100% - 2rem, 80rem); margin-inline: auto; }
+    .app-brand { display: inline-flex; align-items: center; gap: .75rem; color: var(--app-text-primary); font-size: 1.05rem; font-weight: 700; letter-spacing: -.02em; }
+    .app-brand.compact { font-size: 1rem; }
+    .app-brand-mark { display: grid; width: 2.25rem; height: 2.25rem; place-items: center; border-radius: .75rem; background: var(--app-brand-strong); color: var(--app-brand-foreground); font-weight: 800; }
+    .app-nav-link { display: flex; min-height: 2.75rem; align-items: center; gap: .8rem; border-radius: .75rem; padding: .65rem .8rem; color: var(--app-text-secondary); font-weight: 600; }
+    .app-nav-link:hover { background: var(--app-surface-raised); color: var(--app-text-primary); }
+    .app-nav-link.is-active { background: var(--app-brand-soft); color: var(--app-brand-soft-foreground); box-shadow: inset 3px 0 var(--app-brand-strong); }
+    .app-bottom-nav { padding: .4rem max(.4rem, env(safe-area-inset-right)) max(.4rem, env(safe-area-inset-bottom)) max(.4rem, env(safe-area-inset-left)); border-top-width: 1px; }
+    .app-bottom-link { display: flex; min-width: 0; flex-direction: column; align-items: center; gap: .2rem; border-radius: .6rem; padding: .4rem .2rem; color: var(--app-text-secondary); font-size: .7rem; font-weight: 600; }
+    .app-bottom-link.is-active { background: var(--app-brand-soft); color: var(--app-brand-soft-foreground); }
+    .app-language-link { display: inline-flex; min-width: 2.75rem; min-height: 2.75rem; align-items: center; justify-content: center; border: 1px solid var(--app-border-strong); border-radius: .5rem; padding: .35rem .55rem; color: var(--app-text-secondary); font-size: .75rem; font-weight: 700; }
+    .app-language-link.is-active { background: var(--app-brand-strong); color: var(--app-brand-foreground); border-color: var(--app-brand-strong); }
+    .app-icon-button { display: inline-grid; min-width: 2.75rem; min-height: 2.75rem; place-items: center; border-radius: .65rem; color: var(--app-text-primary); }
+    .app-icon-button:hover { background: var(--app-surface-raised); }
+    .app-account-link { display: flex; min-height: 2.75rem; align-items: center; gap: .75rem; border-radius: .75rem; padding: .6rem; color: var(--app-text-primary); }
+    .app-account-link:hover { background: var(--app-surface-raised); }
+    .app-avatar { display: grid; width: 2.25rem; height: 2.25rem; flex: none; place-items: center; border-radius: 999px; background: var(--app-brand-soft); color: var(--app-brand-soft-foreground); font-weight: 800; }
+    .app-logout-button { width: 100%; min-height: 2.75rem; border: 1px solid var(--app-border-strong); border-radius: .65rem; padding: .55rem .75rem; color: var(--app-text-primary); text-align: center; font-size: .875rem; font-weight: 600; }
+    .app-logout-button:hover { background: var(--app-surface-raised); }
+    .app-account-menu { position: relative; }
+    .app-account-menu > summary { display: inline-flex; min-height: 2.75rem; align-items: center; cursor: pointer; border-radius: .6rem; padding: .5rem .7rem; color: var(--app-text-primary); font-size: .875rem; font-weight: 700; list-style: none; }
+    .app-account-menu > summary::-webkit-details-marker { display: none; }
+    .app-account-popover { position: absolute; z-index: 50; top: calc(100% + .6rem); width: min(18rem, calc(100vw - 2rem)); border: 1px solid var(--app-border-quiet); border-radius: .9rem; padding: 1rem; box-shadow: 0 16px 40px rgb(9 20 19 / 20%); }
+    .app-account-popover.inline-end { right: 0; }
+    .app-skip-link { position: fixed; z-index: 100; left: 1rem; top: 1rem; transform: translateY(-160%); border-radius: .5rem; background: var(--app-brand-strong); color: var(--app-brand-foreground); padding: .65rem .9rem; font-weight: 700; }
+    .app-skip-link:focus { transform: translateY(0); }
+    .app-flash-stack { position: fixed; z-index: 90; top: 1rem; right: 1rem; display: grid; width: min(26rem, calc(100vw - 2rem)); gap: .75rem; }
+    .app-flash-message { border: 1px solid var(--app-border-strong); border-radius: .75rem; background: var(--app-surface); padding: .85rem 1rem; box-shadow: 0 12px 32px rgb(9 20 19 / 20%); color: var(--app-text-primary); font-size: .875rem; font-weight: 600; }
+    .app-flash-success { border-left: .35rem solid var(--app-brand-strong); }
+    .app-flash-warning { border-left: .35rem solid var(--app-warning); }
+    .app-flash-error { border-left: .35rem solid var(--app-danger); }
+    .text-primary { color: var(--app-text-primary); }
+    .text-secondary { color: var(--app-text-secondary); }
+    .ui-surface { border: 1px solid var(--app-border-quiet); border-radius: 1rem; background: var(--app-surface); color: var(--app-text-primary); }
+    .ui-surface-raised { background: var(--app-surface-raised); }
+    .ui-financial-number { font-variant-numeric: tabular-nums lining-nums; letter-spacing: -.025em; }
+    .state-warning { border-color: var(--app-warning); }
+    .state-danger { border-color: var(--app-danger); }
+    .button-primary, .button-secondary, .button-danger { display: inline-flex; min-height: 2.75rem; align-items: center; justify-content: center; border-radius: .7rem; padding: .65rem 1rem; font-size: .875rem; font-weight: 700; }
+    .button-primary { background: var(--app-brand-strong); color: var(--app-brand-foreground); }
+    .button-primary:hover { background: var(--app-brand-hover); }
+    .button-secondary { border: 1px solid var(--app-border-strong); background: var(--app-surface); color: var(--app-text-primary); }
+    .button-secondary:hover { background: var(--app-surface-raised); }
+    .button-danger { background: var(--app-danger); color: var(--app-danger-foreground); }
+    .button-primary:disabled, .button-secondary:disabled, .button-danger:disabled { cursor: not-allowed; opacity: .6; }
+    .financial-hero { border-left: .35rem solid var(--app-brand-strong); }
+    .metric-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); }
+    .metric-rollup { background: var(--app-surface-raised); }
+    .chart-grid, .allocation-grid { display: grid; gap: 1.5rem; }
+    .financial-chart-panel { min-width: 0; }
+    .financial-table { width: 100%; min-width: 30rem; border-collapse: collapse; font-size: .82rem; }
+    .financial-table th, .financial-table td { border-bottom: 1px solid var(--app-border-quiet); padding: .65rem .5rem; text-align: left; vertical-align: top; }
+    .financial-table thead th { color: var(--app-text-secondary); font-size: .72rem; text-transform: uppercase; letter-spacing: .04em; }
+    .financial-table .is-selected th { box-shadow: inset 3px 0 var(--app-brand-strong); }
+    .chart-empty, .chart-fallback { border: 1px dashed var(--app-border-strong); border-radius: .75rem; padding: 1.25rem; color: var(--app-text-secondary); text-align: center; }
+    .allocation-bar, .income-bar, .target-track { display: flex; width: 100%; height: 1rem; overflow: hidden; border-radius: 999px; background: var(--app-surface-raised); }
+    .allocation-bar span, .income-bar span, .target-track span { min-width: 0; }
+    .chart-savings, .target-track span { background: var(--chart-savings); }
+    .chart-commitments, .chart-allocated { background: var(--chart-commitments); }
+    .chart-others { background: repeating-linear-gradient(135deg, var(--chart-others) 0 7px, var(--app-surface) 7px 9px); }
+    .chart-remaining { background: var(--chart-remaining); }
+    .income-bar.is-over-allocated { border: 2px solid var(--app-danger); }
+    .over-allocation-marker { display: inline-block; width: .65rem; height: 1.4rem; margin-top: .5rem; border-radius: 999px; background: var(--app-danger); }
+    .magnitude-track { height: .4rem; overflow: hidden; border-radius: 999px; background: var(--app-surface-raised); }
+    .magnitude-track span { display: block; height: 100%; border-radius: inherit; background: var(--app-brand-mid); }
+    .trend-bars { display: flex; min-height: 13rem; align-items: end; justify-content: space-around; gap: 1rem; border-bottom: 1px solid var(--app-border-strong); }
+    .trend-bars > div { display: flex; min-width: 0; flex: 1; flex-direction: column; align-items: center; gap: .5rem; color: var(--app-text-secondary); font-size: .7rem; text-align: center; }
+    .trend-bars > .is-selected { color: var(--app-text-primary); font-weight: 700; }
+    .trend-series { display: flex; width: min(100%, 4.5rem); height: 10rem; align-items: end; justify-content: center; gap: .2rem; }
+    .trend-series span { width: 25%; min-height: 2px; border-radius: .25rem .25rem 0 0; }
+    .trend-income { background: var(--chart-savings); }
+    .trend-allocated { background: var(--chart-commitments); }
+    .trend-remaining { background: var(--chart-remaining); }
+    .trend-over-allocation { background: var(--app-danger); }
+    .dialog-layer { position: fixed; z-index: 80; inset: 0; display: grid; place-items: center; padding: 1rem; }
+    .dialog-backdrop { position: absolute; inset: 0; width: 100%; background: rgb(9 20 19 / 68%); }
+    .delete-dialog { position: relative; width: min(100%, 30rem); border: 1px solid var(--app-border-quiet); border-radius: 1rem; background: var(--app-surface); padding: 1.5rem; box-shadow: 0 24px 60px rgb(9 20 19 / 35%); color: var(--app-text-primary); }
+}
+
+@media (min-width: 768px) {
+    .allocation-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+    .chart-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+    .allocation-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }

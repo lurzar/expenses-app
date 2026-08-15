@@ -1,6 +1,6 @@
 # UI/UX system specification
 
-This document is the approved implementation target for the Expenses App interface. It records product-owner decisions for issue #118 while separating them from the v2.1.2 interface that still exists in source. Runtime adoption belongs to focused v2.1.4+ issues.
+This document is the approved implementation target for the Expenses App interface. It records product-owner decisions for issue #118 while separating them from the legacy v2.1.2 interface. Runtime adoption belongs to focused v2.1.4+ issues, beginning with #123 and #124.
 
 ## Product experience
 
@@ -27,6 +27,10 @@ As of `v2.1.2-dev`:
 - Inter is loaded from Google Fonts with a system fallback; typography roles and numeric presentation are not documented.
 - No canonical loading, skeleton, error summary, offline, destructive dialog, reduced-motion, or responsive navigation pattern exists.
 - No chart component or chart dependency exists.
+
+## v2.1.4 implementation status
+
+Issue #123 implements the authenticated foundation: exact light/dark semantic tokens, restored global focus visibility, reduced-motion behavior, desktop sidebar, tablet overlay drawer with focus containment/return, four-destination mobile bottom navigation, account/language/theme/logout access at every breakpoint, and shared page/surface/metric/state/financial-number primitives. Issue #124 applies those primitives and the visualization contracts to Dashboard, Planning, and Expenses. The verified v2.1.2 audit above remains historical evidence for why the migration was required.
 
 These are audit facts, not reasons to preserve the current presentation.
 
@@ -128,8 +132,8 @@ All final token combinations must meet WCAG 2.2 AA: at least 4.5:1 for normal te
 
 ### Exact figures
 
-- Summary values use `RM 12,345.67` once #63 establishes authoritative decimal output.
-- Until #63, preserve current value semantics and label them as planned values; do not imply new precision guarantees in UI code.
+- Summary values use `RM 12,345.67` from #63's authoritative decimal output.
+- Preserve the #63 value semantics and label them as planned values; UI code must not introduce a second calculation authority.
 - Use a true minus sign and explicit placement for negative values, for example `−RM 125.50`.
 - Percentages show the minimum useful precision and never more than two decimal places.
 - Show `RM 0.00` for a real zero; use an em dash plus explanatory text for unavailable/not-calculated values.
@@ -248,10 +252,10 @@ Every data page defines these states before implementation:
 
 ## Implementation sequence after v2.1.3
 
-1. #63 establishes server-authoritative money values and stable frontend payload meaning.
-2. Create a focused UI-foundation issue for semantic tokens, focus restoration, responsive `AppShell`, and primitive components.
-3. Implement the #44 [Planning summary specification](planning-summary.md) using authoritative values and accessible chart alternatives.
-4. Migrate Dashboard and Expenses projections to the shared summary/chart patterns.
+1. #63 establishes server-authoritative money values and stable frontend payload meaning (complete in v2.1.4).
+2. #123 implements semantic tokens, focus restoration, responsive `AppShell`, and primitive components.
+3. #124 implements the #44 [Planning summary specification](planning-summary.md) using authoritative values and accessible chart alternatives.
+4. #124 migrates Dashboard and Expenses projections to the shared summary/chart patterns.
 5. Migrate Auth/Profile/forms and remove remaining fixed light-only styles.
 
 Each code PR must include focused component/source tests, TypeScript/build, backend contract tests where props change, exact-head `composer check`, responsive evidence at mobile/tablet/desktop widths, keyboard/focus evidence, light/dark evidence, and an accessibility review. Browser/E2E infrastructure remains a separate decision.

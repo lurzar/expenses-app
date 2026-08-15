@@ -24,10 +24,12 @@ The implementation deliberately excludes:
 The key format is:
 
 ```text
-planning:index:v1:user:<internal-user-id>
+planning:index:v2:user:<internal-user-id>
 ```
 
-For example, internal user ID `42` uses `planning:index:v1:user:42`. Laravel may prepend `CACHE_PREFIX` when the selected store supports prefixes.
+For example, internal user ID `42` uses `planning:index:v2:user:42`. Laravel may prepend `CACHE_PREFIX` when the selected store supports prefixes.
+
+Version `v2` begins with the v2.1.4 fixed-decimal Planning payload. Deployments must not reuse `v1` entries because those serialized models can contain the legacy month, salary, and totals shape. The namespace change makes old entries unreachable; they may expire naturally without a global cache flush.
 
 The entry lives for 300 seconds. The application also invalidates it after successful mutations, so the five-minute lifetime is a recovery boundary rather than the primary consistency mechanism. Empty collections use the same key and lifetime.
 
@@ -68,7 +70,7 @@ $key;
 cache()->has($key);
 ```
 
-The expected synthetic key is `planning:index:v1:user:42`. A `true` presence result confirms only that the configured store contains an entry. It does not confirm ownership, freshness, or database persistence.
+The expected synthetic key is `planning:index:v2:user:42`. A `true` presence result confirms only that the configured store contains an entry. It does not confirm ownership, freshness, or database persistence.
 
 Never dump the cached value, serialized file, Redis payload, salary, sections, totals, production key inventory, credentials, or connection configuration into a terminal transcript, issue, pull request, log, or incident channel.
 
@@ -114,7 +116,7 @@ Check ownership and permissions for `storage/framework/cache/data` against the a
 
 Confirm the selected Redis cache connection and deployment network before retrying application writes. If the approved recovery is to return to the file store, change `CACHE_DRIVER`, refresh Laravel's configuration, and verify a synthetic key before restoring normal traffic.
 
-Cache invalidation runs after the owning database transaction. A cache exception can therefore reach the user after the database write committed. Verify PostgreSQL before retrying a create or delete operation.
+Cache invalidation runs after the owning database transaction. The service reports an invalidation exception without changing the committed database result. A delete redirects to the Planning index with a polite warning that lists may remain stale for the five-minute cache lifetime; it never invites the user to retry a deletion that already committed. Create follows the same database-authoritative boundary and redirects normally. Verify PostgreSQL and the affected cache store before taking further action.
 
 ### A cached value cannot be decoded
 
@@ -135,7 +137,7 @@ Do not run a global cache flush as part of routine rollback. Once the applicatio
 
 ## Validation reference
 
-`tests/Feature/Planning/PlanningCacheTest.php` covers cache hits, per-user isolation, empty results, five-minute expiry, Planning create/delete invalidation, unaffected users, account delete/restore invalidation, and rollback behavior with Laravel's array store.
+`tests/Feature/Planning/PlanningCacheTest.php` and `tests/Feature/Planning/PlanningAuthorizationTest.php` cover cache hits, per-user isolation, empty results, five-minute expiry, Planning create/delete invalidation, committed deletion with failed invalidation, unaffected users, account delete/restore invalidation, and rollback behavior with Laravel's array store.
 
 The operational contract belongs to:
 

@@ -41,9 +41,9 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 
 | Scope | Covered? | Typical target | Notes |
 | --- | --- | --- | --- |
-| Unit | Minimal | Example scaffold | Domain calculations do not yet have dedicated unit coverage |
+| Unit | Focused | Exact MYR parsing/formatting, half-up saving target, canonical Planning calculation | Preserve integer-sen boundary coverage |
 | Laravel feature/integration | Yes | Auth, profile, Planning cache/policy, activity, Telescope, language, trusted hosts | Real routes, middleware, Eloquent, SQLite, Inertia assertions |
-| PostgreSQL-specific integration | No automated gate | Future money/index/migration behavior | Required for #63 where SQLite semantics are insufficient |
+| PostgreSQL-specific integration | Manual release evidence | Money/index/migration SQL and representative data | SQLite tests cover up/down normalization and partial-index behavior; PostgreSQL deployment still requires explicit SQL review |
 | Frontend unit/component | Focused | Theme resolver/hook, root DOM state, storage failures, shared toggle, layout wiring, pre-Vite bootstrap | `resources/js/theme.test.tsx`; feature issues add focused tests |
 | Browser/E2E | No | Full user journeys | No Playwright/Cypress configuration found |
 
@@ -57,14 +57,14 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 - Mocking is used at a narrow collaborator boundary to prove transaction rollback when `ActivityRecorder` fails.
 - Telescope tests alter loaded configuration explicitly and validate fail-closed behavior.
 
-## Verified v2.1.2 gate on 2026-08-16
+## Verified v2.1.4 #63 gate on 2026-08-16
 
-- Backend: 86 tests passed with 404 assertions; no failures or deprecated PHPUnit schema warning.
+- Backend: 122 tests passed with 564 assertions, including cache-namespace, migration up/down/failure, supported seeding, tampering, precision, rounding, duplicate period, and projection payload coverage.
 - Repository-wide Pint: clean.
-- Larastan/PHPStan: level 8, 79 application/database files, no errors, no baseline or ignored error.
-- Frontend tests: 20 passed across the theme, language-route, and Planning/Expenses public-route contracts.
+- Larastan/PHPStan: level 8, 83 application/database files, no errors, no baseline or ignored error.
+- Frontend tests: 22 passed across exact money preview, theme, language-route, and Planning/Expenses public-route contracts.
 - Strict TypeScript: passed.
-- Vite production build: passed, 803 modules transformed after the four Auth pages were added.
+- Vite production build: passed, 804 modules transformed.
 - Composer audit: no advisories.
 - npm audit: zero vulnerabilities.
 
@@ -72,7 +72,7 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 
 - `phpunit.xml` includes `app/` as coverage source but defines no enforced percentage; coverage is intentionally not presented as a gate until a measured ratchet is approved.
 - GitHub-hosted Actions are not used under the approved zero-cost personal-account policy. The release owner runs `npm ci` and `composer check` locally on every exact PR/release head and records the results in the PR and release tracker.
-- Planning persistence validation/calculation paths lack authoritative money/tampering tests; #63 owns them after #57 records domain decisions.
+- Planning persistence has authoritative money, tampering, precision, uniqueness, migration, rollback, and payload tests under #63.
 - Planning/Expenses owner success, non-owner denial, public-ULID binding, deletion, and DTO serialization are covered together in `PlanningAuthorizationTest`.
 - Browser/E2E coverage remains absent; focused component and Laravel feature coverage protects current behavior.
 
@@ -80,8 +80,8 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 
 - `composer.lock`, `phpunit.xml`, `tests/Pest.php`, `tests/TestCase.php`
 - `tests/Feature/Planning/PlanningAuthorizationTest.php`
-- `tests/Feature/Planning/PlanningCacheTest.php`
+- `tests/Feature/Planning/PlanningCacheTest.php`, `PlanningMoneyIntegrityTest.php`, and `PlanningMoneyMigrationTest.php`
 - `tests/Feature/System/ActivityLoggingTest.php`
-- `resources/js/theme.test.tsx`
+- `resources/js/theme.test.tsx`, `resources/js/money.test.ts`
 - `resources/js/language-route.test.ts`, `resources/js/planning-route.test.ts`
 - Verified commands listed above, run on 2026-08-16
