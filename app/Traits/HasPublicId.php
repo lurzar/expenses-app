@@ -12,7 +12,7 @@ trait HasPublicId
      */
     public function publicIdColumn(): string
     {
-        return Str::singular($this->getTable()) . '_id';
+        return Str::singular($this->getTable()).'_id';
     }
 
     /**

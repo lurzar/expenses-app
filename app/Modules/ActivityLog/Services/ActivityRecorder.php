@@ -9,6 +9,7 @@ use InvalidArgumentException;
 
 class ActivityRecorder
 {
+    /** @param array<string, mixed> $metadata */
     public function record(
         ActivityEvent $event,
         ?string $actorId,

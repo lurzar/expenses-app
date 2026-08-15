@@ -32,10 +32,10 @@ Tags `v2.0.1-dev` through `v2.0.9-dev` remain historical tag-only releases. Do n
 | PostgreSQL | 18.4 Alpine in Sail | `docker-compose.yml` |
 | Redis | 8.8.1 Alpine, optional for application cache | `docker-compose.yml` and `.env.example` |
 | pgAdmin | 9.16 | `docker-compose.yml` |
-| CI database | SQLite file | `.github/workflows/laravel.yml` |
+| CI/test database | Forced SQLite in memory | `tests/bootstrap.php`, `phpunit.xml`, and `.github/workflows/laravel.yml` |
 | Default application cache | File | `.env.example` and `config/cache.php` |
 
-The current workflow runs only for pull requests and pushes to `main`. It installs PHP 8.4 and Node 22, builds the frontend, and runs Pest with SQLite. It does not currently validate active `v2.x` or version-branch PRs, Pint, TypeScript as a separate gate, audits, or static analysis. Issue #65 owns that target quality pipeline.
+The quality workflow runs for every pull request and for pushes to `main`, `v2.x`, and version branches. Separate mandatory jobs install committed locks and run PHP formatting, Larastan, isolated backend tests, frontend tests, TypeScript, build, and both audits. Actions are commit-pinned, checkout credentials are not persisted, and the token has only `contents: read`.
 
 ## Set up a clean checkout with Sail
 
@@ -71,10 +71,10 @@ Do not copy a real `.env`, database, cache payload, Telescope entry, activity re
 
 Use the host for Composer, frontend checks, and isolated SQLite tests when its PHP and Node versions match the matrix. The checked-in development database host is `pgsql`, a Sail service name that a host process usually cannot resolve.
 
-Run host tests with an explicit isolated database:
+The committed test bootstrap force-selects isolated in-memory SQLite before Laravel loads, so the normal host command is safe even if the shell exports development-database variables:
 
 ```bash
-DB_CONNECTION=sqlite DB_DATABASE=:memory: php artisan test
+composer test
 ```
 
 Never run an automated test while its resolved connection can target development or production data. Use Sail when behavior depends on PostgreSQL semantics.
@@ -223,18 +223,10 @@ Never merge the top layer into an already-merged feature branch and assume it re
 Use focused checks during development, then run the configured aggregate matrix on the exact release tree:
 
 ```bash
-composer validate --strict
-vendor/bin/pint --test
-DB_CONNECTION=sqlite DB_DATABASE=:memory: php artisan test
-npx tsc --noEmit
-npm run build
-composer audit --locked --no-interaction
-npm audit --package-lock-only
+composer check
 ```
 
-Run changed-file Pint separately so inherited style failures cannot hide new ones. Run configured static analysis only when the repository supplies it; PHPStan/Larastan is not configured yet.
-
-The v2.0.8 baseline recorded 57 passing backend tests and five failures: four missing auth views and one Profile hard-delete expectation that conflicts with the soft-delete model. Repository-wide Pint reported findings in 35 legacy files. Record current counts every time; do not copy these numbers forward as a passing result. Issue #65 owns their resolution.
+`composer check` runs repository Pint, Larastan/PHPStan, the isolated backend suite, frontend tests/types/build, and both locked dependency audits. Run focused tests while developing, then this aggregate command on the exact PR/release head. Do not weaken a required stage or add an unexplained static-analysis baseline.
 
 Browser testing is optional for a change with no browser-visible behavior. Record the omission. For UI changes, add the smallest relevant smoke or interaction check.
 
@@ -285,7 +277,7 @@ Related foundation issues have separate ownership:
 
 - #33 completed the login-page changes summary backed by `config/changelog.php`; release work updates it but does not reopen or reimplement #33.
 - #59 completed the documentation source-of-truth map in `docs/README.md`; new canonical documents update that map rather than creating a competing index.
-- #65 remains open for deterministic quality gates and inherited failures; this guide records current behavior without claiming that target is complete.
+- #65 established the deterministic quality pipeline; future changes update the scripts, workflow, and this guide together.
 
 ## Roll back and clean up
 

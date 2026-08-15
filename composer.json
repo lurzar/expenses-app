@@ -19,6 +19,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",
         "fakerphp/faker": "^1.9.1",
+        "larastan/larastan": "^3.0",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.40",
         "laravel/telescope": "^5.3",
@@ -44,6 +45,20 @@
         }
     },
     "scripts": {
+        "analyse": "phpstan analyse --memory-limit=512M",
+        "check": [
+            "composer validate --strict",
+            "@format:test",
+            "@analyse",
+            "@test",
+            "npm run test",
+            "npm run typecheck",
+            "npm run build",
+            "composer audit --locked --no-interaction",
+            "npm audit --package-lock-only"
+        ],
+        "format": "pint",
+        "format:test": "pint --test",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
@@ -56,7 +71,8 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "test": "@php artisan test --compact"
     },
     "extra": {
         "laravel": {

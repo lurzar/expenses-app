@@ -61,16 +61,10 @@ Describe unmerged behavior as planned and link its issue. Update documentation i
 Run the smallest relevant checks while developing, then run all configured checks affected by the change. The current baseline commands are:
 
 ```bash
-composer validate --strict
-vendor/bin/pint --test
-php artisan test
-npx tsc --noEmit
-npm run build
-composer audit --locked --no-interaction
-npm audit --audit-level=high
+composer check
 ```
 
-Use an isolated test database. SQLite in memory is acceptable for compatible tests; use PostgreSQL when behavior depends on PostgreSQL semantics. Never point automated tests at development or production data.
+The committed test bootstrap forces isolated in-memory SQLite before Laravel loads. Use a separate explicit configuration for PostgreSQL-dependent behavior and never point automated tests at development or production data.
 
 Also run configured static analysis, coverage, or security checks when they exist. If a repository-wide check already fails outside the change, report the exact baseline failure and verify that the focused change does not add another failure. Do not silently weaken or bypass a gate.
 

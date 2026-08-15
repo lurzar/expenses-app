@@ -8,10 +8,12 @@ use App\Providers\TelescopeServiceProvider as AppTelescopeServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Telescope\TelescopeServiceProvider;
+use LogicException;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -48,20 +50,9 @@ class AppServiceProvider extends ServiceProvider
      * Result: App\Modules\Planning\Database\Factories\PlanningFactory
      * Fallback: Database\Factories\PlanningFactory
      */
-    private function customGuessFactoryNames()
+    private function customGuessFactoryNames(): void
     {
-        Factory::guessFactoryNamesUsing(function (string $modelName) {
-            if (str_contains($modelName, 'App\\Modules\\')) {
-                $moduleNamespace = Str::before($modelName, 'Models\\');
-                $modelBasename = class_basename($modelName);
-
-                return $moduleNamespace.'Database\\Factories\\'.$modelBasename.'Factory';
-            }
-
-            $modelName = Str::afterLast($modelName, '\\');
-
-            return 'Database\\Factories\\'.$modelName.'Factory';
-        });
+        Factory::guessFactoryNamesUsing(fn (string $modelName): string => $this->resolveFactoryName($modelName));
     }
 
     /**
@@ -69,22 +60,56 @@ class AppServiceProvider extends ServiceProvider
      * Result: App\Modules\Planning\Database\Factories\PlanningFactory
      * Fallback: App\Models\Planning
      */
-    private function customGuessFactoryModelNames()
+    private function customGuessFactoryModelNames(): void
     {
-        Factory::guessModelNamesUsing(function (Factory $factory) {
-            $namespacedFactoryBasename = Str::replaceLast(
-                'Factory', '', Str::replaceFirst('Database\\Factories\\', '', get_class($factory))
-            );
+        Factory::guessModelNamesUsing(fn (Factory $factory): string => $this->resolveFactoryModelName($factory));
+    }
 
-            $factoryBasename = Str::afterLast($namespacedFactoryBasename, '\\');
+    /**
+     * @param  class-string<Model>  $modelName
+     * @return class-string<Factory<Model>>
+     */
+    private function resolveFactoryName(string $modelName): string
+    {
+        if (str_contains($modelName, 'App\\Modules\\')) {
+            $moduleNamespace = Str::before($modelName, 'Models\\');
+            $modelBasename = class_basename($modelName);
+            $factoryName = $moduleNamespace.'Database\\Factories\\'.$modelBasename.'Factory';
+        } else {
+            $modelBasename = Str::afterLast($modelName, '\\');
+            $factoryName = 'Database\\Factories\\'.$modelBasename.'Factory';
+        }
 
-            if (str_contains(get_class($factory), 'App\\Modules\\')) {
-                $moduleNamespace = Str::before(get_class($factory), 'Database\\Factories\\');
+        if (! is_subclass_of($factoryName, Factory::class)) {
+            throw new LogicException("Unable to resolve factory for {$modelName}.");
+        }
 
-                return $moduleNamespace.'Models\\'.$factoryBasename;
-            }
+        return $factoryName;
+    }
 
-            return 'App\\Models\\'.$factoryBasename;
-        });
+    /**
+     * @param  Factory<Model>  $factory
+     * @return class-string<Model>
+     */
+    private function resolveFactoryModelName(Factory $factory): string
+    {
+        $factoryClass = get_class($factory);
+        $namespacedFactoryBasename = Str::replaceLast(
+            'Factory', '', Str::replaceFirst('Database\\Factories\\', '', $factoryClass)
+        );
+        $factoryBasename = Str::afterLast($namespacedFactoryBasename, '\\');
+
+        if (str_contains($factoryClass, 'App\\Modules\\')) {
+            $moduleNamespace = Str::before($factoryClass, 'Database\\Factories\\');
+            $modelName = $moduleNamespace.'Models\\'.$factoryBasename;
+        } else {
+            $modelName = 'App\\Models\\'.$factoryBasename;
+        }
+
+        if (! is_subclass_of($modelName, Model::class)) {
+            throw new LogicException("Unable to resolve model for {$factoryClass}.");
+        }
+
+        return $modelName;
     }
 }

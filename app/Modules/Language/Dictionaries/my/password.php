@@ -18,7 +18,7 @@ return [
     'sent' => 'Kami telah menghantar e-mel pautan tetapan semula kata laluan anda.',
     'throttled' => 'Sila tunggu sebelum mencuba semula.',
     'token' => 'Token tetapan semula kata laluan ini tidak sah.',
-    'user' => "Kami tidak dapat mencari pengguna dengan alamat e-mel itu.",
+    'user' => 'Kami tidak dapat mencari pengguna dengan alamat e-mel itu.',
     'forgot' => 'Lupa kata laluan anda?',
     'forgot_desc' => 'Terlupa kata laluan anda? Tiada masalah. Hanya beritahu kami alamat e-mel anda dan kami akan menghantar e-mel kepada anda pautan tetapan semula kata laluan yang membolehkan anda memilih yang baharu.',
     'update' => 'Kemaskini Kata Laluan',
