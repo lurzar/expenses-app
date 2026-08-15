@@ -9,15 +9,15 @@ As of 2026-08-16:
 | Item | Current role |
 | --- | --- |
 | `main` | GitHub's default branch and the merged v2.0.0 application state. Do not use it as the automatic base for current patch work. |
-| `v2.1` | Active integration branch for versions 2.1.0 through 2.1.9. Completed patch-version branches merge here. |
-| `v2.0.x` | Temporary version-aggregation branch created from an exact approved `v2.1` commit. |
-| `v2.x` | Longer-running v2 release line. PR #37 promotes the completed v2.1.0 milestone from `v2.1`. |
-| `v2.0.x-dev` | Lightweight Git tags placed on the `v2.1` merge commit after an approved version release. |
-| `v2.1.0-dev` | Lightweight Git tag placed on the `v2.x` merge commit after the approved v2.1.0 promotion. |
+| `v2.x` | Active integration and release line for supported v2 development. Approved patch-version branches merge here. |
+| `v2.1.x` | Temporary version-aggregation branch created from an exact approved `v2.x` commit and deleted after release preservation checks. |
+| `<type>/<issue>-<slug>` | Temporary issue branch. It targets the approved version branch, or the immediately lower branch when a genuine dependency requires a stack. |
+| `v2.1.x-dev` | Lightweight Git tag placed on the resulting `v2.x` merge commit after an approved patch release. |
+| GitHub Release | Published from each verified release tag with user-facing notes, known limitations, and rollback guidance. |
 
-PR #37 is not part of an ordinary patch release. It promotes only the 14 resolved v2.1.0 milestone sub-issues; other issues carrying the broad `v2.1` label remain available for versions 2.1.1 through 2.1.9.
+PR #37 historically promoted the completed v2.1.0 milestone into `v2.x`. The source `v2.1` branch was deleted after its tree was proven identical to the merge commit and `v2.1.0-dev` tag. Do not recreate that branch as a second integration line.
 
-The repository currently publishes lightweight patch tags without matching GitHub Release objects. GitHub Releases stop at `v2.0.0-dev`; this is a known distinction, not proof that later tags are missing.
+The broad `v2.1` label identifies the 2.1.x development series. Every approved issue also receives its exact target-version label, such as `v2.1.1`. A series label alone does not make an issue a blocker for every patch in that series.
 
 ## Tool and runtime matrix
 
@@ -33,7 +33,7 @@ The repository currently publishes lightweight patch tags without matching GitHu
 | CI database | SQLite file | `.github/workflows/laravel.yml` |
 | Default application cache | File | `.env.example` and `config/cache.php` |
 
-The current workflow runs only for pull requests and pushes to `main`. It installs PHP 8.4 and Node 22, builds the frontend, and runs Pest with SQLite. It does not currently validate active `v2.1` or version-branch PRs, Pint, TypeScript as a separate gate, audits, or static analysis. Issue #65 owns that target quality pipeline.
+The current workflow runs only for pull requests and pushes to `main`. It installs PHP 8.4 and Node 22, builds the frontend, and runs Pest with SQLite. It does not currently validate active `v2.x` or version-branch PRs, Pint, TypeScript as a separate gate, audits, or static analysis. Issue #65 owns that target quality pipeline.
 
 ## Set up a clean checkout with Sail
 
@@ -102,10 +102,10 @@ Choose the base in this order:
 
 1. use the base recorded in the approved issue and release tracker;
 2. otherwise use the active version branch when the issue is approved for that release;
-3. otherwise use the verified active integration branch, currently `v2.1`; and
+3. otherwise use the verified active integration branch, currently `v2.x`; and
 4. use `main` only when the issue and repository state explicitly call for the default branch.
 
-Do not branch current issue work from `v2.x`, PR #37, a completed patch branch, or whichever branch happens to be checked out.
+Do not branch issue work from `main`, a completed patch branch, or whichever branch happens to be checked out. During an active patch train, issue branches target its temporary version branch. Create that version branch from the exact `v2.x` commit recorded by the approved release tracker.
 
 ## Execute one issue
 
@@ -242,7 +242,7 @@ An approved release tracker owns the version scope and decisions.
 
 ### Prepare
 
-- [ ] Fetch and verify that local `v2.1` matches `origin/v2.1`.
+- [ ] Fetch and verify that local `v2.x` matches `origin/v2.x`.
 - [ ] Record the exact base commit in the release tracker.
 - [ ] Create and push `v<version>` from that exact commit.
 - [ ] Confirm every included issue has the correct version label, base, branch, and PR plan.
@@ -255,18 +255,19 @@ An approved release tracker owns the version scope and decisions.
 - [ ] Verify the aggregate file list and commit history against the tracker.
 - [ ] Update `CHANGELOG.md` and `config/changelog.php` on the version branch.
 - [ ] Run the complete validation matrix on the exact remote release commit.
-- [ ] Open a normal version PR from `v<version>` into `v2.1`.
+- [ ] Open a normal version PR from `v<version>` into `v2.x`.
 
 ### Complete
 
 - [ ] Verify the version PR's base, head, included issues, checks, mergeability, deployment notes, and rollback.
 - [ ] Obtain explicit authorization for the version merge.
-- [ ] Verify the resulting `v2.1` commit before tagging.
+- [ ] Verify the resulting `v2.x` commit before tagging.
 - [ ] Create and push the lightweight `v<version>-dev` tag only after tag authorization.
-- [ ] Verify the remote tag resolves to the exact approved `v2.1` commit.
+- [ ] Verify the remote tag resolves to the exact approved `v2.x` commit.
+- [ ] Publish and verify the GitHub Release from that existing tag, including compatibility, limitations, deployment, and rollback notes.
 - [ ] Close completed issues through verified PR relationships or explicit issue updates.
 - [ ] Delete only merged issue and version branches covered by explicit cleanup authorization.
-- [ ] Leave `v2.1`, `v2.x`, `main`, and PR #37 intact unless separately authorized.
+- [ ] Leave the long-lived `v2.x` and `main` branches intact; retain tags, Releases, merged PRs, and issue records as preservation evidence.
 
 ## Own changelogs, tags, and Releases
 
@@ -276,7 +277,7 @@ An approved release tracker owns the version scope and decisions.
 
 The version PR body records the exact included PRs, validation, known baseline failures, deployment/rollback notes, and planned tag. It is not a substitute for either changelog.
 
-The recent repository convention uses lightweight `-dev` tags and no new GitHub Release object. Do not create a GitHub Release, mark one latest, change SemVer, or rewrite a tag unless the release tracker explicitly approves it.
+The current repository convention uses lightweight `-dev` tags plus matching GitHub Release objects. Create the Release only after the remote tag resolves to the approved `v2.x` merge commit. Mark the newest approved patch latest. Do not change SemVer, move a tag, or replace a published Release artifact; ship a corrective patch when post-release code must change.
 
 Related foundation issues have separate ownership:
 
@@ -290,11 +291,11 @@ Before merge, close or update the PR and preserve the branch for correction.
 
 After an issue PR reaches the version branch, revert its commit or patch through a new reviewed PR. Follow any migration, retention, cache, or operational guide attached to that issue.
 
-After a version PR reaches `v2.1`, use a reviewed revert on `v2.1`; do not reset or force-push the integration branch. A published tag must not be moved or deleted without explicit owner approval and a documented recovery plan.
+After a version PR reaches `v2.x`, use a reviewed revert on `v2.x`; do not reset or force-push the integration branch. A published tag must not be moved or deleted; use a corrective release unless the owner separately approves and documents an exceptional recovery plan.
 
 Branch deletion is cleanup, not proof of release. Verify merge state and exact branch targets first. Do not delete branches with unmerged commits, open dependent PRs, or active rollback value.
 
-## Proven stacked-release examples
+## Historical stacked-release examples
 
 Version 2.0.7 used two independent two-layer stacks:
 
@@ -309,4 +310,4 @@ Version 2.0.8 used one two-layer stack:
 - Stack #85 preserved the dependency relationship.
 - PR #86 merged the aggregate into `v2.1`, and `v2.0.8-dev` marks commit `0f32c4e61f6e9fb3676a835c06e6c5414d7db570`.
 
-These examples establish the topology. The current release tracker remains the authority for the next version's exact issues, branches, stacks, and authorization checkpoints.
+These examples predate the v2.1.0 promotion and used `v2.1` as their then-current target. They establish the issue-stack topology, not the current integration branch. The active release tracker remains the authority for each version's exact issues, `v2.x` base commit, temporary branches, stacks, and authorization checkpoints.
