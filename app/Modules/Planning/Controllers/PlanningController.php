@@ -3,6 +3,7 @@
 namespace App\Modules\Planning\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Planning\Data\PlanningData;
 use App\Modules\Planning\Models\Planning;
 use App\Modules\Planning\Requests\PlanningStoreRequest as StoreRequest;
 use App\Modules\Planning\Services\PlanningService;
@@ -20,7 +21,7 @@ class PlanningController extends Controller
     public function index(): Response
     {
         return Inertia::render('Planning/Index', [
-            'plannings' => $this->service->getAllPlannings(),
+            'plannings' => PlanningData::collection($this->service->getAllPlannings()),
         ]);
     }
 
@@ -41,7 +42,7 @@ class PlanningController extends Controller
         Gate::authorize('view', $planning);
 
         return Inertia::render('Planning/Show', [
-            'planning' => $planning,
+            'planning' => PlanningData::fromModel($planning),
         ]);
     }
 

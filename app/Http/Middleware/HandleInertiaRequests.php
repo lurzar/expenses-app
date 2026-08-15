@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Data\AuthenticatedUserData;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -25,10 +26,12 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user ? AuthenticatedUserData::fromModel($user) : null,
             ],
             'locale' => app()->getLocale(),
             'translations' => $this->getTranslations(),

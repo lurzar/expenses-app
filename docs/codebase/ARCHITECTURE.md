@@ -10,7 +10,7 @@ Primary constraints:
 
 - Planning is the only stored monthly-plan aggregate; Dashboard and Expenses project it.
 - Server middleware, validation, authorization, and transactions define trust boundaries; React is a presentation/client-preview layer.
-- Public ULIDs are used for route binding and activity identifiers, but current Inertia serialization also exposes internal numeric `id`/`user_id` fields because no explicit resource transform hides them; #61 owns narrowing that boundary.
+- Public ULIDs are used for route binding, activity identifiers, explicit Planning page payloads, and shared authenticated-user props; internal numeric keys remain server-side persistence details.
 - There is no implemented public REST API or separate transaction ledger.
 
 ## System flow
@@ -30,7 +30,7 @@ For Planning creation:
 5. After commit, `PlanningCache` invalidates the authenticated user's collection key.
 6. The redirect returns to the Planning index, whose Inertia props come from the cached user-scoped collection.
 
-For direct Planning display, Laravel resolves the public ULID through `HasPublicId` and the controller calls `PlanningPolicy` before returning an Inertia page. Expenses intends the same flow, but its `{expenses}` route parameter does not match controller argument `$expense`; the requested record is not injected and an isolated owner-path request returns 403. Issue #61 owns binding normalization, response serialization, and complete owner/non-owner coverage.
+For direct Planning and Expenses display, Laravel resolves the public ULID through `HasPublicId` and the controller calls `PlanningPolicy` before returning an Inertia page. `PlanningData` shapes every Planning/Expenses/Dashboard projection without numeric Planning or owner IDs; `AuthenticatedUserData` likewise omits the numeric user primary key from shared props.
 
 ## Layer and module responsibilities
 
@@ -56,6 +56,7 @@ For direct Planning display, Laravel resolves the public ULID through `HasPublic
 | Database transaction | Planning, registration, profile lifecycle | Keep domain mutation and audit history atomic |
 | User-scoped cache-aside | `PlanningCache`; `PlanningService::getAllPlannings` | Reuse five-minute collection reads and invalidate after lifecycle changes |
 | Public ID trait | `HasPublicId` on `User`/`Planning` | Generate ULIDs and use them as route keys while persistence continues using numeric keys |
+| Explicit Inertia data boundary | `PlanningData`; `AuthenticatedUserData` | Expose required public identifiers and fields without serializing internal numeric keys |
 | Inertia shared props | `HandleInertiaRequests` | Provide auth, locale, dictionaries, and flash data consistently |
 
 ## Startup order
@@ -66,9 +67,7 @@ For direct Planning display, Laravel resolves the public ULID through `HasPublic
 
 - `PlanningService::store` persists browser-supplied totals and `Planning` casts salary as binary float. #57 documents meaning; #63 owns authoritative calculations, precision, constraints, and migration.
 - Planning validation does not enforce numeric boundaries, period uniqueness, or deterministic rounding. See #63.
-- The Expenses binding name differs from its controller variable. Policy checks exist, but #61 owns binding normalization and complete owner/non-owner coverage.
 - Collection reads load every plan without pagination. The cache reduces repeated queries but does not bound payload growth.
-- Some Auth controllers still return removed Blade views while the primary UI uses Inertia/React; this causes known backend failures and is owned by #65.
 - `PlanningService` is registered as a singleton with a mutable injected `Planning` instance. Current HTTP store flow calls it once, but reusable multi-create flows would need a fresh model boundary.
 
 ## Evidence
