@@ -37,9 +37,6 @@ export default function Index({ auth, plannings }: ExpensesIndexProps) {
                                                     <h3 className="font-semibold text-lg">
                                                         {planning.name}
                                                     </h3>
-                                                    <p className="text-sm text-gray-500">
-                                                        {planning.name}
-                                                    </p>
                                                 </div>
                                                 <div className="text-right">
                                                     <p className="text-sm text-gray-500">Salary</p>

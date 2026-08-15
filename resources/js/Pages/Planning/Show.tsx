@@ -38,18 +38,15 @@ export default function Show({ auth, planning }: ShowProps) {
     };
 
     return (
-        <AppLayout user={auth.user!} header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">{planning.name || `${planning.month}, ${planning.year}`}</h2>}>
-            <Head title={planning.name || 'Planning'} />
+        <AppLayout user={auth.user!} header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">{planning.name}</h2>}>
+            <Head title={planning.name} />
 
             <div className="py-12">
                 <div className="max-w-4xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6">
                             {/* Actions */}
-                            <div className="mb-6 flex justify-between items-center">
-                                <p className="text-sm text-gray-500">
-                                    {planning.name}
-                                </p>
+                            <div className="mb-6 flex justify-end items-center">
                                 <div className="flex gap-2">
                                     <Link
                                         href={`/expenses/${planning.planning_id}`}

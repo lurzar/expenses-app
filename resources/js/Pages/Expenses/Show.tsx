@@ -22,9 +22,6 @@ export default function Show({ auth, planning }: ShowProps) {
                                 <h3 className="text-lg font-semibold text-gray-800">
                                     {planningName}
                                 </h3>
-                                <p className="text-sm text-gray-500">
-                                    {planning.name}
-                                </p>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">

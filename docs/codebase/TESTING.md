@@ -59,7 +59,7 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 
 ## Verified v2.1.4 #63 gate on 2026-08-16
 
-- Backend: 115 tests passed with 549 assertions, including migration up/down, tampering, precision, rounding, duplicate period, and projection payload coverage.
+- Backend: 122 tests passed with 564 assertions, including cache-namespace, migration up/down/failure, supported seeding, tampering, precision, rounding, duplicate period, and projection payload coverage.
 - Repository-wide Pint: clean.
 - Larastan/PHPStan: level 8, 83 application/database files, no errors, no baseline or ignored error.
 - Frontend tests: 22 passed across exact money preview, theme, language-route, and Planning/Expenses public-route contracts.
