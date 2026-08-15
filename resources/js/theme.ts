@@ -19,8 +19,8 @@ export function nextTheme(theme: Theme): Theme {
     return theme === 'light' ? 'dark' : 'light';
 }
 
-export function themeToggleLabel(theme: Theme): string {
-    return `Switch to ${nextTheme(theme)} mode`;
+export function themeToggleLabel(): string {
+    return 'Dark mode';
 }
 
 export function initialTheme(): Theme {
@@ -55,7 +55,6 @@ function persistTheme(theme: Theme): void {
         // Theme selection remains functional when storage is unavailable.
     }
 
-    applyTheme(theme);
 }
 
 export function useTheme(): {
@@ -66,16 +65,11 @@ export function useTheme(): {
 
     useEffect(() => {
         applyTheme(theme);
+        persistTheme(theme);
     }, [theme]);
 
     const toggleTheme = useCallback(() => {
-        setTheme((currentTheme) => {
-            const updatedTheme = nextTheme(currentTheme);
-
-            persistTheme(updatedTheme);
-
-            return updatedTheme;
-        });
+        setTheme(nextTheme);
     }, []);
 
     return { theme, toggleTheme };
