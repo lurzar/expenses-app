@@ -3,6 +3,25 @@
 return [
     'releases' => [
         [
+            'version' => '2.1.0',
+            'status' => 'Released',
+            'released_at' => '2026-08-16',
+            'changes' => [
+                [
+                    'category' => 'Added',
+                    'description' => 'Added a modern React experience for monthly planning, summaries, and account management.',
+                ],
+                [
+                    'category' => 'Changed',
+                    'description' => 'Upgraded the application platform, database, identifiers, performance, and operational guidance.',
+                ],
+                [
+                    'category' => 'Security',
+                    'description' => 'Strengthened dependencies, diagnostics, activity history, and account-isolated planning caches.',
+                ],
+            ],
+        ],
+        [
             'version' => '2.0.9',
             'status' => 'Released',
             'released_at' => '2026-08-15',

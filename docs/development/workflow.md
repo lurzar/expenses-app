@@ -4,17 +4,18 @@ This guide gives an Expenses App contributor or release owner one path from a cl
 
 ## Current repository model
 
-As of 2026-08-15:
+As of 2026-08-16:
 
 | Item | Current role |
 | --- | --- |
 | `main` | GitHub's default branch and the merged v2.0.0 application state. Do not use it as the automatic base for current patch work. |
-| `v2.1` | Active integration branch for the v2.1 development line. Completed patch-version branches merge here. |
+| `v2.1` | Active integration branch for versions 2.1.0 through 2.1.9. Completed patch-version branches merge here. |
 | `v2.0.x` | Temporary version-aggregation branch created from an exact approved `v2.1` commit. |
-| `v2.x` | Longer-running v2 release line. Draft PR #37 proposes `v2.1` -> `v2.x`. |
+| `v2.x` | Longer-running v2 release line. PR #37 promotes the completed v2.1.0 milestone from `v2.1`. |
 | `v2.0.x-dev` | Lightweight Git tags placed on the `v2.1` merge commit after an approved version release. |
+| `v2.1.0-dev` | Lightweight Git tag placed on the `v2.x` merge commit after the approved v2.1.0 promotion. |
 
-PR #37 is not part of an ordinary patch release. Keep it draft until the owner separately authorizes the v2.1-to-v2.x integration.
+PR #37 is not part of an ordinary patch release. It promotes only the 14 resolved v2.1.0 milestone sub-issues; other issues carrying the broad `v2.1` label remain available for versions 2.1.1 through 2.1.9.
 
 The repository currently publishes lightweight patch tags without matching GitHub Release objects. GitHub Releases stop at `v2.0.0-dev`; this is a known distinction, not proof that later tags are missing.
 

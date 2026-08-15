@@ -6,6 +6,22 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-08-16
+
+### Added
+
+- Added the Laravel 12 modular application structure with an Inertia, React, and TypeScript frontend.
+- Added PostgreSQL-backed monthly planning, public change summaries, operational diagnostics, activity history, and Planning cache guidance.
+
+### Changed
+
+- Replaced the earlier Livewire interface and MySQL development stack with the supported React/Inertia and PostgreSQL workflow.
+- Standardized internal database IDs, public model identifiers, supported runtime versions, container images, release documentation, and issue-linked development practices.
+
+### Security
+
+- Removed known dependency advisories, restricted non-local diagnostics, minimized activity metadata, and isolated cached Planning collections by authenticated user.
+
 ## [2.0.9] - 2026-08-15
 
 ### Added
@@ -67,7 +83,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Updated Composer and npm dependencies to remove known security advisories while remaining on the intended major versions.
 
-[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.0.9-dev...HEAD
+[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.1.0-dev...HEAD
+[2.1.0]: https://github.com/lurzar/expenses-app/compare/v2.0.9-dev...v2.1.0-dev
 [2.0.9]: https://github.com/lurzar/expenses-app/compare/v2.0.8-dev...v2.0.9-dev
 [2.0.8]: https://github.com/lurzar/expenses-app/compare/v2.0.7-dev...v2.0.8-dev
 [2.0.7]: https://github.com/lurzar/expenses-app/compare/v2.0.6-dev...v2.0.7-dev
