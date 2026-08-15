@@ -3,11 +3,14 @@
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
+use Inertia\Testing\AssertableInertia as Assert;
 
 test('reset password link screen can be rendered', function () {
     $response = $this->get('/forgot-password');
 
-    $response->assertStatus(200);
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('Auth/ForgotPassword')
+        ->where('status', null));
 });
 
 test('reset password link can be requested', function () {
@@ -27,10 +30,16 @@ test('reset password screen can be rendered', function () {
 
     $this->post('/forgot-password', ['email' => $user->email]);
 
-    Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
-        $response = $this->get('/reset-password/'.$notification->token);
+    Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
+        $response = $this->get(route('password.reset', [
+            'token' => $notification->token,
+            'email' => $user->email,
+        ]));
 
-        $response->assertStatus(200);
+        $response->assertInertia(fn (Assert $page) => $page
+            ->component('Auth/ResetPassword')
+            ->where('token', $notification->token)
+            ->where('email', $user->email));
 
         return true;
     });

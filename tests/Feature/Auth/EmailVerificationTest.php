@@ -1,10 +1,11 @@
 <?php
 
-use App\Modules\Auth\Middleware\RedirectIfAuthenticated;
 use App\Models\User;
+use App\Modules\Auth\Middleware\RedirectIfAuthenticated;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
+use Inertia\Testing\AssertableInertia as Assert;
 
 test('email verification screen can be rendered', function () {
     $user = User::factory()->create([
@@ -13,7 +14,9 @@ test('email verification screen can be rendered', function () {
 
     $response = $this->actingAs($user)->get('/verify-email');
 
-    $response->assertStatus(200);
+    $response->assertInertia(fn (Assert $page) => $page
+        ->component('Auth/VerifyEmail')
+        ->where('status', null));
 });
 
 test('email can be verified', function () {

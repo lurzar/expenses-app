@@ -3,6 +3,7 @@
 namespace App\Modules\Profile\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Modules\ActivityLog\ActivityEvent;
 use App\Modules\ActivityLog\Services\ActivityRecorder;
 use App\Modules\Planning\Services\PlanningCache;
@@ -41,6 +42,8 @@ class ProfileController extends Controller
     {
         DB::transaction(function () use ($request): void {
             $user = $request->user();
+            abort_unless($user instanceof User, 401);
+
             $user->fill($request->validated());
             $changedFields = array_values(array_intersect(
                 ['name', 'email'],
@@ -77,6 +80,7 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+        abort_unless($user instanceof User, 401);
 
         DB::transaction(function () use ($user): void {
             $user->delete();

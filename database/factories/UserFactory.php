@@ -4,16 +4,23 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory<User>
  */
 class UserFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return array{
+     *     name: string,
+     *     email: string,
+     *     email_verified_at: Carbon,
+     *     password: string,
+     *     remember_token: null
+     * }
      */
     public function definition(): array
     {
@@ -35,6 +42,7 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
     /**
      * Indicate that the model's array should be superadmin.
      */
@@ -44,7 +52,7 @@ class UserFactory extends Factory
             'name' => 'Super Admin',
             'email' => 'superadmin@app.com',
             'email_verified_at' => now(),
-            'password' => bcrypt('superadmin@app.com')
+            'password' => bcrypt('superadmin@app.com'),
         ]);
     }
 }

@@ -3,17 +3,35 @@
 namespace App\Modules\Planning\Models;
 
 use App\Models\User;
+use App\Modules\Planning\Database\Factories\PlanningFactory;
 use App\Traits\HasPublicId;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
+/**
+ * @property int $id
+ * @property string $planning_id
+ * @property int $user_id
+ * @property string $month
+ * @property string $year
+ * @property float $salary
+ * @property Collection<string, mixed>|null $sections
+ * @property Collection<string, float|int|string>|null $totals
+ * @property-read string $name
+ * @property-read string $spending
+ */
 class Planning extends Model
 {
-    use HasFactory, HasPublicId, SoftDeletes;
+    /** @use HasFactory<PlanningFactory> */
+    use HasFactory;
+
+    use HasPublicId, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -63,14 +81,16 @@ class Planning extends Model
         return 'planning_id';
     }
 
-    public function name(): Attribute
+    /** @return Attribute<string, never> */
+    protected function name(): Attribute
     {
         return new Attribute(
             get: fn () => $this->month.', '.$this->year,
         );
     }
 
-    public function spending(): Attribute
+    /** @return Attribute<string, never> */
+    protected function spending(): Attribute
     {
         $value = $this->totals ? $this->totals->sum() : 0.00;
 
@@ -82,12 +102,17 @@ class Planning extends Model
     /**
      * Get the user that owns the Planning
      */
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    protected function scopeThisMonth($query)
+    /**
+     * @param  Builder<Planning>  $query
+     * @return Builder<Planning>
+     */
+    protected function scopeThisMonth(Builder $query): Builder
     {
         return $query->where('month', getCurrentMonthName());
     }

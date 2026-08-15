@@ -59,19 +59,13 @@ npm run dev
 
 Open [http://localhost:8080](http://localhost:8080). The port comes from `APP_PORT` in `.env.example`.
 
-### Run the available checks
+### Run the quality gates
 
 ```bash
-composer validate --strict
-DB_CONNECTION=sqlite DB_DATABASE=:memory: php artisan test
-vendor/bin/pint --test
-npx tsc --noEmit
-npm run build
-composer audit --locked
-npm audit --package-lock-only
+composer check
 ```
 
-The repository is still establishing a deterministic quality baseline in [issue #65](https://github.com/lurzar/expenses-app/issues/65). Treat a local environment failure as a failure to investigate, not as a passing check.
+The committed test bootstrap clears `DATABASE_URL` and forces in-memory SQLite before Laravel loads, preventing exported shell values from selecting the Sail/development database. Backend tests do not require a pre-existing Vite manifest. `composer check` runs formatting, Larastan, backend and frontend tests, TypeScript, production build, and locked dependency audits. Treat any local environment failure as a failure to investigate, not as a passing check.
 
 ## Documentation
 

@@ -4,16 +4,23 @@ namespace App\Models;
 
 use App\Modules\Planning\Models\Planning;
 use App\Traits\HasPublicId;
+use Database\Factories\UserFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmailContract
 {
-    use HasApiTokens, HasFactory, Notifiable, HasPublicId, SoftDeletes;
+    use HasApiTokens;
+
+    /** @use HasFactory<UserFactory> */
+    use HasFactory;
+
+    use HasPublicId, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -54,6 +61,8 @@ class User extends Authenticatable
 
     /**
      * Get all of the plannings for the User
+     *
+     * @return HasMany<Planning, $this>
      */
     public function plannings(): HasMany
     {

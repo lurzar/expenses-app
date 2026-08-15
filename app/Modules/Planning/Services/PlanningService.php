@@ -19,13 +19,18 @@ class PlanningService
 
     /**
      * Store a new planning record.
+     *
+     * @param  Collection<string, mixed>  $planning
      */
     public function store(Collection $planning): Planning
     {
-        $storedPlanning = DB::transaction(function () use ($planning): Planning {
+        $userId = Auth::id();
+        abort_unless(is_int($userId), 401);
+
+        $storedPlanning = DB::transaction(function () use ($planning, $userId): Planning {
             $this->handleRequest($planning);
 
-            $this->model->user_id = Auth::id();
+            $this->model->user_id = $userId;
             $this->model->month = $planning->get('month');
             $this->model->year = $planning->get('year');
             $this->model->salary = $planning->get('salary');
@@ -71,12 +76,14 @@ class PlanningService
 
     /**
      * Get all plannings for the authenticated user.
+     *
+     * @return Collection<int, Planning>
      */
     public function getAllPlannings(): Collection
     {
         $userId = Auth::id();
 
-        if ($userId === null) {
+        if (! is_int($userId)) {
             return collect();
         }
 
@@ -91,6 +98,8 @@ class PlanningService
 
     /**
      * Get all expenses for the authenticated user.
+     *
+     * @return Collection<int, Planning>
      */
     public function getAllExpenses(): Collection
     {
@@ -105,11 +114,14 @@ class PlanningService
      */
     public function getSinglePlanning(string $planningId): Planning
     {
-        return $this->model->firstWhere('planning_id', $planningId);
+        return $this->model->where('planning_id', $planningId)->firstOrFail();
     }
 
     /**
      * Handle and transform the request data.
+     *
+     * @param  Collection<string, mixed>  $planning
+     * @return Collection<string, mixed>
      */
     private function handleRequest(Collection $planning): Collection
     {
