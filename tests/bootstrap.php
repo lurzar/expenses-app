@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+putenv('DATABASE_URL');
+unset($_ENV['DATABASE_URL'], $_SERVER['DATABASE_URL']);
+
 $isolatedDatabase = [
     'DB_CONNECTION' => 'sqlite',
     'DB_DATABASE' => ':memory:',

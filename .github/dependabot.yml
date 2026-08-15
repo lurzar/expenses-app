@@ -76,33 +76,3 @@ updates:
       prefix-development: chore(deps-dev)
     pull-request-branch-name:
       separator: '-'
-
-  - package-ecosystem: github-actions
-    directory: /
-    target-branch: v2.x
-    schedule:
-      interval: weekly
-      day: monday
-      time: '09:30'
-      timezone: Asia/Kuala_Lumpur
-    open-pull-requests-limit: 2
-    cooldown:
-      semver-major-days: 30
-      semver-minor-days: 7
-      semver-patch-days: 3
-      include:
-        - '*'
-    groups:
-      actions-minor-patch:
-        update-types:
-          - minor
-          - patch
-    assignees:
-      - lurzar
-    labels:
-      - dependencies
-      - System
-    commit-message:
-      prefix: ci(deps)
-    pull-request-branch-name:
-      separator: '-'

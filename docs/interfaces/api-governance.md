@@ -18,7 +18,7 @@ The first approved API feature must create `docs/api/openapi.yaml`. From that me
 1. OpenAPI is canonical for paths, methods, parameters, schemas, authentication, responses, examples, and deprecations.
 2. Laravel routes, requests, resources, policies, and tests implement the committed contract.
 3. Generated HTML/interactive documentation is build output derived from OpenAPI, never a competing hand-edited source.
-4. CI validates the OpenAPI document and tests implemented request/response examples before merge.
+4. The approved exact-head quality gate validates the OpenAPI document and tests implemented request/response examples before merge.
 5. Unimplemented paths are not added merely to describe a roadmap.
 
 ## First-API approval checklist
@@ -137,7 +137,7 @@ The first API delivery must add deterministic commands for:
 - authentication, ability, owner/non-owner, validation, rate-limit, and error-shape tests;
 - compatibility/diff detection for later contract changes.
 
-Issue #65 owns the general CI foundation. A future API issue owns these API-specific gates and must make them mandatory for its paths.
+Issue #65 owns the general local quality foundation. A future API issue owns these API-specific gates and must make them mandatory for its paths without assuming a paid hosted runner.
 
 ## Evidence and related decisions
 

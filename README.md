@@ -65,7 +65,7 @@ Open [http://localhost:8080](http://localhost:8080). The port comes from `APP_PO
 composer check
 ```
 
-The committed test bootstrap forces in-memory SQLite before Laravel loads, preventing exported shell values from selecting the Sail/development database. `composer check` runs formatting, Larastan, backend and frontend tests, TypeScript, production build, and locked dependency audits. Treat any local environment failure as a failure to investigate, not as a passing check.
+The committed test bootstrap clears `DATABASE_URL` and forces in-memory SQLite before Laravel loads, preventing exported shell values from selecting the Sail/development database. Backend tests do not require a pre-existing Vite manifest. `composer check` runs formatting, Larastan, backend and frontend tests, TypeScript, production build, and locked dependency audits. Treat any local environment failure as a failure to investigate, not as a passing check.
 
 ## Documentation
 

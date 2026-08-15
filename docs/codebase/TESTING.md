@@ -49,7 +49,8 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 
 ## Isolation and mocking
 
-- `tests/bootstrap.php` overwrites process, server, and environment values for both `DB_CONNECTION=sqlite` and `DB_DATABASE=:memory:` before Laravel loads; `phpunit.xml` repeats the contract. Default `composer test` and `php artisan test` runs therefore cannot inherit the Sail/development PostgreSQL connection.
+- `tests/bootstrap.php` clears `DATABASE_URL` and overwrites process, server, and environment values for both `DB_CONNECTION=sqlite` and `DB_DATABASE=:memory:` before Laravel loads; `phpunit.xml` repeats the contract. Default `composer test` and `php artisan test` runs therefore cannot inherit or reconstruct the Sail/development PostgreSQL connection.
+- The base feature test case disables Vite manifest resolution. Backend tests are therefore reproducible before a production asset build exists; the aggregate gate still builds the assets explicitly.
 - Do not bypass the forced test configuration. Use a separate explicit configuration when validating PostgreSQL-only behavior.
 - Feature tests recreate database state through `RefreshDatabase`; factories create isolated users and Planning records.
 - Security tests use separate owner/non-owner accounts rather than guessing public identifiers.
@@ -58,7 +59,7 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 
 ## Verified v2.1.2 gate on 2026-08-16
 
-- Backend: 78 tests passed with 316 assertions; no failures or deprecated PHPUnit schema warning.
+- Backend: 79 tests passed with 319 assertions; no failures or deprecated PHPUnit schema warning.
 - Repository-wide Pint: clean.
 - Larastan/PHPStan: level 8, 77 application/database files, no errors, no baseline or ignored error.
 - Frontend tests: 18 passed across the theme and language-route contracts.
@@ -70,7 +71,7 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 ## Coverage and quality signals
 
 - `phpunit.xml` includes `app/` as coverage source but defines no enforced percentage; coverage is intentionally not presented as a gate until a measured ratchet is approved.
-- GitHub Actions runs mandatory backend and frontend jobs for pull requests plus pushes to `main`, `v2.x`, and version branches. It uses committed locks, least-privilege read access, immutable action pins, PHP 8.4, and Node 22.
+- GitHub-hosted Actions are not used under the approved zero-cost personal-account policy. The release owner runs `npm ci` and `composer check` locally on every exact PR/release head and records the results in the PR and release tracker.
 - Planning persistence validation/calculation paths lack authoritative money/tampering tests; #63 owns them after #57 records domain decisions.
 - Owner-success paths and route-binding normalization remain for #61.
 - Browser/E2E coverage remains absent; focused component and Laravel feature coverage protects current behavior.
@@ -81,6 +82,5 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 - `tests/Feature/Planning/PlanningAuthorizationTest.php`
 - `tests/Feature/Planning/PlanningCacheTest.php`
 - `tests/Feature/System/ActivityLoggingTest.php`
-- `.github/workflows/laravel.yml`
 - `resources/js/theme.test.tsx`
 - Verified commands listed above, run on 2026-08-16
