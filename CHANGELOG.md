@@ -6,6 +6,21 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [2.0.7] - 2026-08-15
+
+### Added
+
+- Added a canonical documentation map, repository-wide contributor guidance, and an operator runbook for error diagnostics and incident response.
+
+### Changed
+
+- Replaced the development Telescope pruning loop with configurable daily retention.
+- Limited non-local diagnostics to reportable failures, scheduled tasks, monitored entries, and error-level logs.
+
+### Security
+
+- Added explicit non-local Telescope enablement, verified-operator authorization, fail-closed configuration, and recursive credential redaction.
+
 ## [2.0.6] - 2026-08-15
 
 ### Added
@@ -22,5 +37,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Updated Composer and npm dependencies to remove known security advisories while remaining on the intended major versions.
 
-[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.0.6-dev...HEAD
+[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.0.7-dev...HEAD
+[2.0.7]: https://github.com/lurzar/expenses-app/compare/v2.0.6-dev...v2.0.7-dev
 [2.0.6]: https://github.com/lurzar/expenses-app/compare/v2.0.5-dev...v2.0.6-dev
