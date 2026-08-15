@@ -18,7 +18,7 @@ Do not replace `composer install` or `npm ci` with an unlocked update command. D
 
 ## Automated update policy
 
-`.github/dependabot.yml` checks Composer and npm weekly on Monday morning in `Asia/Kuala_Lumpur` and targets the active `v2.x` integration line. GitHub activates this file from the default branch, so the same reviewed configuration is installed on `main` through the focused companion PR for #60 and retained on `v2.x` as the active-line source of truth.
+`.github/dependabot.yml` checks Composer and npm weekly on Monday morning in `Asia/Kuala_Lumpur` and targets the active `v2.x` integration line. GitHub activates this file from the default branch, so the same reviewed configuration is installed on `main` through focused companion PR #108 and retained on `v2.x` as the active-line source of truth.
 
 - Composer and npm minor/patch updates are separated into runtime and development groups.
 - Major updates stay separate and receive a 30-day cooldown.
