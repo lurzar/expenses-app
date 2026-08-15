@@ -2,6 +2,8 @@
 
 This is the approved implementation target for issue #44. It applies the financial UI system in [`ui-system.md`](ui-system.md) to Dashboard, Planning detail, and Expenses detail without changing financial meaning or pretending that planned allocations are transactions.
 
+Issue #124 implements this target in v2.1.4 with shared exact-value summary, chart-panel, allocation-section, planned-trend, and delete-dialog components. Presentation ratios and deltas use one tested BigInt/sen boundary; page components consume the canonical #63 payload and do not redefine financial formulas.
+
 ## Product questions and hierarchy
 
 The summary must answer these questions in order:
