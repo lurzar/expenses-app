@@ -1,66 +1,83 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./public/images/logo-white.png">
+    <source media="(prefers-color-scheme: light)" srcset="./public/images/logo-black.png">
+    <img src="./public/images/logo-black.png" alt="Expenses App" width="420">
+  </picture>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+  <p>Plan a month, understand the allocation, and replace a manual expense-planning spreadsheet with one web application.</p>
+</div>
 
-## About Laravel
+## Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Expenses App is a personal monthly-planning application. A user records income and planned savings, commitments, and other spending for a month. The application stores that plan and presents it through Planning, Dashboard, and Expenses views.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The current Expenses view is a projection of monthly Planning data. It is not a transaction ledger, and the application does not expose a public REST API.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Current capabilities
 
-## Learning Laravel
+- Register, sign in, sign out, and manage a profile.
+- Create, review, list, and delete monthly plans.
+- Organize planned amounts into savings, commitments, and other spending.
+- Review planning summaries through Dashboard and Expenses views.
+- Switch between English and Malay interface dictionaries.
+- Run locally with Laravel Sail, PostgreSQL, Redis, and pgAdmin.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Architecture
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Expenses App is a Laravel 12 modular monolith. Laravel modules own the web routes and server-side orchestration; Inertia 2 connects them to a React 19 and TypeScript frontend.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Planning is the central stored aggregate. Dashboard and Expenses read Planning data through the Planning service. PostgreSQL stores application data, while Redis is available to the local stack for future cache and queue use.
 
-## Laravel Sponsors
+See the [documentation map](docs/README.md) for current references and issue-backed planned documentation.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Getting started
 
-### Premium Partners
+### Prerequisites
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+- PHP 8.4
+- Composer 2
+- Docker with Docker Compose
+- Node.js 22 and npm
 
-## Contributing
+> [!IMPORTANT]
+> The development stack uses PostgreSQL 18. If you already have an Expenses App database volume created by PostgreSQL 17 or earlier, follow the [PostgreSQL 18 upgrade guide](docs/postgresql-18-upgrade.md) before starting the updated stack.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Set up the application
 
-## Code of Conduct
+```bash
+git clone https://github.com/lurzar/expenses-app.git
+cd expenses-app
+composer install
+cp .env.example .env
+php artisan key:generate
+npm ci
+./vendor/bin/sail up -d
+./vendor/bin/sail artisan migrate
+npm run dev
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Open [http://localhost:8080](http://localhost:8080). The port comes from `APP_PORT` in `.env.example`.
 
-## Security Vulnerabilities
+### Run the available checks
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+composer validate --strict
+DB_CONNECTION=sqlite DB_DATABASE=:memory: php artisan test
+vendor/bin/pint --test
+npx tsc --noEmit
+npm run build
+composer audit --locked
+npm audit --package-lock-only
+```
 
-## License
+The repository is still establishing a deterministic quality baseline in [issue #65](https://github.com/lurzar/expenses-app/issues/65). Treat a local environment failure as a failure to investigate, not as a passing check.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Documentation
+
+- [Documentation map and ownership](docs/README.md)
+- [PostgreSQL 18 local-volume upgrade](docs/postgresql-18-upgrade.md)
+- [Release history](CHANGELOG.md)
+- [Version 2.0.7 plan](https://github.com/lurzar/expenses-app/issues/72)
+
+GitHub Issues hold planned work. Repository documentation describes approved, current behavior. When the two disagree, verify the source and update the stale issue or document.
