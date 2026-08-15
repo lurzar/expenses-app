@@ -6,6 +6,18 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [2.1.3] - 2026-08-16
+
+### Added
+
+- Added a canonical banking-style UI/UX system covering responsive navigation, deterministic light/dark semantic tokens, financial number presentation, component states, motion, and WCAG 2.2 AA behavior.
+- Added a complete Planning summary specification for exact figure hierarchy, accessible allocation graphs, page roles, responsive layouts, and legacy/error states.
+
+### Changed
+
+- Established remaining planned balance, income, savings allocation/target, commitments, and other allocations as the approved summary order, with total allocation kept as a lower-priority roll-up.
+- Clarified that charts visualize monthly plans rather than bank transactions and must retain exact-value alternatives, zero-denominator behavior, and server-authoritative money boundaries.
+
 ## [2.1.2] - 2026-08-16
 
 ### Added
@@ -125,7 +137,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Updated Composer and npm dependencies to remove known security advisories while remaining on the intended major versions.
 
-[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.1.2-dev...HEAD
+[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.1.3-dev...HEAD
+[2.1.3]: https://github.com/lurzar/expenses-app/compare/v2.1.2-dev...v2.1.3-dev
 [2.1.2]: https://github.com/lurzar/expenses-app/compare/v2.1.1-dev...v2.1.2-dev
 [2.1.1]: https://github.com/lurzar/expenses-app/compare/v2.1.0-dev...v2.1.1-dev
 [2.1.0]: https://github.com/lurzar/expenses-app/compare/v2.0.9-dev...v2.1.0-dev

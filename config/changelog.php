@@ -3,6 +3,21 @@
 return [
     'releases' => [
         [
+            'version' => '2.1.3',
+            'status' => 'Released',
+            'released_at' => '2026-08-16',
+            'changes' => [
+                [
+                    'category' => 'Added',
+                    'description' => 'Defined the upcoming banking-style experience with clear financial figures, useful graphs, and accessible exact-value alternatives.',
+                ],
+                [
+                    'category' => 'Changed',
+                    'description' => 'Standardized the preferred green light and dark themes, responsive navigation, and monthly-plan summary order before runtime implementation.',
+                ],
+            ],
+        ],
+        [
             'version' => '2.1.2',
             'status' => 'Released',
             'released_at' => '2026-08-16',
