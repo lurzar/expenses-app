@@ -6,6 +6,33 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [2.1.4] - 2026-08-16
+
+### Added
+
+- Added an accessible finance-style application shell with semantic green light/dark themes, responsive desktop/tablet/mobile navigation, shared financial-number and state primitives, and visible keyboard focus behavior.
+- Added exact-value Planning summaries, allocation composition, income/allocation, savings-target, category-magnitude, and multi-period trend graphs across Dashboard, Planning, and the read-only Expenses projection.
+
+### Changed
+
+- Changed Planning money persistence and browser payloads to canonical two-decimal strings backed by integer-sen calculations, deterministic half-up savings targets, bounded calendar periods, and one active plan per owner/period.
+- Changed legacy Planning migration behavior to reject ambiguous months and lossy savings targets, normalize valid rows deterministically, and isolate the new fixed-precision cache namespace.
+- Changed deletion feedback to identify the affected period and to preserve a committed database result when cache invalidation is temporarily unavailable.
+
+### Fixed
+
+- Fixed client-submitted totals, floating-point persistence, and duplicated period records so server-calculated income, savings, commitments, other allocations, spending, allocated total, and balance remain authoritative.
+- Fixed negative, partial, zero-denominator, and over-target presentation so graphs never invent percentages or exact values and always retain a readable tabular alternative.
+
+### Security
+
+- Preserved public-identifier ownership checks and CSRF protection for Planning deletion while returning generic failure messages and keeping exception details server-side.
+- Kept numeric owner identifiers and internal Planning IDs out of browser payloads while maintaining account-isolated cache keys and projections.
+
+### Deployment
+
+- Before production rollout, back up and compare Planning rows and validate the migration and rollback on a disposable PostgreSQL database. The development release gate passed SQLite execution and PostgreSQL SQL review but did not run against a live PostgreSQL service.
+
 ## [2.1.3] - 2026-08-16
 
 ### Added
@@ -137,7 +164,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Updated Composer and npm dependencies to remove known security advisories while remaining on the intended major versions.
 
-[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.1.3-dev...HEAD
+[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.1.4-dev...HEAD
+[2.1.4]: https://github.com/lurzar/expenses-app/compare/v2.1.3-dev...v2.1.4-dev
 [2.1.3]: https://github.com/lurzar/expenses-app/compare/v2.1.2-dev...v2.1.3-dev
 [2.1.2]: https://github.com/lurzar/expenses-app/compare/v2.1.1-dev...v2.1.2-dev
 [2.1.1]: https://github.com/lurzar/expenses-app/compare/v2.1.0-dev...v2.1.1-dev
