@@ -3,6 +3,7 @@
 namespace App\Modules\Expenses\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Planning\Data\PlanningData;
 use App\Modules\Planning\Models\Planning;
 use App\Modules\Planning\Services\PlanningService;
 use Illuminate\Support\Facades\Gate;
@@ -18,7 +19,7 @@ class ExpensesController extends Controller
     public function index(): Response
     {
         return Inertia::render('Expenses/Index', [
-            'plannings' => $this->planningService->getAllPlannings(),
+            'plannings' => PlanningData::collection($this->planningService->getAllPlannings()),
         ]);
     }
 
@@ -27,7 +28,7 @@ class ExpensesController extends Controller
         Gate::authorize('view', $expense);
 
         return Inertia::render('Expenses/Show', [
-            'planning' => $expense,
+            'planning' => PlanningData::fromModel($expense),
         ]);
     }
 }

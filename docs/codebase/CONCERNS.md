@@ -8,8 +8,6 @@ This register prioritizes verified current risks. It does not duplicate exploit 
 | --- | --- | --- | --- | --- |
 | High | Persisted money trusts browser totals and uses binary float salary | `PlanningService::store`; `Planning::casts`; Planning migration | Tampered or rounded values can become authoritative | #57 decisions, then #63 implementation |
 | High | Quality enforcement relies on exact-head local execution because hosted CI is intentionally disabled | `composer check`; `tests/bootstrap.php`; verified test runs | A release owner could omit or misreport a gate | Record locked-install and full-gate evidence on every PR and release tracker under #65 policy |
-| High | Expenses direct owner access fails before the intended ownership check | `{expenses}` does not bind to `$expense`; isolated owner-path request returns 403 | Owners cannot open the detail projection; intended record authorization is not exercised | #61 |
-| Medium | Inertia payloads expose internal numeric `id`/`user_id` values alongside public ULIDs | `Planning`/`User` serialization; no API Resource or hidden fields | The public-identifier boundary is not enforced at the browser contract | #61 |
 | Medium | Supported PostgreSQL environment conflicts with MySQL config fallback when `DB_CONNECTION` is absent | `.env.example`; `config/database.php` | An incomplete environment can target the wrong engine | #65/setup validation |
 | Medium | Planning list payloads are unbounded | `getAllPlannings()->get()`; Dashboard/Planning/Expenses props | Database, cache, serialization, and browser cost grow with history | Add approved pagination/query limits |
 | Medium | Development mail configuration names a service absent from Compose | `.env.example`; `docker-compose.yml` | Verification/reset mail cannot work in a compose-only setup | Add/replace documented local mail service |
@@ -31,7 +29,7 @@ This register prioritizes verified current risks. It does not duplicate exploit 
 
 | Risk | Category | Current mitigation | Gap |
 | --- | --- | --- | --- |
-| Cross-user Planning access | OWASP A01 Broken Access Control | `PlanningPolicy`, Gate calls, user-scoped collections, non-owner tests | Normalize binding and add owner-success/local-gate enforcement in #61 |
+| Cross-user Planning access | OWASP A01 Broken Access Control | Public-ULID binding, `PlanningPolicy`, user-scoped collections, explicit data DTOs, owner/non-owner tests | Preserve the complete owner-success and denial matrix when adding record routes |
 | Financial tampering/precision | OWASP A04 Insecure Design / data integrity | Request shape validation only | Server authority, precision, rounding, uniqueness, migration in #63 |
 | Diagnostic data exposure | OWASP A09 Logging/Monitoring | Explicit non-local enablement, verified allowlist, redaction, pruning tests/docs | No external monitoring/alerting/SLO is configured |
 | Activity metadata privacy | N/A | Enum event contract, public ULIDs, allowlisted fields, atomic writes | Access/reporting interface and production retention ownership are not defined |

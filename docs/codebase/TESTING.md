@@ -59,10 +59,10 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 
 ## Verified v2.1.2 gate on 2026-08-16
 
-- Backend: 79 tests passed with 319 assertions; no failures or deprecated PHPUnit schema warning.
+- Backend: 86 tests passed with 404 assertions; no failures or deprecated PHPUnit schema warning.
 - Repository-wide Pint: clean.
-- Larastan/PHPStan: level 8, 77 application/database files, no errors, no baseline or ignored error.
-- Frontend tests: 18 passed across the theme and language-route contracts.
+- Larastan/PHPStan: level 8, 79 application/database files, no errors, no baseline or ignored error.
+- Frontend tests: 20 passed across the theme, language-route, and Planning/Expenses public-route contracts.
 - Strict TypeScript: passed.
 - Vite production build: passed, 803 modules transformed after the four Auth pages were added.
 - Composer audit: no advisories.
@@ -73,7 +73,7 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 - `phpunit.xml` includes `app/` as coverage source but defines no enforced percentage; coverage is intentionally not presented as a gate until a measured ratchet is approved.
 - GitHub-hosted Actions are not used under the approved zero-cost personal-account policy. The release owner runs `npm ci` and `composer check` locally on every exact PR/release head and records the results in the PR and release tracker.
 - Planning persistence validation/calculation paths lack authoritative money/tampering tests; #63 owns them after #57 records domain decisions.
-- Owner-success paths and route-binding normalization remain for #61.
+- Planning/Expenses owner success, non-owner denial, public-ULID binding, deletion, and DTO serialization are covered together in `PlanningAuthorizationTest`.
 - Browser/E2E coverage remains absent; focused component and Laravel feature coverage protects current behavior.
 
 ## Evidence
@@ -83,4 +83,5 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 - `tests/Feature/Planning/PlanningCacheTest.php`
 - `tests/Feature/System/ActivityLoggingTest.php`
 - `resources/js/theme.test.tsx`
+- `resources/js/language-route.test.ts`, `resources/js/planning-route.test.ts`
 - Verified commands listed above, run on 2026-08-16

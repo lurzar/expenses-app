@@ -49,7 +49,7 @@ flowchart LR
 3. Submission includes the raw section items and a browser-built `totals` object.
 4. `PlanningStoreRequest` validates only broad string/array shape. It does not enforce financial precision, bounds, valid calendar values, or uniqueness.
 5. `PlanningService` renames the three `*_values` arrays into `sections`, discards `saving_rate`, trusts `salary` and `totals`, and persists within an activity-recording transaction.
-6. Dashboard and Expenses query the same user-owned Planning collection. Planning detail binds the public ULID and authorizes the record. Expenses detail intends the same flow, but `{expenses}` does not match controller argument `$expense`; the requested record is not injected and an isolated owner request returns 403. #61 owns the fix and complete owner/non-owner coverage.
+6. Dashboard and Expenses query the same user-owned Planning collection. Planning and Expenses detail routes bind the public ULID and authorize the owner through `PlanningPolicy`; collection and detail pages receive an explicit public-ID payload without numeric Planning/user IDs.
 
 ## Current formulas and divergences
 
