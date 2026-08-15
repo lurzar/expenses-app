@@ -3,6 +3,25 @@
 return [
     'releases' => [
         [
+            'version' => '2.0.9',
+            'status' => 'Released',
+            'released_at' => '2026-08-15',
+            'changes' => [
+                [
+                    'category' => 'Added',
+                    'description' => 'Added faster access to monthly planning summaries.',
+                ],
+                [
+                    'category' => 'Added',
+                    'description' => 'Added clearer development, release, and cache operations guidance.',
+                ],
+                [
+                    'category' => 'Security',
+                    'description' => 'Isolated cached planning summaries by account and refreshed them after changes.',
+                ],
+            ],
+        ],
+        [
             'version' => '2.0.8',
             'status' => 'Released',
             'released_at' => '2026-08-15',
