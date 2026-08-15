@@ -2,14 +2,18 @@
 
 namespace App\Modules\Planning\Services;
 
+use App\Modules\ActivityLog\ActivityEvent;
+use App\Modules\ActivityLog\Services\ActivityRecorder;
 use App\Modules\Planning\Models\Planning;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PlanningService
 {
     public function __construct(
-        private Planning $model
+        private Planning $model,
+        private ActivityRecorder $activityRecorder,
     ) {}
 
     /**
@@ -17,17 +21,43 @@ class PlanningService
      */
     public function store(Collection $planning): Planning
     {
-        $this->handleRequest($planning);
+        return DB::transaction(function () use ($planning): Planning {
+            $this->handleRequest($planning);
 
-        $this->model->user_id = Auth::id();
-        $this->model->month = $planning->get('month');
-        $this->model->year = $planning->get('year');
-        $this->model->salary = $planning->get('salary');
-        $this->model->sections = $planning->get('sections');
-        $this->model->totals = $planning->get('totals');
-        $this->model->save();
+            $this->model->user_id = Auth::id();
+            $this->model->month = $planning->get('month');
+            $this->model->year = $planning->get('year');
+            $this->model->salary = $planning->get('salary');
+            $this->model->sections = $planning->get('sections');
+            $this->model->totals = $planning->get('totals');
+            $this->model->save();
 
-        return $this->model;
+            $this->activityRecorder->record(
+                ActivityEvent::PlanningCreated,
+                Auth::user()?->user_id,
+                'planning',
+                $this->model->planning_id,
+            );
+
+            return $this->model;
+        });
+    }
+
+    /**
+     * Soft-delete a planning record and its activity atomically.
+     */
+    public function delete(Planning $planning): void
+    {
+        DB::transaction(function () use ($planning): void {
+            $planning->delete();
+
+            $this->activityRecorder->record(
+                ActivityEvent::PlanningDeleted,
+                Auth::user()?->user_id,
+                'planning',
+                $planning->planning_id,
+            );
+        });
     }
 
     /**

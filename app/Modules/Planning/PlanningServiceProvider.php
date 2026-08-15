@@ -2,9 +2,10 @@
 
 namespace App\Modules\Planning;
 
-use Illuminate\Support\ServiceProvider;
+use App\Modules\ActivityLog\Services\ActivityRecorder;
 use App\Modules\Planning\Models\Planning;
 use App\Modules\Planning\Services\PlanningService;
+use Illuminate\Support\ServiceProvider;
 
 class PlanningServiceProvider extends ServiceProvider
 {
@@ -14,7 +15,7 @@ class PlanningServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(PlanningService::class, function ($app) {
-            return new PlanningService(new Planning());
+            return new PlanningService(new Planning, $app->make(ActivityRecorder::class));
         });
     }
 
