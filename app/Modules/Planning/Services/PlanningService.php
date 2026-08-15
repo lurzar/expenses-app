@@ -9,6 +9,7 @@ use App\Modules\Planning\Support\PlanningCalculator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class PlanningService
 {
@@ -56,7 +57,7 @@ class PlanningService
             return $storedPlanning;
         });
 
-        $this->cache->forgetIndex((int) $storedPlanning->user_id);
+        $this->forgetIndexAfterCommit((int) $storedPlanning->user_id);
 
         return $storedPlanning;
     }
@@ -64,7 +65,7 @@ class PlanningService
     /**
      * Soft-delete a planning record and its activity atomically.
      */
-    public function delete(Planning $planning): void
+    public function delete(Planning $planning): bool
     {
         $userId = (int) $planning->user_id;
 
@@ -79,7 +80,7 @@ class PlanningService
             );
         });
 
-        $this->cache->forgetIndex($userId);
+        return $this->forgetIndexAfterCommit($userId);
     }
 
     /**
@@ -136,5 +137,22 @@ class PlanningService
             'commitments' => $planning->get('commitments_values') ?? [],
             'others' => $planning->get('others_values') ?? [],
         ];
+    }
+
+    /**
+     * Keep a committed database mutation authoritative when cache invalidation
+     * is temporarily unavailable. The entry expires after five minutes.
+     */
+    private function forgetIndexAfterCommit(int $userId): bool
+    {
+        try {
+            $this->cache->forgetIndex($userId);
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return false;
+        }
+
+        return true;
     }
 }

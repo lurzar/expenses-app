@@ -2,8 +2,11 @@
 
 use App\Models\User;
 use App\Modules\Planning\Models\Planning;
+use App\Modules\Planning\Services\PlanningCache;
 use App\Modules\Planning\Services\PlanningService;
+use Illuminate\Contracts\Cache\Repository;
 use Inertia\Testing\AssertableInertia as Assert;
+use Mockery\MockInterface;
 
 test('owners can view planning through its public id without numeric identifiers', function () {
     $owner = User::factory()->create();
@@ -62,6 +65,27 @@ test('a failed owner deletion returns to the plan with an announced error', func
         ->assertSessionHas('error', 'The plan could not be deleted. Try again.');
 
     expect($planning->fresh()->trashed())->toBeFalse();
+});
+
+test('a cache failure after deletion reports the committed result without inviting a retry', function () {
+    $owner = User::factory()->create();
+    $planning = Planning::factory()->for($owner)->create();
+    $name = $planning->name;
+
+    $repository = $this->mock(Repository::class, function (MockInterface $mock): void {
+        $mock->shouldReceive('forget')
+            ->once()
+            ->andThrow(new RuntimeException('cache unavailable'));
+    });
+    $this->app->instance(PlanningCache::class, new PlanningCache($repository));
+
+    $this->actingAs($owner)
+        ->delete(route('planning.destroy', $planning->planning_id))
+        ->assertRedirect(route('planning.index'))
+        ->assertSessionHas('warning', "{$name} plan deleted. Planning lists may take up to five minutes to refresh.")
+        ->assertSessionMissing('error');
+
+    expect($planning->fresh()->trashed())->toBeTrue();
 });
 
 test('planning projections expose only owned records through public identifiers', function (string $routeName, string $component) {

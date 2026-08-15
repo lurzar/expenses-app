@@ -102,6 +102,7 @@ body {
     .app-flash-stack { position: fixed; z-index: 90; top: 1rem; right: 1rem; display: grid; width: min(26rem, calc(100vw - 2rem)); gap: .75rem; }
     .app-flash-message { border: 1px solid var(--app-border-strong); border-radius: .75rem; background: var(--app-surface); padding: .85rem 1rem; box-shadow: 0 12px 32px rgb(9 20 19 / 20%); color: var(--app-text-primary); font-size: .875rem; font-weight: 600; }
     .app-flash-success { border-left: .35rem solid var(--app-brand-strong); }
+    .app-flash-warning { border-left: .35rem solid var(--app-warning); }
     .app-flash-error { border-left: .35rem solid var(--app-danger); }
     .text-primary { color: var(--app-text-primary); }
     .text-secondary { color: var(--app-text-secondary); }

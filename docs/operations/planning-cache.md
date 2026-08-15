@@ -116,7 +116,7 @@ Check ownership and permissions for `storage/framework/cache/data` against the a
 
 Confirm the selected Redis cache connection and deployment network before retrying application writes. If the approved recovery is to return to the file store, change `CACHE_DRIVER`, refresh Laravel's configuration, and verify a synthetic key before restoring normal traffic.
 
-Cache invalidation runs after the owning database transaction. A cache exception can therefore reach the user after the database write committed. Verify PostgreSQL before retrying a create or delete operation.
+Cache invalidation runs after the owning database transaction. The service reports an invalidation exception without changing the committed database result. A delete redirects to the Planning index with a polite warning that lists may remain stale for the five-minute cache lifetime; it never invites the user to retry a deletion that already committed. Create follows the same database-authoritative boundary and redirects normally. Verify PostgreSQL and the affected cache store before taking further action.
 
 ### A cached value cannot be decoded
 
@@ -137,7 +137,7 @@ Do not run a global cache flush as part of routine rollback. Once the applicatio
 
 ## Validation reference
 
-`tests/Feature/Planning/PlanningCacheTest.php` covers cache hits, per-user isolation, empty results, five-minute expiry, Planning create/delete invalidation, unaffected users, account delete/restore invalidation, and rollback behavior with Laravel's array store.
+`tests/Feature/Planning/PlanningCacheTest.php` and `tests/Feature/Planning/PlanningAuthorizationTest.php` cover cache hits, per-user isolation, empty results, five-minute expiry, Planning create/delete invalidation, committed deletion with failed invalidation, unaffected users, account delete/restore invalidation, and rollback behavior with Laravel's array store.
 
 The operational contract belongs to:
 

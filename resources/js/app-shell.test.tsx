@@ -8,7 +8,7 @@ const { pageState } = vi.hoisted(() => ({
     pageState: {
         locale: 'en',
         translations: {},
-        flash: { message: null as string | null, success: null as string | null, error: null as string | null },
+        flash: { message: null as string | null, success: null as string | null, warning: null as string | null, error: null as string | null },
     },
 }));
 
@@ -46,7 +46,7 @@ const user = {
 
 afterEach(() => {
     cleanup();
-    pageState.flash = { message: null, success: null, error: null };
+    pageState.flash = { message: null, success: null, warning: null, error: null };
 });
 
 describe('authenticated financial application shell', () => {
@@ -90,6 +90,15 @@ describe('authenticated financial application shell', () => {
         pageState.flash.error = 'The plan could not be deleted. Try again.';
         render(<AppLayout user={user}><p>Plan content</p></AppLayout>);
         expect(screen.getByRole('alert').textContent).toContain('could not be deleted');
+    });
+
+    it('announces a committed deletion with delayed cache refresh as a polite warning', () => {
+        pageState.flash.warning = 'August 2026 plan deleted. Planning lists may take up to five minutes to refresh.';
+        render(<AppLayout user={user}><p>Plan content</p></AppLayout>);
+
+        const status = screen.getByRole('status');
+        expect(status.textContent).toContain('plan deleted');
+        expect(status.className).toContain('app-flash-warning');
     });
 
     it('exposes the approved desktop, tablet, and mobile navigation models', () => {

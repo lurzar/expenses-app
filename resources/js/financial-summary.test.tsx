@@ -98,7 +98,7 @@ const partialPlan: Planning = {
     },
 };
 
-const props = { auth: { user }, flash: { message: null, success: null, error: null } };
+const props = { auth: { user }, flash: { message: null, success: null, warning: null, error: null } };
 
 afterEach(() => {
     cleanup();
@@ -153,7 +153,8 @@ describe('banking-style Planning summaries', () => {
             callbacks.onFinish();
         });
 
-        expect(screen.getByRole('alert').textContent).toContain('could not be deleted');
+        expect(screen.getByText('The plan could not be deleted. Try again.')).not.toBeNull();
+        expect(screen.queryByRole('alert')).toBeNull();
         expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Delete plan permanently' }));
     });
 

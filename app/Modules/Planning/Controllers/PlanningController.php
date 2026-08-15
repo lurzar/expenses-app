@@ -54,11 +54,18 @@ class PlanningController extends Controller
         $name = $planning->name;
 
         try {
-            $this->service->delete($planning);
+            $cacheInvalidated = $this->service->delete($planning);
         } catch (Throwable $exception) {
             report($exception);
 
             return back()->with('error', 'The plan could not be deleted. Try again.');
+        }
+
+        if (! $cacheInvalidated) {
+            return redirect()->route('planning.index')->with(
+                'warning',
+                "{$name} plan deleted. Planning lists may take up to five minutes to refresh.",
+            );
         }
 
         return redirect()->route('planning.index')->with('success', "{$name} plan deleted.");

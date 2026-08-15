@@ -92,8 +92,9 @@ export default function AppLayout({ user, header, children }: PropsWithChildren<
 
     return <div className="app-shell min-h-screen">
         <a href="#main-content" className="app-skip-link">Skip to main content</a>
-        {(notice || flash?.error) && <div className="app-flash-stack">
+        {(notice || flash?.warning || flash?.error) && <div className="app-flash-stack">
             {notice && <div role="status" aria-live="polite" className="app-flash-message app-flash-success">{notice}</div>}
+            {flash?.warning && <div role="status" aria-live="polite" className="app-flash-message app-flash-warning">{flash.warning}</div>}
             {flash?.error && <div role="alert" aria-live="assertive" className="app-flash-message app-flash-error">{flash.error}</div>}
         </div>}
         <aside data-testid="desktop-sidebar" className="app-sidebar fixed inset-y-0 left-0 z-30 hidden w-64 flex-col lg:flex" aria-label="Application navigation">

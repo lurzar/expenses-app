@@ -58,7 +58,7 @@ export default function DeletePlanDialog({ planningId, planningName }: { plannin
                 <h2 id="delete-plan-title" className="text-xl font-bold">Delete {planningName} plan?</h2>
                 <p id="delete-plan-description" className="mt-3 text-sm text-secondary">This removes the monthly plan from Planning and all of its projections. This action cannot be undone.</p>
                 {pending && <p role="status" className="mt-3 text-sm text-secondary">Deleting {planningName} plan…</p>}
-                {error && <p role="alert" className="mt-3 text-sm state-danger">{error}</p>}
+                {error && <p className="mt-3 text-sm state-danger">{error}</p>}
                 <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end"><button ref={cancel} type="button" className="button-secondary" onClick={close} disabled={pending}>Keep plan</button><button ref={confirm} type="button" className="button-danger" onClick={confirmDelete} disabled={pending}>{pending ? 'Deleting plan…' : 'Delete plan permanently'}</button></div>
             </div>
         </div>}
