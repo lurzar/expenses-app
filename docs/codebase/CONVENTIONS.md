@@ -53,7 +53,7 @@ npm run build
 - Feature behavior is tested through real Laravel routes, Eloquent factories, Inertia assertions, and database state.
 - Mockery is used only at explicit collaborator boundaries, such as simulating `ActivityRecorder` failure.
 - Security tests create separate users and assert denial plus retained data.
-- There is no enforced coverage threshold. #65 owns static analysis, safe database defaults, baseline repair, and CI parity.
+- There is no enforced coverage threshold. #65 owns static analysis, safe database defaults, baseline repair, and exact-head local-gate parity.
 
 ## Contribution conventions
 
