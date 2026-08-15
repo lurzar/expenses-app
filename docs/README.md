@@ -14,7 +14,7 @@ This page maps each kind of project knowledge to one canonical source. Repositor
 | Stack, structure, architecture, conventions, integrations, testing, and concerns | `docs/codebase/` | Planned in [#66](https://github.com/lurzar/expenses-app/issues/66) | Technical owner; update when architecture or supported tooling changes. |
 | Web/Inertia interfaces and future API governance | `docs/interfaces/` | Planned in [#58](https://github.com/lurzar/expenses-app/issues/58) | Interface owner; update when routes, page props, authentication, or approved API contracts change. |
 | Development, validation, and release workflow | `docs/development/` | Planned in [#64](https://github.com/lurzar/expenses-app/issues/64) | Development owner; update when setup, quality gates, branching, versioning, or releases change. |
-| Error monitoring and operational response | `docs/operations/` | Planned in [#73](https://github.com/lurzar/expenses-app/issues/73) | Operations owner; update when monitoring, access, retention, incident response, or rollback changes. |
+| Error monitoring and operational response | [`docs/operations/error-monitoring.md`](operations/error-monitoring.md) | Current | Operations owner; update when monitoring, access, retention, incident response, or rollback changes. |
 | Architecture decisions | `docs/decisions/` | Reserved | Decision owner; add an ADR when an approved choice changes architecture, data, interfaces, or operations. |
 | Repository-wide AI-agent instructions | [`AGENTS.md`](../AGENTS.md) | Current | Maintainers; update when repository rules, safety boundaries, or required checks change. |
 
