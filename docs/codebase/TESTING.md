@@ -66,7 +66,7 @@ With explicit in-memory SQLite:
 Other gates on the same branch:
 
 - TypeScript: passed.
-- Frontend tests: 12 passed in one focused theme suite.
+- Frontend tests: 13 passed in one focused theme suite.
 - Vite production build: passed, 799 modules transformed.
 - Composer audit: no advisories (cache-directory warning did not change the audit result).
 - npm audit: zero vulnerabilities.
