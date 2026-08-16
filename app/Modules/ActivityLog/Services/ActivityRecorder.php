@@ -60,6 +60,16 @@ class ActivityRecorder
             return ['role' => $metadata['role']];
         }
 
+        if ($event === ActivityEvent::AuthorizationSuperAdminRotated) {
+            if (array_keys($metadata) !== ['previous_account_id']
+                || ! is_string($metadata['previous_account_id'])
+                || ! Str::isUlid($metadata['previous_account_id'])) {
+                throw new InvalidArgumentException('Super-admin rotation activity accepts one previous account ULID only.');
+            }
+
+            return ['previous_account_id' => $metadata['previous_account_id']];
+        }
+
         if ($event !== ActivityEvent::AccountProfileUpdated) {
             if ($metadata !== []) {
                 throw new InvalidArgumentException('This activity event accepts no metadata.');

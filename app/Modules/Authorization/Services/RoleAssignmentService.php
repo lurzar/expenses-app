@@ -10,10 +10,17 @@ use Illuminate\Support\Facades\DB;
 
 final class RoleAssignmentService
 {
-    public function __construct(private readonly ActivityRecorder $activityRecorder) {}
+    public function __construct(
+        private readonly ActivityRecorder $activityRecorder,
+        private readonly SuperAdminLifecycleService $superAdminLifecycle,
+    ) {}
 
     public function assign(User $actor, User $subject, RoleName $role): bool
     {
+        if ($role === RoleName::SuperAdmin) {
+            return $this->superAdminLifecycle->grant($subject, $actor);
+        }
+
         return DB::transaction(function () use ($actor, $subject, $role): bool {
             $target = User::query()
                 ->whereKey($subject->getKey())
@@ -33,6 +40,10 @@ final class RoleAssignmentService
 
     public function remove(User $actor, User $subject, RoleName $role): bool
     {
+        if ($role === RoleName::SuperAdmin) {
+            return $this->superAdminLifecycle->remove($subject, $actor);
+        }
+
         return DB::transaction(function () use ($actor, $subject, $role): bool {
             $target = User::query()
                 ->whereKey($subject->getKey())

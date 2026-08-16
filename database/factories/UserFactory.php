@@ -44,15 +44,15 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the model's array should be superadmin.
+     * Create the non-privileged verified account used by development seed data.
      */
-    public function superAdmin(): static
+    public function demoAccount(): static
     {
         return $this->state(fn (array $attributes) => [
-            'name' => 'Super Admin',
-            'email' => 'superadmin@app.com',
+            'name' => 'Demo Account',
+            'email' => 'demo@example.test',
             'email_verified_at' => now(),
-            'password' => bcrypt('superadmin@app.com'),
+            'password' => bcrypt('password'),
         ]);
     }
 }

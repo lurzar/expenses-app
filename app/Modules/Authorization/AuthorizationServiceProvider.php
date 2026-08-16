@@ -3,9 +3,11 @@
 namespace App\Modules\Authorization;
 
 use App\Models\User;
+use App\Modules\Authorization\Console\ManageSuperAdmin;
 use App\Modules\Authorization\Console\SyncAuthorization;
 use App\Modules\Authorization\Observers\AssignDefaultRole;
 use App\Modules\Authorization\Permissions\SystemPermission;
+use App\Modules\Authorization\Services\SuperAdminLifecycleService;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Permission\Exceptions\PermissionDoesNotExist;
@@ -14,6 +16,8 @@ class AuthorizationServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->app->scoped(SuperAdminLifecycleService::class);
+
         $this->app->singleton(PermissionCatalog::class, function (): PermissionCatalog {
             $catalog = new PermissionCatalog;
             $catalog->register(SystemPermission::class);
@@ -40,7 +44,10 @@ class AuthorizationServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/Translations', 'authorization');
 
         if ($this->app->runningInConsole()) {
-            $this->commands([SyncAuthorization::class]);
+            $this->commands([
+                ManageSuperAdmin::class,
+                SyncAuthorization::class,
+            ]);
         }
     }
 }

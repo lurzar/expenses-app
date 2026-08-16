@@ -10,6 +10,9 @@ enum ActivityEvent: string
     case AuthorizationCatalogSynchronized = 'authorization.catalog_synchronized';
     case AuthorizationRoleAssigned = 'authorization.role_assigned';
     case AuthorizationRoleRemoved = 'authorization.role_removed';
+    case AuthorizationSuperAdminGranted = 'authorization.super_admin_granted';
+    case AuthorizationSuperAdminRemoved = 'authorization.super_admin_removed';
+    case AuthorizationSuperAdminRotated = 'authorization.super_admin_rotated';
     case PlanningCreated = 'planning.created';
     case PlanningDeleted = 'planning.deleted';
 
@@ -21,7 +24,10 @@ enum ActivityEvent: string
             self::AccountRegistered => 'account',
             self::AuthorizationCatalogSynchronized => 'authorization_catalog',
             self::AuthorizationRoleAssigned,
-            self::AuthorizationRoleRemoved => 'account',
+            self::AuthorizationRoleRemoved,
+            self::AuthorizationSuperAdminGranted,
+            self::AuthorizationSuperAdminRemoved,
+            self::AuthorizationSuperAdminRotated => 'account',
             self::PlanningCreated,
             self::PlanningDeleted => 'planning',
         };

@@ -30,8 +30,15 @@ The application records these events:
 | `authorization.catalog_synchronized` | Catalog synchronization transaction | System (`null`) | `authorization_catalog` with no invented identifier | Created permission/role/mapping names and drift identifiers |
 | `authorization.role_assigned` | Role assignment service transaction | Operator account public ULID | Target `account` public ULID | Stable role name |
 | `authorization.role_removed` | Role removal service transaction | Operator account public ULID | Target `account` public ULID | Stable role name |
+| `authorization.super_admin_granted` | Super-admin lifecycle transaction | Operator account public ULID or system (`null`) | Target `account` public ULID | None |
+| `authorization.super_admin_removed` | Super-admin lifecycle transaction | Operator account public ULID or system (`null`) | Target `account` public ULID | None |
+| `authorization.super_admin_rotated` | Atomic super-admin rotation | Operator account public ULID or system (`null`) | Replacement `account` public ULID | Previous account public ULID only |
 
 Catalog synchronization is system-generated and therefore uses a null actor and subject identifier. It does not invent a user or a public ULID. Account and Planning events retain public actor and subject identifiers.
+
+The `authorization:super-admin` command records a null actor because Laravel does not authenticate a browser user for an Artisan process. The event name records what initiated the change; the approved deployment or shell-access audit must identify the human operator. The command never accepts or records an email, password, token, session value, or internal key.
+
+A verified super-admin may become unverified only when another active operator remains; verified or already-unverified super-admin deletion always uses the audited lifecycle. The lifecycle-owned transaction records the existing minimized `account.profile_updated` or `account.deleted` event and rolls back the account and session-revocation changes if capture fails. The user observer rejects direct Eloquent deletion or unverification outside that context. Future administrative account-management paths must reuse the same lifecycle transaction rather than saving or deleting the model directly.
 
 Account deletion produces one `account.deleted` event. The account observer soft-deletes the account's Planning records without emitting a `planning.deleted` event for each record. Activity rows have no foreign keys to accounts or Planning records, so the public actor and subject identifiers remain available after soft deletion.
 
