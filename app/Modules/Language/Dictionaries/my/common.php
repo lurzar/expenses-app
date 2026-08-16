@@ -32,6 +32,7 @@ return [
     'dashboard' => 'Papan Pemuka',
     'planning' => 'Perancangan',
     'expenses' => 'Perbelanjaan',
+    'admin' => 'Pentadbir',
     'profile' => 'Profil',
     'saving' => 'Simpanan',
     'balance' => 'Baki',

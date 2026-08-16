@@ -6,7 +6,7 @@ import { route } from '@/utils/route';
 
 interface AppLayoutProps { user: User; header?: ReactNode; }
 interface AppPageProps extends PageProps { locale?: string; }
-interface Destination { label: string; href: string; match: string; icon: 'dashboard' | 'planning' | 'expenses' | 'profile'; }
+interface Destination { label: string; href: string; match: string; icon: 'dashboard' | 'planning' | 'expenses' | 'admin' | 'profile'; }
 
 function t(translations: Record<string, unknown> | undefined, key: string, fallback: string): string {
     const value = translations?.[key];
@@ -18,6 +18,7 @@ function NavigationIcon({ name }: { name: Destination['icon'] }) {
         dashboard: <><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></>,
         planning: <><path d="M7 3v3M17 3v3M4 9h16" /><rect x="4" y="5" width="16" height="16" rx="2" /><path d="m8 15 2 2 5-5" /></>,
         expenses: <><path d="M4 19V9M10 19V5M16 19v-7M22 19H2" /></>,
+        admin: <><path d="M12 3 4.5 6v5.5c0 4.8 3.2 8 7.5 9.5 4.3-1.5 7.5-4.7 7.5-9.5V6L12 3Z" /><path d="M9 12.5 11 14l4-4" /></>,
         profile: <><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></>,
     };
     return <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">{paths[name]}</svg>;
@@ -52,6 +53,7 @@ export default function AppLayout({ user, header, children }: PropsWithChildren<
     const { locale, translations, flash } = page.props;
     const common = translations?.common as Record<string, unknown> | undefined;
     const currentPath = page.url.split('?')[0];
+    const canAccessAdmin = page.props.auth?.capabilities.access_admin ?? false;
     const [drawerOpen, setDrawerOpen] = useState(false);
     const drawerTrigger = useRef<HTMLButtonElement>(null);
     const drawer = useRef<HTMLElement>(null);
@@ -59,8 +61,10 @@ export default function AppLayout({ user, header, children }: PropsWithChildren<
         { label: t(common, 'dashboard', 'Dashboard'), href: route('dashboard'), match: '/dashboard', icon: 'dashboard' },
         { label: t(common, 'planning', 'Planning'), href: route('planning.index'), match: '/planning', icon: 'planning' },
         { label: t(common, 'expenses', 'Expenses'), href: route('expenses.index'), match: '/expenses', icon: 'expenses' },
+        ...(canAccessAdmin ? [{ label: t(common, 'admin', 'Admin'), href: route('admin.index'), match: '/admin', icon: 'admin' as const }] : []),
         { label: 'Profile', href: route('profile.edit'), match: '/profile', icon: 'profile' },
     ];
+    const primaryDestinations = destinations.filter((destination) => destination.icon !== 'profile');
     const notice = flash?.success ?? flash?.message;
 
     const closeDrawer = (focusMain = false) => {
@@ -99,7 +103,7 @@ export default function AppLayout({ user, header, children }: PropsWithChildren<
         </div>}
         <aside data-testid="desktop-sidebar" className="app-sidebar fixed inset-y-0 left-0 z-30 hidden w-64 flex-col lg:flex" aria-label="Application navigation">
             <Link href={route('landing')} className="app-brand"><span className="app-brand-mark" aria-hidden="true">E</span><span>Expenses</span></Link>
-            <nav className="mt-8 flex-1 space-y-2"><DestinationLinks destinations={destinations.slice(0, 3)} currentPath={currentPath} /></nav>
+            <nav className="mt-8 flex-1 space-y-2"><DestinationLinks destinations={primaryDestinations} currentPath={currentPath} /></nav>
             <AccountControls user={user} locale={locale} common={common} />
         </aside>
         <header data-testid="tablet-header" className="app-topbar hidden h-16 items-center gap-4 px-5 md:flex lg:hidden">
@@ -115,7 +119,7 @@ export default function AppLayout({ user, header, children }: PropsWithChildren<
             <button type="button" className="absolute inset-0 bg-black/50" aria-label="Close navigation overlay" onClick={() => closeDrawer()} />
             <aside ref={drawer} role="dialog" aria-modal="true" aria-label="Application navigation" onKeyDown={trapDrawerFocus} className="app-drawer relative z-10 flex h-full w-[280px] flex-col p-5">
                 <div className="flex items-center justify-between"><span className="app-brand"><span className="app-brand-mark" aria-hidden="true">E</span><span>Expenses</span></span><button type="button" className="app-icon-button" aria-label="Close navigation" onClick={() => closeDrawer()}>×</button></div>
-                <nav className="mt-8 flex-1 space-y-2"><DestinationLinks destinations={destinations.slice(0, 3)} currentPath={currentPath} onNavigate={() => closeDrawer()} initialFocus /></nav>
+                <nav className="mt-8 flex-1 space-y-2"><DestinationLinks destinations={primaryDestinations} currentPath={currentPath} onNavigate={() => closeDrawer()} initialFocus /></nav>
                 <AccountControls user={user} locale={locale} common={common} />
             </aside>
         </div>}
@@ -123,6 +127,6 @@ export default function AppLayout({ user, header, children }: PropsWithChildren<
             {header && <header className="app-page-header"><div className="app-page-container py-5">{header}</div></header>}
             <main id="main-content" tabIndex={-1} className="min-h-[calc(100vh-4rem)] pb-24 text-primary md:pb-8">{children}</main>
         </div>
-        <nav data-testid="mobile-bottom-nav" className="app-bottom-nav fixed inset-x-0 bottom-0 z-30 grid grid-cols-4 md:hidden" aria-label="Mobile application navigation"><DestinationLinks destinations={destinations} currentPath={currentPath} mobile /></nav>
+        <nav data-testid="mobile-bottom-nav" className="app-bottom-nav fixed inset-x-0 bottom-0 z-30 grid md:hidden" style={{ gridTemplateColumns: `repeat(${destinations.length}, minmax(0, 1fr))` }} aria-label="Mobile application navigation"><DestinationLinks destinations={destinations} currentPath={currentPath} mobile /></nav>
     </div>;
 }

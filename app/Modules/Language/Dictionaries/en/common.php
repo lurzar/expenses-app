@@ -32,6 +32,7 @@ return [
     'dashboard' => 'Dashboard',
     'planning' => 'Planning',
     'expenses' => 'Expenses',
+    'admin' => 'Admin',
     'profile' => 'Profile',
     'saving' => 'Saving',
     'balance' => 'Balance',

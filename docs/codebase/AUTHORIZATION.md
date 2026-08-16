@@ -146,6 +146,14 @@ Never expose:
 
 Keep PHP data objects and TypeScript types aligned when capability props change.
 
+## Admin control-plane boundary
+
+The Admin shell is one module inside the existing Laravel/Inertia application, not a separate SPA or API. `admin.index` passes through `web`, `auth`, `verified`, and `can:admin.access` before `AdminController` returns `Admin/Index`. The shared `auth.capabilities.access_admin` boolean controls presentation in desktop, tablet-drawer, and mobile navigation, but a hidden link never substitutes for the route middleware.
+
+`AdminNavigationRegistry` is the server-owned extension point for delivered Admin pages. A module that adds a management page registers an `AdminNavigationItem` with a unique stable key, translated label/description keys, named route, and declared Laravel ability. The registry calls `$user->can()` and returns only authorized items as `{key, label, description, href}`. Register the item from the delivering module's provider only after its permission, route, controller, page, tests, and operations contract exist; do not register placeholders for planned billing, tenancy, or management features.
+
+The initial registry contains only `overview`. `Admin/Index` therefore shows an explicit empty management-tools state until #133 or #134 delivers a real tool. The page receives no role names, permission lists, package records, private Planning data, credentials, or internal identifiers. Inertia's existing progress indicator handles page-navigation loading, the shared flash contract handles request errors, and Laravel owns denial responses.
+
 ## Super-admin boundary
 
 Expenses App does not use a universal `Gate::before` rule that returns `true` for every super-admin ability. That pattern would also bypass present and future model policies unless each exception were reconstructed elsewhere.
@@ -206,9 +214,9 @@ A future tenancy design must define which account owns a role assignment and how
 | Database-backed roles/permissions | Implemented by #13 with `spatie/laravel-permission` 8.3.0 |
 | Catalog synchronization and drift reporting | Implemented by #13 through `authorization:sync` |
 | Planning capability plus ownership policies | Implemented by #13 |
-| Shared Admin capability boolean | Implemented by #13; no Admin routes yet |
+| Shared Admin capability boolean | Implemented by #13 and consumed by the #40 application shell |
 | Super-admin lifecycle | Implemented by #132 through `authorization:super-admin` and `SuperAdminLifecycleService` |
-| Admin shell | Planned by #40 |
+| Admin shell | Implemented by #40 through `admin.index`, `AdminController`, and `AdminNavigationRegistry` |
 | User-role administration | Planned by #133 |
 | Role-permission administration | Planned by #134 |
 | Operations guide and integrated readiness | Planned by #135 |

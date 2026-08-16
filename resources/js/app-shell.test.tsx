@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 const { pageState } = vi.hoisted(() => ({
     pageState: {
+        auth: { capabilities: { access_admin: false } },
         locale: 'en',
         translations: {},
         flash: { message: null as string | null, success: null as string | null, warning: null as string | null, error: null as string | null },
@@ -47,6 +48,7 @@ const user = {
 afterEach(() => {
     cleanup();
     pageState.flash = { message: null, success: null, warning: null, error: null };
+    pageState.auth.capabilities.access_admin = false;
 });
 
 describe('authenticated financial application shell', () => {
@@ -110,6 +112,25 @@ describe('authenticated financial application shell', () => {
         expect(screen.getByTestId('mobile-bottom-nav').querySelectorAll('a')).toHaveLength(4);
         expect(screen.getAllByRole('link', { name: 'Planning' }).some((link) => link.getAttribute('aria-current') === 'page')).toBe(true);
         expect(screen.getByRole('link', { name: 'Skip to main content' }).getAttribute('href')).toBe('#main-content');
+    });
+
+    it('exposes Admin navigation at every navigation breakpoint only for eligible users', () => {
+        const { unmount } = render(<AppLayout user={user}><p>Plan content</p></AppLayout>);
+
+        expect(screen.getByTestId('desktop-sidebar').textContent).not.toContain('Admin');
+        expect(screen.getByTestId('mobile-bottom-nav').textContent).not.toContain('Admin');
+        expect(screen.getByTestId('mobile-bottom-nav').querySelectorAll('a')).toHaveLength(4);
+
+        unmount();
+        pageState.auth.capabilities.access_admin = true;
+        render(<AppLayout user={user}><p>Plan content</p></AppLayout>);
+
+        expect(screen.getByTestId('desktop-sidebar').textContent).toContain('Admin');
+        expect(screen.getByTestId('mobile-bottom-nav').textContent).toContain('Admin');
+        expect(screen.getByTestId('mobile-bottom-nav').querySelectorAll('a')).toHaveLength(5);
+
+        fireEvent.click(screen.getByRole('button', { name: 'Open navigation' }));
+        expect(screen.getByRole('dialog', { name: 'Application navigation' }).textContent).toContain('Admin');
     });
 
     it('opens, traps, and restores focus for the tablet drawer', () => {
