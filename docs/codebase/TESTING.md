@@ -31,7 +31,7 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 
 - `tests/Pest.php` binds Laravel's `TestCase` and `RefreshDatabase` to feature tests.
 - `tests/Feature/Auth/` covers session authentication and account security flows.
-- `tests/Feature/Authorization/` covers schema lifecycle, protected roles, Gate/policy matrices, drift-preserving synchronization, capability props, and transactional activity.
+- `tests/Feature/Authorization/` covers schema lifecycle, protected roles, Gate/policy matrices, drift-preserving synchronization, capability props, transactional activity, super-admin provisioning/rotation, last-operator protection, and authorization-session revocation.
 - `tests/Feature/Planning/` covers cross-user authorization and user-scoped caching.
 - `tests/Feature/System/` covers activity history, locale validation, Telescope, and trusted hosts.
 - `tests/Feature/ProfileTest.php` covers profile updates/deletion.

@@ -88,7 +88,7 @@ Every route in this group also uses `guest`/`RedirectIfAuthenticated`.
 | POST | `/logout` | `logout` | `AuthenticatedSessionController@destroy` | Invalidates session, redirects |
 | GET | `/profile` | `profile.edit` | `ProfileController@edit` | Inertia `Profile/Edit` |
 | PATCH | `/profile` | `profile.update` | `ProfileController@update` | Validates, persists/activity-logs, redirects |
-| DELETE | `/profile` | `profile.destroy` | `ProfileController@destroy` | Password check, soft delete/activity/logout, redirects |
+| DELETE | `/profile` | `profile.destroy` | `ProfileController@destroy` | Password check, final-active-super-admin invariant, soft delete/activity/logout, redirects |
 
 ### Planning, Dashboard, and Expenses routes
 

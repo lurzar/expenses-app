@@ -3,8 +3,10 @@
 namespace App\Modules\Auth\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Modules\Auth\Middleware\RedirectIfAuthenticated;
 use App\Modules\Auth\Requests\LoginRequest;
+use App\Modules\Authorization\Services\AuthorizationSession;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,11 +28,15 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request, AuthorizationSession $authorizationSession): RedirectResponse
     {
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        $user = $request->user();
+        abort_unless($user instanceof User, 401);
+        $authorizationSession->bind($request->session(), $user);
 
         return redirect()->intended(RedirectIfAuthenticated::HOME);
     }

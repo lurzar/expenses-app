@@ -14,10 +14,10 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $superAdmin = User::factory()->superAdmin()->create();
+        $demoAccount = User::factory()->demoAccount()->create();
         $users = User::factory(10)->unverified()->create();
 
-        $users->prepend($superAdmin)->each(function (User $user): void {
+        $users->prepend($demoAccount)->each(function (User $user): void {
             Planning::factory()
                 ->count(10)
                 ->for($user)

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Modules\Authorization\Middleware\EnsureAuthorizationSessionIsCurrent;
 use App\Modules\Language\Middleware\LanguageManager;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->web(append: [
             LanguageManager::class,
+            EnsureAuthorizationSessionIsCurrent::class,
             HandleInertiaRequests::class,
         ]);
     })

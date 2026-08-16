@@ -1,6 +1,6 @@
 # Authorization contract
 
-This reference defines the v2.2.0 authorization contract implemented by issue [#13](https://github.com/lurzar/expenses-app/issues/13). [ADR 0002](../decisions/0002-modular-laravel-authorization.md) records the decision and alternatives. Dependent Admin screens and the production super-admin lifecycle remain separate issue-backed work.
+This reference defines the v2.2.0 authorization contract implemented by issues [#13](https://github.com/lurzar/expenses-app/issues/13) and [#132](https://github.com/lurzar/expenses-app/issues/132). [ADR 0002](../decisions/0002-modular-laravel-authorization.md) records the decision and alternatives. Dependent Admin screens remain separate issue-backed work.
 
 ## Trust model
 
@@ -56,7 +56,7 @@ The initial protected roles are:
 
 An administrative account also retains the base `user` role when it uses personal Planning features. Roles group permissions; the application does not grant direct user permissions in v2.2.0.
 
-Protected roles have code-owned identifiers and lifecycle rules. Admin screens may display them, but cannot rename or retire them. Issue #132 owns initial provisioning, rotation, final-super-admin protection, and recovery.
+Protected roles have code-owned identifiers and lifecycle rules. Admin screens may display them, but cannot rename or retire them. `SuperAdminLifecycleService` owns verified-account eligibility, atomic rotation, final-active-operator protection, authorization-session revocation, and minimized lifecycle activity.
 
 ## Permission catalog
 
@@ -152,6 +152,21 @@ Expenses App does not use a universal `Gate::before` rule that returns `true` fo
 
 Instead, the protected `super-admin` role receives explicit control-plane permissions. Laravel evaluates those permissions through its normal Gate path. Planning and other private domain policies still require ownership. A future support-access or impersonation feature needs a separate permission, purpose limitation, confirmation, audit trail, data contract, and issue.
 
+Production provisioning uses one server-side command and an existing account public ULID:
+
+```sh
+php artisan authorization:super-admin <account-ulid>
+php artisan authorization:super-admin <replacement-ulid> --replace=<previous-ulid>
+```
+
+The first command grants access idempotently after interactive confirmation. The second assigns the verified active replacement before removing the previous account in one transaction, so rotation never creates an interval with no active operator. `--force` is reserved for an already approved non-interactive deployment operation. The command does not accept or print email addresses, passwords, tokens, or internal IDs. Console changes use a null ActivityLog actor to mean system-initiated; the deployment or shell-access audit remains responsible for identifying the human operator.
+
+Only a verified, non-deleted existing account can receive `super-admin`. The last verified, non-deleted super-admin cannot lose the role, soft-delete the account, or become unverified through supported application paths. `RoleAssignmentService` delegates protected role mutations, while active-status changes run through the lifecycle service so account mutation, session revocation, and activity capture share one transaction. The user observer rejects direct Eloquent deletion or unverification of a super-admin outside that audited context.
+
+Every super-admin grant, removal, rotation, permitted deletion, or transition to unverified status increments the affected account's `authorization_version` and rotates its Laravel remember token. Successful login binds the current version to the session. Global web middleware logs out a session with a missing or stale version after any privileged lifecycle change before protected content is returned; only an ordinary account at its initial version may adopt a missing version during rolling deployment. Roles or authorization identifiers are never copied into browser-visible Inertia props.
+
+See the [super-admin lifecycle runbook](../operations/super-admin-lifecycle.md) for bootstrap, rotation, recovery, verification, and rollback.
+
 ## Activity events
 
 Authorization work extends the ActivityLog allowlist with narrowly named events as the related issues deliver them. Expected event families include catalog synchronization, role lifecycle, role assignment, permission mapping, and super-admin lifecycle.
@@ -192,7 +207,7 @@ A future tenancy design must define which account owns a role assignment and how
 | Catalog synchronization and drift reporting | Implemented by #13 through `authorization:sync` |
 | Planning capability plus ownership policies | Implemented by #13 |
 | Shared Admin capability boolean | Implemented by #13; no Admin routes yet |
-| Super-admin lifecycle | Planned by #132 |
+| Super-admin lifecycle | Implemented by #132 through `authorization:super-admin` and `SuperAdminLifecycleService` |
 | Admin shell | Planned by #40 |
 | User-role administration | Planned by #133 |
 | Role-permission administration | Planned by #134 |
