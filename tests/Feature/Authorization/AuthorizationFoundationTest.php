@@ -87,6 +87,13 @@ test('Planning policy requires both capability and ownership', function () {
         ->and(Gate::forUser($owner)->allows('delete', $planning))->toBeFalse();
 });
 
+test('missing declared permission rows fail closed until synchronization repairs them', function () {
+    $user = User::factory()->create();
+    Permission::findByName(PlanningPermission::View->value)->delete();
+
+    expect(Gate::forUser($user)->allows(PlanningPermission::View->value))->toBeFalse();
+});
+
 test('undeclared generic permissions cannot bypass Planning ownership policies', function () {
     $owner = User::factory()->create();
     $attacker = User::factory()->create();
@@ -165,6 +172,17 @@ test('unexpected protected-role mappings are retained and reported as drift', fu
     expect($result->unexpectedRolePermissions)->toBe(['user:legacy.unknown'])
         ->and($result->drift())->toContain('role-permission:user:legacy.unknown')
         ->and($userRole->fresh()->hasPermissionTo('legacy.unknown'))->toBeTrue();
+});
+
+test('non-web guard rows are retained and reported as malformed drift', function () {
+    Permission::create(['name' => 'planning.view', 'guard_name' => 'api']);
+    Role::create(['name' => 'admin', 'guard_name' => 'api']);
+
+    $result = app(AuthorizationSynchronizer::class)->sync();
+
+    expect($result->unknownPermissions)->toBe(['planning.view@api'])
+        ->and($result->unknownRoles)->toBe(['admin@api'])
+        ->and($result->drift())->toContain('permission:planning.view@api', 'role:admin@api');
 });
 
 test('role assignment mutations use package APIs and minimized transactional activity', function () {

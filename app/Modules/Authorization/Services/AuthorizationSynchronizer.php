@@ -87,19 +87,25 @@ final class AuthorizationSynchronizer
         $knownPermissions = $this->catalog->names();
         $knownRoles = array_map(fn (RoleName $role): string => $role->value, RoleName::cases());
         $unknownPermissions = array_values(Permission::query()
-            ->where('guard_name', 'web')
-            ->whereNotIn('name', $knownPermissions)
+            ->where('guard_name', '!=', 'web')
+            ->orWhereNotIn('name', $knownPermissions)
             ->orderBy('name')
+            ->orderBy('guard_name')
             ->get()
-            ->map(fn (Permission $permission): string => $permission->name)
+            ->map(fn (Permission $permission): string => $permission->guard_name === 'web'
+                ? $permission->name
+                : "{$permission->name}@{$permission->guard_name}")
             ->values()
             ->all());
         $unknownRoles = array_values(Role::query()
-            ->where('guard_name', 'web')
-            ->whereNotIn('name', $knownRoles)
+            ->where('guard_name', '!=', 'web')
+            ->orWhereNotIn('name', $knownRoles)
             ->orderBy('name')
+            ->orderBy('guard_name')
             ->get()
-            ->map(fn (Role $role): string => $role->name)
+            ->map(fn (Role $role): string => $role->guard_name === 'web'
+                ? $role->name
+                : "{$role->name}@{$role->guard_name}")
             ->values()
             ->all());
         $unexpectedRolePermissions = [];

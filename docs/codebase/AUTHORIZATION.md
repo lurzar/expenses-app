@@ -90,7 +90,7 @@ Each declaration supplies code-owned metadata:
 - owning module;
 - translation key for its label and description;
 - classification as account/domain or control-plane access; and
-- lifecycle state when a permission is intentionally retired.
+- active catalog membership; retiring a permission requires a later issue to add explicit lifecycle metadata and a data-preserving transition before removing the declaration.
 
 The database stores the package's permission and assignment records. Code and translation dictionaries remain the source for names shown in Admin. This prevents the database or UI from inventing an ability that no route, Gate, or policy enforces.
 

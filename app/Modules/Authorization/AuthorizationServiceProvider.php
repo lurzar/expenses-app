@@ -8,6 +8,7 @@ use App\Modules\Authorization\Observers\AssignDefaultRole;
 use App\Modules\Authorization\Permissions\SystemPermission;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 
 class AuthorizationServiceProvider extends ServiceProvider
 {
@@ -24,7 +25,13 @@ class AuthorizationServiceProvider extends ServiceProvider
     public function boot(): void
     {
         foreach ($this->app->make(PermissionCatalog::class)->names() as $permission) {
-            Gate::define($permission, fn (User $user): bool => $user->hasPermissionTo($permission, 'web'));
+            Gate::define($permission, function (User $user) use ($permission): bool {
+                try {
+                    return $user->hasPermissionTo($permission, 'web');
+                } catch (PermissionDoesNotExist) {
+                    return false;
+                }
+            });
         }
 
         User::observe(AssignDefaultRole::class);

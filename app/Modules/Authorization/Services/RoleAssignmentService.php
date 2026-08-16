@@ -14,13 +14,18 @@ final class RoleAssignmentService
 
     public function assign(User $actor, User $subject, RoleName $role): bool
     {
-        if ($subject->hasRole($role->value)) {
-            return false;
-        }
-
         return DB::transaction(function () use ($actor, $subject, $role): bool {
-            $subject->assignRole($role->value);
-            $this->record(ActivityEvent::AuthorizationRoleAssigned, $actor, $subject, $role);
+            $target = User::query()
+                ->whereKey($subject->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if ($target->hasRole($role->value)) {
+                return false;
+            }
+
+            $target->assignRole($role->value);
+            $this->record(ActivityEvent::AuthorizationRoleAssigned, $actor, $target, $role);
 
             return true;
         });
@@ -28,13 +33,18 @@ final class RoleAssignmentService
 
     public function remove(User $actor, User $subject, RoleName $role): bool
     {
-        if (! $subject->hasRole($role->value)) {
-            return false;
-        }
-
         return DB::transaction(function () use ($actor, $subject, $role): bool {
-            $subject->removeRole($role->value);
-            $this->record(ActivityEvent::AuthorizationRoleRemoved, $actor, $subject, $role);
+            $target = User::query()
+                ->whereKey($subject->getKey())
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if (! $target->hasRole($role->value)) {
+                return false;
+            }
+
+            $target->removeRole($role->value);
+            $this->record(ActivityEvent::AuthorizationRoleRemoved, $actor, $target, $role);
 
             return true;
         });
