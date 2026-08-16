@@ -38,11 +38,15 @@ test('administrators receive the minimal localized Admin shell contract', functi
         ->assertInertia(fn (Assert $page) => $page
             ->component('Admin/Index')
             ->where('auth.capabilities.access_admin', true)
-            ->has('admin.navigation', 1)
+            ->has('admin.navigation', 2)
             ->where('admin.navigation.0.key', 'overview')
             ->where('admin.navigation.0.label', 'Overview')
             ->where('admin.navigation.0.description', 'Admin control plane status')
             ->where('admin.navigation.0.href', route('admin.index'))
+            ->where('admin.navigation.1.key', 'users')
+            ->where('admin.navigation.1.label', 'Users and roles')
+            ->where('admin.navigation.1.description', 'Review accounts and manage approved administrative roles.')
+            ->where('admin.navigation.1.href', route('admin.users.index'))
             ->missing('admin.roles')
             ->missing('admin.permissions')
             ->missing('admin.user')
@@ -60,7 +64,9 @@ test('the Admin shell localizes server-owned navigation metadata', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->where('locale', 'my')
             ->where('admin.navigation.0.label', 'Gambaran keseluruhan')
-            ->where('admin.navigation.0.description', 'Status panel kawalan pentadbir'));
+            ->where('admin.navigation.0.description', 'Status panel kawalan pentadbir')
+            ->where('admin.navigation.1.label', 'Pengguna dan peranan')
+            ->where('admin.navigation.1.description', 'Semak akaun dan urus peranan pentadbiran yang diluluskan.'));
 });
 
 test('super administrators can enter with a current authorization session', function () {

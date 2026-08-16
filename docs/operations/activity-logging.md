@@ -44,6 +44,8 @@ Account deletion produces one `account.deleted` event. The account observer soft
 
 Each capture runs in the same database transaction as its state change. If enabled capture fails, Laravel rolls back both the mutation and its activity row. Failed validation and a profile update that changes neither name nor email produce no event.
 
+Admin user-role changes record one existing assignment/removal event per changed role. Repeated desired-state submissions that make no change produce no event. Each changed assignment also increments the subject's authorization revision and rotates its remember token so retained sessions cannot continue with stale privileges.
+
 Issue [#13](https://github.com/lurzar/expenses-app/issues/13) provides the authorization foundation, but it does not add an activity-log viewer. Any future viewer needs its own permission, access review, data contract, tests, and issue.
 
 ## Stored fields and prohibited data
@@ -152,10 +154,10 @@ Disable capture when the activity table is unavailable or a suspected data-polic
 1. Set `ACTIVITY_LOG_ENABLED=false` in the target environment.
 2. Refresh the deployed configuration with `php artisan config:cache`.
 3. Confirm the effective value with `php artisan config:show activity-log` on the target server.
-4. Verify that an approved test mutation succeeds without adding an activity row.
+4. Verify that an approved non-authorization test mutation succeeds without adding an activity row.
 5. Record the start and end of the audit gap in the incident or deployment record without including personal or financial data.
 
-While capture is disabled, mutations continue without durable activity events. Re-enable capture only after the migration is present and the recorder path passes its focused tests.
+While capture is disabled, ordinary account and Planning mutations continue without durable activity events. Authorization role changes and protected super-admin lifecycle mutations fail closed because those security-sensitive operations require atomic durable history. Re-enable capture only after the migration is present and the recorder path passes its focused tests.
 
 ## Respond to suspected exposure
 
