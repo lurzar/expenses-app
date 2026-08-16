@@ -1,8 +1,11 @@
 <?php
 
 use App\Models\User;
+use App\Modules\Admin\Navigation\AdminNavigationItem;
+use App\Modules\Admin\Navigation\AdminNavigationRegistry;
 use App\Modules\Authorization\RoleName;
 use App\Modules\Authorization\Services\AuthorizationSession;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Testing\AssertableInertia as Assert;
 use Spatie\Permission\Models\Permission;
 
@@ -81,4 +84,50 @@ test('the Admin request boundary fails closed when its declared permission is mi
     $this->actingAs($operator)
         ->get('/admin')
         ->assertForbidden();
+});
+
+test('the Admin navigation registry returns only items allowed by Laravel abilities', function () {
+    $operator = User::factory()->create();
+    Gate::define('admin.registry.allowed', fn (User $user): bool => $user->is($operator));
+    Gate::define('admin.registry.denied', fn (): bool => false);
+
+    $registry = new AdminNavigationRegistry;
+    $registry->register(new AdminNavigationItem(
+        key: 'allowed',
+        labelKey: 'admin.overview',
+        descriptionKey: 'admin.overview_description',
+        routeName: 'admin.index',
+        ability: 'admin.registry.allowed',
+    ));
+    $registry->register(new AdminNavigationItem(
+        key: 'denied',
+        labelKey: 'admin.overview',
+        descriptionKey: 'admin.overview_description',
+        routeName: 'admin.index',
+        ability: 'admin.registry.denied',
+    ));
+
+    expect($registry->availableTo($operator))->toBe([
+        [
+            'key' => 'allowed',
+            'label' => 'Overview',
+            'description' => 'Admin control plane status',
+            'href' => route('admin.index'),
+        ],
+    ]);
+});
+
+test('the Admin navigation registry rejects duplicate extension keys', function () {
+    $registry = new AdminNavigationRegistry;
+    $item = new AdminNavigationItem(
+        key: 'overview',
+        labelKey: 'admin.overview',
+        descriptionKey: 'admin.overview_description',
+        routeName: 'admin.index',
+        ability: 'admin.access',
+    );
+    $registry->register($item);
+
+    expect(fn () => $registry->register($item))
+        ->toThrow(InvalidArgumentException::class, 'Admin navigation item [overview] is already registered.');
 });
