@@ -6,7 +6,7 @@ This reference describes the deterministic test and quality stack established fo
 
 - Backend framework: Pest 3.8.7 with Pest Laravel plugin 3.2.0 and PHPUnit underneath.
 - Assertions: Pest expectations, PHPUnit assertions, Laravel HTTP/database/session assertions, and Inertia `AssertableInertia`.
-- Mocking: Mockery 1.6.12 through Laravel's container-aware `$this->mock()`.
+- Mocking: Mockery 1.6.13 through Laravel's container-aware `$this->mock()`.
 - Frontend: Vitest 4.1.1, React Testing Library 16.3.2, and jsdom 27.4.0.
 - Database isolation: `RefreshDatabase` applies to every `tests/Feature` test through `tests/Pest.php`.
 - Static/build checks: Pint, Larastan/PHPStan, strict TypeScript, Vite build, and Composer/npm audits.
@@ -31,6 +31,7 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 
 - `tests/Pest.php` binds Laravel's `TestCase` and `RefreshDatabase` to feature tests.
 - `tests/Feature/Auth/` covers session authentication and account security flows.
+- `tests/Feature/Authorization/` covers schema lifecycle, protected roles, Gate/policy matrices, drift-preserving synchronization, capability props, and transactional activity.
 - `tests/Feature/Planning/` covers cross-user authorization and user-scoped caching.
 - `tests/Feature/System/` covers activity history, locale validation, Telescope, and trusted hosts.
 - `tests/Feature/ProfileTest.php` covers profile updates/deletion.

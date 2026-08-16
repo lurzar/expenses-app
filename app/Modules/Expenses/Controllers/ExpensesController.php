@@ -18,6 +18,8 @@ class ExpensesController extends Controller
 
     public function index(): Response
     {
+        Gate::authorize('viewAny', Planning::class);
+
         return Inertia::render('Expenses/Index', [
             'plannings' => PlanningData::collection($this->planningService->getAllPlannings()),
         ]);

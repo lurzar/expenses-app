@@ -16,7 +16,7 @@ The repository currently locks Laravel 12.66.0 and a PHP 8.4.0 Composer platform
 
 ## Decision
 
-1. Use `spatie/laravel-permission` v8 as the database-backed role, permission, assignment, and cache engine. Issue #13 will re-check the current v8 release, resolve a reviewed Composer constraint beginning from `^8.3`, lock the exact dependency graph, and run the repository audits before implementation merges.
+1. Use `spatie/laravel-permission` v8 as the database-backed role, permission, assignment, and cache engine. Issue #13 resolved `^8.3` to 8.3.0 and locked the reviewed dependency graph; later updates remain subject to release-note review, focused authorization regressions, and repository audits.
 2. Keep Laravel's authorization APIs as the application contract. Routes use `can` middleware where it rejects a request before controller work; controllers use `Gate::authorize()` for bound resources; Form Requests authorize submitted mutations; model policies combine capabilities with record context.
 3. Create an application-owned Authorization module. It owns package configuration, the permission catalog, protected-role definitions, synchronization, shared invariants, and authorization migrations. Feature modules continue to own their policies and permission declarations.
 4. Declare permissions in code as module-owned backed enums with stable lowercase dot-separated values such as `planning.view`, `admin.access`, and `roles.manage`. Code and translations own module grouping and labels. Database rows support assignment and lookup; the Admin UI cannot invent permission names.

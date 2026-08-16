@@ -1,6 +1,6 @@
 # Authorization contract
 
-This reference defines the accepted v2.2.0 authorization contract. [ADR 0002](../decisions/0002-modular-laravel-authorization.md) records the decision and alternatives. Issue [#13](https://github.com/lurzar/expenses-app/issues/13) tracks implementation; until it merges, the current runtime remains session authentication plus the existing Planning policy and owner-scoped queries.
+This reference defines the v2.2.0 authorization contract implemented by issue [#13](https://github.com/lurzar/expenses-app/issues/13). [ADR 0002](../decisions/0002-modular-laravel-authorization.md) records the decision and alternatives. Dependent Admin screens and the production super-admin lifecycle remain separate issue-backed work.
 
 ## Trust model
 
@@ -90,9 +90,11 @@ Each declaration supplies code-owned metadata:
 - owning module;
 - translation key for its label and description;
 - classification as account/domain or control-plane access; and
-- lifecycle state when a permission is intentionally retired.
+- active catalog membership; retiring a permission requires a later issue to add explicit lifecycle metadata and a data-preserving transition before removing the declaration.
 
 The database stores the package's permission and assignment records. Code and translation dictionaries remain the source for names shown in Admin. This prevents the database or UI from inventing an ability that no route, Gate, or policy enforces.
+
+Permission labels live in the Authorization module's namespaced server translations. They are not part of the globally shared translation dictionaries; an authorized Admin response may resolve and expose only its allowlisted page catalog.
 
 ## Module integration checklist
 
@@ -124,6 +126,10 @@ The Authorization module owns an idempotent catalog synchronizer. It may:
 It must not silently delete an unknown permission, role, mapping, or user assignment. A row can be unknown during rollback, a mixed-version deployment, or recovery from older data. The synchronizer reports drift and leaves destructive resolution to an explicit, reviewed operation.
 
 Use package mutation APIs rather than direct table writes. Direct writes can leave the package cache stale and bypass assignment invariants.
+
+Run `php artisan authorization:sync` after migrations and before enabling authorization-dependent routes. The command creates missing declared rows and mappings, clears the permission cache, and records `authorization.catalog_synchronized`. It returns a failure status when unknown roles, permissions, mappings, or direct user permissions require operator review; it does not delete that data.
+
+The package's universal permission callback is disabled. The Authorization provider registers only catalog-declared permission names with Laravel Gate, preventing an unknown generic database permission such as `view` or `delete` from bypassing a model policy with the same ability name.
 
 ## Inertia contract
 
@@ -182,7 +188,10 @@ A future tenancy design must define which account owns a role assignment and how
 | Capability | Status/source |
 | --- | --- |
 | Planning owner policy | Implemented in `PlanningPolicy` |
-| Database-backed roles/permissions | Planned by #13 |
+| Database-backed roles/permissions | Implemented by #13 with `spatie/laravel-permission` 8.3.0 |
+| Catalog synchronization and drift reporting | Implemented by #13 through `authorization:sync` |
+| Planning capability plus ownership policies | Implemented by #13 |
+| Shared Admin capability boolean | Implemented by #13; no Admin routes yet |
 | Super-admin lifecycle | Planned by #132 |
 | Admin shell | Planned by #40 |
 | User-role administration | Planned by #133 |

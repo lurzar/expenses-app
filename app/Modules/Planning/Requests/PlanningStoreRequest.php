@@ -2,6 +2,7 @@
 
 namespace App\Modules\Planning\Requests;
 
+use App\Modules\Planning\Models\Planning;
 use App\Modules\Planning\Support\PlanningCalculator;
 use DomainException;
 use Illuminate\Foundation\Http\FormRequest;
@@ -16,7 +17,7 @@ class PlanningStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()?->can('create', Planning::class) === true;
     }
 
     /**

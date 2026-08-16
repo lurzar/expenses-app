@@ -26,6 +26,7 @@ The host versions observed during this documentation pass were PHP 8.5.9 and Nod
 | `@inertiajs/react` | 2.3.27 | React page resolution, navigation, forms, shared props | `package-lock.json`; `resources/js/app.tsx` |
 | `react` / `react-dom` | 19.2.8 | Browser component runtime and rendering | `package-lock.json`; `resources/js/app.tsx` |
 | `laravel/sanctum` | 4.3.3 | Token capability on `User`; no public API routes are implemented | `composer.lock`; `app/Models/User.php`; route inventory |
+| `spatie/laravel-permission` | 8.3.0 | Database-backed roles/permissions and Laravel Gate integration | `composer.lock`; `app/Modules/Authorization/` |
 | `tightenco/ziggy` / `ziggy-js` | 2.6.3 | Named Laravel routes in TypeScript | `composer.lock`; `package-lock.json`; `resources/js/utils/route.ts` |
 | `guzzlehttp/guzzle` | 7.15.3 | Available HTTP client; no application-owned outbound call was found | `composer.lock`; source search |
 | Tailwind CSS | 3.4.19 | Utility CSS and class-based dark mode | `package-lock.json`; `tailwind.config.js` |
@@ -36,7 +37,7 @@ The host versions observed during this documentation pass were PHP 8.5.9 and Nod
 | --- | --- | --- |
 | Laravel Sail | PHP 8.4/Docker development runtime | `composer.lock`; `docker-compose.yml` |
 | Pest 3.8.7 + Laravel plugin 3.2.0 | Backend unit and feature tests | `composer.lock`; `tests/Pest.php` |
-| Mockery 1.6.12 | Focused dependency mocks | `composer.lock`; `tests/Feature/System/ActivityLoggingTest.php` |
+| Mockery 1.6.13 | Focused dependency mocks | `composer.lock`; `tests/Feature/System/ActivityLoggingTest.php` |
 | Vitest 4.1.1 + Testing Library 16.3.2 + jsdom 27.4.0 | Frontend theme hook, DOM, component, and integration-source regression tests | `package-lock.json`; `resources/js/theme.test.tsx` |
 | Laravel Pint 1.30.5 | PHP formatting | `composer.lock`; `AGENTS.md` |
 | TypeScript | Strict static type checking without emission | `tsconfig.json`; `AGENTS.md` |
