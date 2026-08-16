@@ -28,9 +28,11 @@ As of `v2.1.2-dev`:
 - No canonical loading, skeleton, error summary, offline, destructive dialog, reduced-motion, or responsive navigation pattern exists.
 - No chart component or chart dependency exists.
 
-## v2.1.4 implementation status
+## v2.1.4-v2.2.0 implementation status
 
 Issue #123 implements the authenticated foundation: exact light/dark semantic tokens, restored global focus visibility, reduced-motion behavior, desktop sidebar, tablet overlay drawer with focus containment/return, four-destination mobile bottom navigation, account/language/theme/logout access at every breakpoint, and shared page/surface/metric/state/financial-number primitives. Issue #124 applies those primitives and the visualization contracts to Dashboard, Planning, and Expenses. The verified v2.1.2 audit above remains historical evidence for why the migration was required.
+
+Issue #40 extends that same shell with a fifth Admin destination only when the server shares `auth.capabilities.access_admin`. Ordinary users retain the four-destination model. Authorized users receive Admin in the persistent sidebar, tablet drawer, and mobile bottom navigation; direct access remains protected by Laravel middleware. The Admin landing page reuses semantic surfaces, visible focus, reduced-motion, flash announcements, and the global Inertia loading indicator, and shows an explicit empty state until a management module is delivered.
 
 These are audit facts, not reasons to preserve the current presentation.
 
@@ -38,12 +40,13 @@ These are audit facts, not reasons to preserve the current presentation.
 
 ### Primary destinations
 
-Keep four authenticated destinations:
+Keep four destinations for every authenticated user, plus one server-authorized control-plane destination:
 
 1. **Dashboard** — overview, current-period context, key planned figures, and trends when enough plans exist.
 2. **Planning** — create, browse, inspect, and manage monthly plans.
 3. **Expenses** — a read-only allocation projection of Planning until a real ledger is separately implemented.
 4. **Profile** — account identity and account-security actions.
+5. **Admin** — capability-filtered control-plane overview, present only when Laravel grants `admin.access`.
 
 Language, theme, and logout are account utilities, not primary destinations. New modules do not enter navigation until their product behavior and permissions exist.
 
@@ -51,7 +54,7 @@ Language, theme, and logout are account utilities, not primary destinations. New
 
 | Width | Approved shell behavior |
 | --- | --- |
-| `< 768px` (`md`) | Compact top context bar plus fixed bottom navigation. Show Dashboard, Planning, Expenses, and Profile with icon, visible text label, current state, and at least a 44×44 px target. Keep content clear of safe areas and the bottom bar. |
+| `< 768px` (`md`) | Compact top context bar plus fixed bottom navigation. Show Dashboard, Planning, Expenses, and Profile, plus Admin when authorized, with icon, visible text label, current state, and at least a 44×44 px target. Keep content clear of safe areas and the bottom bar. |
 | `768–1023px` | Top context bar plus a closed-by-default 280 px labelled overlay drawer. A visible menu button opens it; focus moves to its heading/first destination, stays within the drawer, and returns to the menu button on close. Escape, overlay click, close button, or destination selection closes it. Drawer state is not persisted across page loads. |
 | `>= 1024px` (`lg`) | Persistent 240–256 px labelled left sidebar plus compact top context bar. Main content uses the remaining width; sidebar collapse is optional, not required for first delivery. |
 
@@ -249,6 +252,7 @@ Every data page defines these states before implementation:
 | Planning detail | Financial summary specification owned by #44. |
 | Expenses index/detail | Clearly label as plan allocation projection until a ledger exists; reuse Planning summary patterns without “actual spend” language. |
 | Profile | Account form and separated danger zone with accessible destructive dialog. |
+| Admin | Capability-filtered control-plane overview using the shared shell, localized navigation metadata, protected-access status, and an explicit empty management-tools state. |
 
 ## Implementation sequence after v2.1.3
 

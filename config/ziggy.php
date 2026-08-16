@@ -21,6 +21,7 @@ return [
         'profile.*',
         'planning.*',
         'expenses.*',
+        'admin.*',
         'language',
     ],
 

@@ -38,6 +38,7 @@ This reference maps source-owned directories and entry points. Generated output,
 | Boundary | Owns | Must not own | Evidence |
 | --- | --- | --- | --- |
 | `ActivityLog` | Allowlisted activity events, persistence, pruning | General application logging or arbitrary metadata | `ActivityEvent.php`; `ActivityRecorder.php` |
+| `Admin` | Server-protected control-plane route, minimal Inertia page contract, and capability-filtered navigation registry | Role/permission persistence, private Planning access, or placeholder billing/tenancy behavior | `AdminServiceProvider.php`; `AdminNavigationRegistry.php`; `AdminController.php` |
 | `Auth` | Session authentication, registration, password and email-verification routes | Planning rules or profile persistence | `AuthServiceProvider.php`; `Auth/routes.php` |
 | `Authorization` | Permission catalog, protected roles, Gate registration, role assignment, super-admin lifecycle, session-version enforcement, and authorization commands | Module-owned record policies or browser-only enforcement | `AuthorizationServiceProvider.php`; `SuperAdminLifecycleService.php` |
 | `Dashboard` | Authenticated summary page over Planning data | A second Planning data model | `DashboardController.php` |

@@ -12,17 +12,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Added explicit `admin.access` Inertia capability data without exposing role, permission, pivot, or internal database identifiers.
 - Added an audited, idempotent Artisan workflow for verified-account super-admin provisioning and atomic rotation, with a dedicated operator runbook.
 - Added driver-independent authorization-session versioning so super-admin grants, removals, and rotations revoke existing browser and remember-me sessions.
+- Added a server-protected Admin module shell with capability-aware desktop, tablet, and mobile navigation, bilingual status/empty states, and a module-extensible navigation registry.
 
 ### Changed
 
 - Changed Planning authorization to require the relevant permission and existing owner relationship at Laravel policy, controller, and Form Request boundaries.
 - Changed development seed data to use an explicitly non-privileged demo account instead of super-admin-like credentials.
+- Changed the authenticated shell to expose Admin navigation only when Laravel shares the explicit `admin.access` capability.
 
 ### Security
 
 - Administrative roles receive explicit control-plane permissions without a universal super-admin bypass, so no administrative role gains access to another account's private Planning data.
 - The final verified, active super-admin cannot lose the protected role, delete the account, or become unverified until another active operator exists.
 - Permitted super-admin deletion or unverification now fails closed without activity capture and revokes existing browser and remember-me sessions.
+- Admin routes require authentication, verified email, and Laravel `can:admin.access` middleware; ordinary users remain denied on direct requests and no role, permission, or Planning internals enter the Admin payload.
 
 ## [2.1.4] - 2026-08-16
 

@@ -46,12 +46,13 @@ This reference catalogs the current browser interface. It describes Laravel web 
 | `expenses.index` | `Expenses/Index` | `plannings`: authenticated-user Planning records |
 | `expenses.show` | `Expenses/Show` | `planning`: authorized public-ID Planning payload |
 | `profile.edit` | `Profile/Edit` | `mustVerifyEmail`, `status` |
+| `admin.index` | `Admin/Index` | `admin.navigation`: authorized `{key, label, description, href}` entries; initially overview only |
 
-These fourteen TSX pages cover the current rendered route contracts.
+These fifteen TSX pages cover the current rendered route contracts.
 
 ## Route catalog
 
-Verified with `php artisan route:list --except-vendor --json` on 2026-08-16: 28 routes, all in the `web` middleware group.
+Verified with `php artisan route:list --except-vendor --json` on 2026-08-17: 29 routes, all in the `web` middleware group.
 
 ### Public and locale routes
 
@@ -103,6 +104,12 @@ Every route in this group also uses `guest`/`RedirectIfAuthenticated`.
 | GET | `/expenses` | `expenses.index` | `ExpensesController@index` | `planning.view` through `PlanningPolicy::viewAny`; owner-scoped projection |
 | GET | `/expenses/{expense}` | `expenses.show` | `ExpensesController@show` | Public-ULID binding plus `planning.view` and owner policy |
 
+### Admin route
+
+| Method | URI | Name | Controller/action | Authorization/result |
+| --- | --- | --- | --- | --- |
+| GET | `/admin` | `admin.index` | `AdminController@index` | `auth`, `verified`, and `can:admin.access`; Inertia `Admin/Index` with capability-filtered navigation metadata only |
+
 ## Binding and authorization constraints
 
 - `Planning::getRouteKeyName()` resolves to the public `planning_id` through `HasPublicId`; URLs must not expose the internal numeric primary key.
@@ -113,6 +120,7 @@ Every route in this group also uses `guest`/`RedirectIfAuthenticated`.
 - Session authentication is not sufficient authorization for a specific Planning record; every new direct-record route must call a policy or use scoped binding.
 - Shared capability booleans are presentation hints only. Direct requests still pass through Laravel Gate, policies, and Form Request authorization.
 - Shared props never include role names, permission lists, package models, pivots, or authorization database identifiers.
+- Admin navigation visibility uses the shared capability boolean, while direct `/admin` requests always pass through Laravel middleware. The page-specific registry resolves only delivered, server-authorized destinations and never serializes role or permission records.
 
 ## Language route contract gap
 
@@ -131,7 +139,7 @@ Do not add speculative JSON behavior to a web route. A public/machine interface 
 
 ## Evidence
 
-- `php artisan route:list --except-vendor --json` (28 routes on 2026-08-16)
+- `php artisan route:list --except-vendor --json` (29 routes on 2026-08-17)
 - `app/Modules/*/routes.php`
 - `app/Modules/*/Controllers/*.php`
 - `app/Http/Middleware/HandleInertiaRequests.php`

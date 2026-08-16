@@ -22,6 +22,7 @@ The current Expenses view is a projection of monthly Planning data. It is not a 
 - Review planning summaries through Dashboard and Expenses views.
 - Enforce module-owned roles and permissions through Laravel Gate and owner-aware policies.
 - Provision and rotate protected super-admin access through an audited server-side workflow without default production credentials.
+- Enter a responsive, bilingual Admin control plane when the authenticated account has the server-issued `admin.access` capability.
 - Switch between the shipped English and Malay interface dictionaries from guest and authenticated layouts.
 - Run locally with Laravel Sail, PostgreSQL, Redis, and pgAdmin.
 
