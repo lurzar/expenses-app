@@ -1,6 +1,6 @@
 # Activity logging operations
 
-This guide helps an authorized operator inspect and manage the durable activity history introduced in version 2.0.8. It describes server-side operations only. The application has no activity-log page, public API, administrator role, alerting integration, or analytics interface.
+This guide helps an authorized operator inspect and manage the durable activity history introduced in version 2.0.8. It describes server-side operations only. The application has no activity-log page, public API, role-authorized viewer, alerting integration, or analytics interface.
 
 ## Purpose and boundaries
 
@@ -27,14 +27,17 @@ The application records these events:
 | `account.deleted` | Successful account soft deletion | Account public ULID | `account` and the same public ULID | None |
 | `planning.created` | Successful Planning creation | Account public ULID | `planning` and the Planning public ULID | None |
 | `planning.deleted` | Successful Planning soft deletion | Account public ULID | `planning` and the Planning public ULID | None |
+| `authorization.catalog_synchronized` | Catalog synchronization transaction | System (`null`) | `authorization_catalog` with no invented identifier | Created permission/role/mapping names and drift identifiers |
+| `authorization.role_assigned` | Role assignment service transaction | Operator account public ULID | Target `account` public ULID | Stable role name |
+| `authorization.role_removed` | Role removal service transaction | Operator account public ULID | Target `account` public ULID | Stable role name |
 
-The current catalog has no system-generated event. The schema permits a null `actor_id` so a future, separately approved system event can identify itself without inventing a user. All five current events have an account actor.
+Catalog synchronization is system-generated and therefore uses a null actor and subject identifier. It does not invent a user or a public ULID. Account and Planning events retain public actor and subject identifiers.
 
 Account deletion produces one `account.deleted` event. The account observer soft-deletes the account's Planning records without emitting a `planning.deleted` event for each record. Activity rows have no foreign keys to accounts or Planning records, so the public actor and subject identifiers remain available after soft deletion.
 
 Each capture runs in the same database transaction as its state change. If enabled capture fails, Laravel rolls back both the mutation and its activity row. Failed validation and a profile update that changes neither name nor email produce no event.
 
-Issue [#13](https://github.com/lurzar/expenses-app/issues/13) tracks a future authorization model. A role-based viewer remains deferred until that model defines who may inspect activity history. Any future viewer needs its own access review, data contract, tests, and issue; this release does not provide one.
+Issue [#13](https://github.com/lurzar/expenses-app/issues/13) provides the authorization foundation, but it does not add an activity-log viewer. Any future viewer needs its own permission, access review, data contract, tests, and issue.
 
 ## Stored fields and prohibited data
 
@@ -75,11 +78,14 @@ Run the migration before enabling code that can capture an event:
 
 ```sh
 php artisan migrate --force
+php artisan authorization:sync
 php artisan config:cache
 php artisan schedule:list
 ```
 
 Confirm that `schedule:list` contains `activity-log:prune --days=365` with a daily frequency. Replace `php artisan` with `./vendor/bin/sail artisan` when the application runs through Laravel Sail.
+
+Authorization schema rollback permits only the deterministic bootstrap state that can be reconstructed. It stops before dropping tables when non-default role assignments, direct permissions, unknown catalog rows, unexpected mappings, or orphan assignments exist. Back up and explicitly resolve that state before retrying; never bypass the guard by dropping tables manually.
 
 ## Safe inspection
 

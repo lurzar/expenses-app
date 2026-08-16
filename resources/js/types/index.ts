@@ -45,6 +45,9 @@ export interface Planning {
 export interface PageProps {
     auth: {
         user: User | null;
+        capabilities: {
+            access_admin: boolean;
+        };
     };
     flash: {
         message: string | null;

@@ -18,6 +18,7 @@ This reference catalogs the current browser interface. It describes Laravel web 
 | Prop | Shape | Source/notes |
 | --- | --- | --- |
 | `auth.user` | explicit user payload or `null` | Public `user_id`, name, email, verification timestamp, and record timestamps; no numeric primary key |
+| `auth.capabilities.access_admin` | boolean | Server-computed `admin.access` result for navigation/presentation; not an authorization credential |
 | `locale` | string | Active Laravel locale |
 | `translations` | record keyed by translation filename | Every PHP dictionary under the active `lang/<locale>` directory |
 | `flash.message` | string or `null` | Session `message` |
@@ -93,14 +94,14 @@ Every route in this group also uses `guest`/`RedirectIfAuthenticated`.
 
 | Method | URI | Name | Controller/action | Authorization/result |
 | --- | --- | --- | --- | --- |
-| GET | `/dashboard` | `dashboard` | `DashboardController@index` | `verified`; Inertia collection projection |
-| GET | `/planning` | `planning.index` | `PlanningController@index` | User-scoped collection |
-| GET | `/planning/create` | `planning.create` | `PlanningController@create` | Creation form |
-| POST | `/planning` | `planning.store` | `PlanningController@store` | Authenticated create; current request authorizes broadly |
-| GET | `/planning/{planning}` | `planning.show` | `PlanningController@show` | Public-ULID binding plus `PlanningPolicy::view` |
-| DELETE | `/planning/{planning}` | `planning.destroy` | `PlanningController@destroy` | Public-ULID binding plus `PlanningPolicy::delete` |
-| GET | `/expenses` | `expenses.index` | `ExpensesController@index` | User-scoped Planning projection |
-| GET | `/expenses/{expense}` | `expenses.show` | `ExpensesController@show` | Public-ULID binding plus `PlanningPolicy::view` |
+| GET | `/dashboard` | `dashboard` | `DashboardController@index` | `verified`; `planning.view` through `PlanningPolicy::viewAny`; owner-scoped projection |
+| GET | `/planning` | `planning.index` | `PlanningController@index` | `planning.view` through `PlanningPolicy::viewAny`; owner-scoped collection |
+| GET | `/planning/create` | `planning.create` | `PlanningController@create` | `planning.create` through `PlanningPolicy::create` |
+| POST | `/planning` | `planning.store` | `PlanningController@store` | `planning.create` through `PlanningStoreRequest::authorize` |
+| GET | `/planning/{planning}` | `planning.show` | `PlanningController@show` | Public-ULID binding plus `planning.view` and owner policy |
+| DELETE | `/planning/{planning}` | `planning.destroy` | `PlanningController@destroy` | Public-ULID binding plus `planning.delete` and owner policy |
+| GET | `/expenses` | `expenses.index` | `ExpensesController@index` | `planning.view` through `PlanningPolicy::viewAny`; owner-scoped projection |
+| GET | `/expenses/{expense}` | `expenses.show` | `ExpensesController@show` | Public-ULID binding plus `planning.view` and owner policy |
 
 ## Binding and authorization constraints
 
@@ -110,6 +111,8 @@ Every route in this group also uses `guest`/`RedirectIfAuthenticated`.
 - Expenses uses the same singular route/controller argument name, public-ULID binding, and `PlanningPolicy::view` owner check as Planning detail.
 - Planning, Expenses, and Dashboard serialize Planning through `PlanningData`; direct Eloquent model serialization is not an Inertia contract.
 - Session authentication is not sufficient authorization for a specific Planning record; every new direct-record route must call a policy or use scoped binding.
+- Shared capability booleans are presentation hints only. Direct requests still pass through Laravel Gate, policies, and Form Request authorization.
+- Shared props never include role names, permission lists, package models, pivots, or authorization database identifiers.
 
 ## Language route contract gap
 

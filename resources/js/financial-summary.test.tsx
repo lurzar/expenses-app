@@ -98,7 +98,10 @@ const partialPlan: Planning = {
     },
 };
 
-const props = { auth: { user }, flash: { message: null, success: null, warning: null, error: null } };
+const props = {
+    auth: { user, capabilities: { access_admin: false } },
+    flash: { message: null, success: null, warning: null, error: null },
+};
 
 afterEach(() => {
     cleanup();

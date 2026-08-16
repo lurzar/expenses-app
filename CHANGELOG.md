@@ -6,6 +6,19 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+### Added
+
+- Added Laravel-native, database-backed roles and permissions with protected `user`, `admin`, and `super-admin` roles, a module-owned permission catalog, idempotent synchronization, and minimized authorization activity events.
+- Added explicit `admin.access` Inertia capability data without exposing role, permission, pivot, or internal database identifiers.
+
+### Changed
+
+- Changed Planning authorization to require the relevant permission and existing owner relationship at Laravel policy, controller, and Form Request boundaries.
+
+### Security
+
+- Administrative roles receive explicit control-plane permissions without a universal super-admin bypass, so no administrative role gains access to another account's private Planning data.
+
 ## [2.1.4] - 2026-08-16
 
 ### Added

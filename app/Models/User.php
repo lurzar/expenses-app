@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmailContract
 {
@@ -20,7 +21,9 @@ class User extends Authenticatable implements MustVerifyEmailContract
     /** @use HasFactory<UserFactory> */
     use HasFactory;
 
-    use HasPublicId, Notifiable, SoftDeletes;
+    use HasPublicId, HasRoles, Notifiable, SoftDeletes;
+
+    protected string $guard_name = 'web';
 
     /**
      * The attributes that are mass assignable.

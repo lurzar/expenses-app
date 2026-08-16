@@ -21,6 +21,8 @@ class PlanningController extends Controller
 
     public function index(): Response
     {
+        Gate::authorize('viewAny', Planning::class);
+
         return Inertia::render('Planning/Index', [
             'plannings' => PlanningData::collection($this->service->getAllPlannings()),
         ]);
@@ -28,6 +30,8 @@ class PlanningController extends Controller
 
     public function create(): Response
     {
+        Gate::authorize('create', Planning::class);
+
         return Inertia::render('Planning/Create');
     }
 
