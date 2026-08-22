@@ -8,6 +8,7 @@ use App\Modules\Authorization\PermissionScope;
 enum SystemPermission: string implements PermissionDefinition
 {
     case AccessAdmin = 'admin.access';
+    case ManageRoles = 'roles.manage';
     case ManageUserRoles = 'users.manage-roles';
     case ManageSuperAdmin = 'users.manage-super-admin';
     case ViewUsers = 'users.view';
@@ -16,6 +17,7 @@ enum SystemPermission: string implements PermissionDefinition
     {
         return match ($this) {
             self::AccessAdmin => 'admin',
+            self::ManageRoles => 'roles',
             self::ManageUserRoles, self::ManageSuperAdmin, self::ViewUsers => 'users',
         };
     }

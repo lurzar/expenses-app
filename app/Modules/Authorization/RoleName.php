@@ -30,6 +30,7 @@ enum RoleName: string
                 SystemPermission::ManageUserRoles->value,
                 SystemPermission::ManageSuperAdmin->value,
                 SystemPermission::ViewUsers->value,
+                SystemPermission::ManageRoles->value,
             ],
         };
     }

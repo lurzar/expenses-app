@@ -28,6 +28,9 @@ The application records these events:
 | `planning.created` | Successful Planning creation | Account public ULID | `planning` and the Planning public ULID | None |
 | `planning.deleted` | Successful Planning soft deletion | Account public ULID | `planning` and the Planning public ULID | None |
 | `authorization.catalog_synchronized` | Catalog synchronization transaction | System (`null`) | `authorization_catalog` with no invented identifier | Created permission/role/mapping names and drift identifiers |
+| `authorization.custom_role_created` | Custom-role creation transaction | Operator account public ULID | `authorization_role` with no invented identifier | Stable custom role name and approved permission names |
+| `authorization.custom_role_updated` | Custom-role update transaction | Operator account public ULID | `authorization_role` with no invented identifier | Before/after stable role and permission names |
+| `authorization.custom_role_retired` | Custom-role retirement transaction | Operator account public ULID | `authorization_role` with no invented identifier | Stable custom role name and approved permission names |
 | `authorization.role_assigned` | Role assignment service transaction | Operator account public ULID | Target `account` public ULID | Stable role name |
 | `authorization.role_removed` | Role removal service transaction | Operator account public ULID | Target `account` public ULID | Stable role name |
 | `authorization.super_admin_granted` | Super-admin lifecycle transaction | Operator account public ULID or system (`null`) | Target `account` public ULID | None |

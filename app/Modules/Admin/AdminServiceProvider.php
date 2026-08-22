@@ -27,6 +27,13 @@ final class AdminServiceProvider extends ServiceProvider
                 routeName: 'admin.users.index',
                 ability: SystemPermission::ViewUsers->value,
             ));
+            $registry->register(new AdminNavigationItem(
+                key: 'roles',
+                labelKey: 'admin.roles',
+                descriptionKey: 'admin.roles_description',
+                routeName: 'admin.roles.index',
+                ability: SystemPermission::ManageRoles->value,
+            ));
 
             return $registry;
         });

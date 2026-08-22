@@ -52,6 +52,14 @@ class ActivityRecorder
             return $this->catalogMetadata($metadata);
         }
 
+        if (in_array($event, [ActivityEvent::AuthorizationCustomRoleCreated, ActivityEvent::AuthorizationCustomRoleRetired], true)) {
+            return $this->roleMetadata($metadata);
+        }
+
+        if ($event === ActivityEvent::AuthorizationCustomRoleUpdated) {
+            return $this->roleUpdateMetadata($metadata);
+        }
+
         if (in_array($event, [ActivityEvent::AuthorizationRoleAssigned, ActivityEvent::AuthorizationRoleRemoved], true)) {
             if (array_keys($metadata) !== ['role'] || ! is_string($metadata['role'])) {
                 throw new InvalidArgumentException('Role activity accepts one role name only.');
@@ -114,6 +122,40 @@ class ActivityRecorder
             'created_roles' => $this->stringList($metadata['created_roles']),
             'added_role_permissions' => $this->stringList($metadata['added_role_permissions']),
             'drift' => $this->stringList($metadata['drift']),
+        ];
+    }
+
+    /** @param array<string, mixed> $metadata
+     * @return array{role: string, permissions: list<string>}
+     */
+    private function roleMetadata(array $metadata): array
+    {
+        if (array_keys($metadata) !== ['role', 'permissions'] || ! is_string($metadata['role'])) {
+            throw new InvalidArgumentException('Custom role activity requires a role and permission list.');
+        }
+
+        return [
+            'role' => $metadata['role'],
+            'permissions' => $this->stringList($metadata['permissions']),
+        ];
+    }
+
+    /** @param array<string, mixed> $metadata
+     * @return array{role: string, previous_role: string, permissions: list<string>, previous_permissions: list<string>}
+     */
+    private function roleUpdateMetadata(array $metadata): array
+    {
+        $keys = ['role', 'previous_role', 'permissions', 'previous_permissions'];
+
+        if (array_keys($metadata) !== $keys || ! is_string($metadata['role']) || ! is_string($metadata['previous_role'])) {
+            throw new InvalidArgumentException('Custom role update activity requires before and after role state.');
+        }
+
+        return [
+            'role' => $metadata['role'],
+            'previous_role' => $metadata['previous_role'],
+            'permissions' => $this->stringList($metadata['permissions']),
+            'previous_permissions' => $this->stringList($metadata['previous_permissions']),
         ];
     }
 
