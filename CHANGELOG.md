@@ -6,6 +6,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-08-22
+
 ### Added
 
 - Added Laravel-native, database-backed roles and permissions with protected `user`, `admin`, and `super-admin` roles, a module-owned permission catalog, idempotent synchronization, and minimized authorization activity events.
@@ -185,7 +187,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Updated Composer and npm dependencies to remove known security advisories while remaining on the intended major versions.
 
-[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.1.4-dev...HEAD
+[Unreleased]: https://github.com/lurzar/expenses-app/compare/v2.2.0-dev...HEAD
+[2.2.0]: https://github.com/lurzar/expenses-app/compare/v2.1.4-dev...v2.2.0-dev
 [2.1.4]: https://github.com/lurzar/expenses-app/compare/v2.1.3-dev...v2.1.4-dev
 [2.1.3]: https://github.com/lurzar/expenses-app/compare/v2.1.2-dev...v2.1.3-dev
 [2.1.2]: https://github.com/lurzar/expenses-app/compare/v2.1.1-dev...v2.1.2-dev
