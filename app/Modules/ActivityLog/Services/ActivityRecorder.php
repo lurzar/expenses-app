@@ -25,7 +25,7 @@ class ActivityRecorder
             throw new InvalidArgumentException('Activity subject type does not match its event.');
         }
 
-        if (($actorId !== null && ! Str::isUlid($actorId)) || ! Str::isUlid($subjectId)) {
+        if (($actorId !== null && ! Str::isUlid($actorId)) || ($subjectId !== null && ! Str::isUlid($subjectId))) {
             throw new InvalidArgumentException('Activity identifiers must use public ULIDs.');
         }
 
@@ -44,10 +44,40 @@ class ActivityRecorder
      * Keep every event's metadata inside its explicit data-minimization contract.
      *
      * @param  array<string, mixed>  $metadata
-     * @return array{changed_fields: list<string>}|null
+     * @return array<string, mixed>|null
      */
     private function validatedMetadata(ActivityEvent $event, array $metadata): ?array
     {
+        if ($event === ActivityEvent::AuthorizationCatalogSynchronized) {
+            return $this->catalogMetadata($metadata);
+        }
+
+        if (in_array($event, [ActivityEvent::AuthorizationCustomRoleCreated, ActivityEvent::AuthorizationCustomRoleRetired], true)) {
+            return $this->roleMetadata($metadata);
+        }
+
+        if ($event === ActivityEvent::AuthorizationCustomRoleUpdated) {
+            return $this->roleUpdateMetadata($metadata);
+        }
+
+        if (in_array($event, [ActivityEvent::AuthorizationRoleAssigned, ActivityEvent::AuthorizationRoleRemoved], true)) {
+            if (array_keys($metadata) !== ['role'] || ! is_string($metadata['role'])) {
+                throw new InvalidArgumentException('Role activity accepts one role name only.');
+            }
+
+            return ['role' => $metadata['role']];
+        }
+
+        if ($event === ActivityEvent::AuthorizationSuperAdminRotated) {
+            if (array_keys($metadata) !== ['previous_account_id']
+                || ! is_string($metadata['previous_account_id'])
+                || ! Str::isUlid($metadata['previous_account_id'])) {
+                throw new InvalidArgumentException('Super-admin rotation activity accepts one previous account ULID only.');
+            }
+
+            return ['previous_account_id' => $metadata['previous_account_id']];
+        }
+
         if ($event !== ActivityEvent::AccountProfileUpdated) {
             if ($metadata !== []) {
                 throw new InvalidArgumentException('This activity event accepts no metadata.');
@@ -68,5 +98,80 @@ class ActivityRecorder
         }
 
         return ['changed_fields' => $changedFields];
+    }
+
+    /**
+     * @param  array<string, mixed>  $metadata
+     * @return array{
+     *     created_permissions: list<string>,
+     *     created_roles: list<string>,
+     *     added_role_permissions: list<string>,
+     *     drift: list<string>
+     * }
+     */
+    private function catalogMetadata(array $metadata): array
+    {
+        $expectedKeys = ['created_permissions', 'created_roles', 'added_role_permissions', 'drift'];
+
+        if (array_keys($metadata) !== $expectedKeys) {
+            throw new InvalidArgumentException('Catalog activity metadata does not match its allowlist.');
+        }
+
+        return [
+            'created_permissions' => $this->stringList($metadata['created_permissions']),
+            'created_roles' => $this->stringList($metadata['created_roles']),
+            'added_role_permissions' => $this->stringList($metadata['added_role_permissions']),
+            'drift' => $this->stringList($metadata['drift']),
+        ];
+    }
+
+    /** @param array<string, mixed> $metadata
+     * @return array{role: string, permissions: list<string>}
+     */
+    private function roleMetadata(array $metadata): array
+    {
+        if (array_keys($metadata) !== ['role', 'permissions'] || ! is_string($metadata['role'])) {
+            throw new InvalidArgumentException('Custom role activity requires a role and permission list.');
+        }
+
+        return [
+            'role' => $metadata['role'],
+            'permissions' => $this->stringList($metadata['permissions']),
+        ];
+    }
+
+    /** @param array<string, mixed> $metadata
+     * @return array{role: string, previous_role: string, permissions: list<string>, previous_permissions: list<string>}
+     */
+    private function roleUpdateMetadata(array $metadata): array
+    {
+        $keys = ['role', 'previous_role', 'permissions', 'previous_permissions'];
+
+        if (array_keys($metadata) !== $keys || ! is_string($metadata['role']) || ! is_string($metadata['previous_role'])) {
+            throw new InvalidArgumentException('Custom role update activity requires before and after role state.');
+        }
+
+        return [
+            'role' => $metadata['role'],
+            'previous_role' => $metadata['previous_role'],
+            'permissions' => $this->stringList($metadata['permissions']),
+            'previous_permissions' => $this->stringList($metadata['previous_permissions']),
+        ];
+    }
+
+    /** @return list<string> */
+    private function stringList(mixed $value): array
+    {
+        if (! is_array($value) || ! array_is_list($value)) {
+            throw new InvalidArgumentException('Catalog activity metadata accepts string lists only.');
+        }
+
+        foreach ($value as $item) {
+            if (! is_string($item)) {
+                throw new InvalidArgumentException('Catalog activity metadata accepts string lists only.');
+            }
+        }
+
+        return $value;
     }
 }

@@ -3,13 +3,29 @@
 namespace App\Observers;
 
 use App\Models\User;
+use App\Modules\Authorization\Services\SuperAdminLifecycleService;
 use App\Modules\Planning\Services\PlanningCache;
 
 class UserObserver
 {
     public function __construct(
         private readonly PlanningCache $planningCache,
+        private readonly SuperAdminLifecycleService $superAdminLifecycle,
     ) {}
+
+    public function updating(User $user): void
+    {
+        if ($user->isDirty('email_verified_at')
+            && $user->getOriginal('email_verified_at') !== null
+            && $user->email_verified_at === null) {
+            $this->superAdminLifecycle->ensureCanLoseActiveStatus($user);
+        }
+    }
+
+    public function deleting(User $user): void
+    {
+        $this->superAdminLifecycle->ensureCanLoseActiveStatus($user);
+    }
 
     /**
      * Handle the User "deleted" event.

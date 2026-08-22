@@ -25,7 +25,7 @@ This reference maps source-owned directories and entry points. Generated output,
 ## Entry points
 
 - HTTP: `public/index.php` loads Composer and `bootstrap/app.php`.
-- Application construction: `bootstrap/app.php` adds trusted-host, language, and Inertia middleware and the health/console routes.
+- Application construction: `bootstrap/app.php` adds trusted-host, language, authorization-session, and Inertia middleware and the health/console routes.
 - Provider/module registration: `bootstrap/providers.php` loads shared and feature service providers.
 - Module web routes: each module provider calls `loadRoutesFrom()` on its own `app/Modules/<Module>/routes.php`.
 - Browser application: `resources/js/app.tsx` resolves `resources/js/Pages/**/*.tsx` through Inertia and mounts React.
@@ -38,13 +38,15 @@ This reference maps source-owned directories and entry points. Generated output,
 | Boundary | Owns | Must not own | Evidence |
 | --- | --- | --- | --- |
 | `ActivityLog` | Allowlisted activity events, persistence, pruning | General application logging or arbitrary metadata | `ActivityEvent.php`; `ActivityRecorder.php` |
+| `Admin` | Server-protected control-plane route, minimal Inertia page contract, and capability-filtered navigation registry | Role/permission persistence, private Planning access, or placeholder billing/tenancy behavior | `AdminServiceProvider.php`; `AdminNavigationRegistry.php`; `AdminController.php` |
 | `Auth` | Session authentication, registration, password and email-verification routes | Planning rules or profile persistence | `AuthServiceProvider.php`; `Auth/routes.php` |
+| `Authorization` | Permission catalog, protected roles, Gate registration, role assignment, super-admin lifecycle, session-version enforcement, and authorization commands | Module-owned record policies or browser-only enforcement | `AuthorizationServiceProvider.php`; `SuperAdminLifecycleService.php` |
 | `Dashboard` | Authenticated summary page over Planning data | A second Planning data model | `DashboardController.php` |
 | `Expenses` | Read-only projection of Planning collections/records | A transaction ledger or expense-entry persistence | `ExpensesController.php`; README |
 | `Landing` | Public landing page | Authenticated domain behavior | `LandingController.php` |
 | `Language` | Locale allowlist, session selection, dictionaries | Domain calculations | `LanguageManager.php`; `Language/routes.php` |
 | `Planning` | Monthly-plan aggregate, policy, storage, cache, and orchestration | Profile/auth ownership or speculative ledger data | `PlanningServiceProvider.php`; `PlanningService.php` |
-| `Profile` | Profile update and soft deletion lifecycle | Role administration | `ProfileController.php`; issue #13 |
+| `Profile` | Profile update and soft deletion lifecycle, including calls to shared protected-role invariants | Role administration | `ProfileController.php`; `SuperAdminLifecycleService.php` |
 | Shared `app/Models`, `Traits`, `Providers` | Cross-module user, public-ID, startup, and diagnostics behavior | Feature-specific page/controller logic | `User.php`; `HasPublicId.php`; providers |
 
 ## Naming and organization rules

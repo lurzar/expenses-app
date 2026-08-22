@@ -13,8 +13,8 @@ use LogicException;
  * @property string $event
  * @property string|null $actor_id
  * @property string $subject_type
- * @property string $subject_id
- * @property array{changed_fields: list<string>}|null $metadata
+ * @property string|null $subject_id
+ * @property array<string, mixed>|null $metadata
  * @property Carbon $created_at
  */
 class ActivityLog extends Model

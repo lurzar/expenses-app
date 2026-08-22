@@ -18,6 +18,7 @@ This reference catalogs the current browser interface. It describes Laravel web 
 | Prop | Shape | Source/notes |
 | --- | --- | --- |
 | `auth.user` | explicit user payload or `null` | Public `user_id`, name, email, verification timestamp, and record timestamps; no numeric primary key |
+| `auth.capabilities.access_admin` | boolean | Server-computed `admin.access` result for navigation/presentation; not an authorization credential |
 | `locale` | string | Active Laravel locale |
 | `translations` | record keyed by translation filename | Every PHP dictionary under the active `lang/<locale>` directory |
 | `flash.message` | string or `null` | Session `message` |
@@ -45,12 +46,14 @@ This reference catalogs the current browser interface. It describes Laravel web 
 | `expenses.index` | `Expenses/Index` | `plannings`: authenticated-user Planning records |
 | `expenses.show` | `Expenses/Show` | `planning`: authorized public-ID Planning payload |
 | `profile.edit` | `Profile/Edit` | `mustVerifyEmail`, `status` |
+| `admin.index` | `Admin/Index` | `admin.navigation`: authorized `{key, label, description, href}` entries |
+| `admin.users.index` | `Admin/Users/Index` | paginated minimized `users`; validated `filters`; `role_options`; page-specific `capabilities.manage_super_admin` |
 
-These fourteen TSX pages cover the current rendered route contracts.
+These sixteen TSX pages cover the current rendered route contracts.
 
 ## Route catalog
 
-Verified with `php artisan route:list --except-vendor --json` on 2026-08-16: 28 routes, all in the `web` middleware group.
+Verified with `php artisan route:list --except-vendor --json` on 2026-08-17: 31 routes, all in the `web` middleware group.
 
 ### Public and locale routes
 
@@ -87,20 +90,32 @@ Every route in this group also uses `guest`/`RedirectIfAuthenticated`.
 | POST | `/logout` | `logout` | `AuthenticatedSessionController@destroy` | Invalidates session, redirects |
 | GET | `/profile` | `profile.edit` | `ProfileController@edit` | Inertia `Profile/Edit` |
 | PATCH | `/profile` | `profile.update` | `ProfileController@update` | Validates, persists/activity-logs, redirects |
-| DELETE | `/profile` | `profile.destroy` | `ProfileController@destroy` | Password check, soft delete/activity/logout, redirects |
+| DELETE | `/profile` | `profile.destroy` | `ProfileController@destroy` | Password check, final-active-super-admin invariant, soft delete/activity/logout, redirects |
 
 ### Planning, Dashboard, and Expenses routes
 
 | Method | URI | Name | Controller/action | Authorization/result |
 | --- | --- | --- | --- | --- |
-| GET | `/dashboard` | `dashboard` | `DashboardController@index` | `verified`; Inertia collection projection |
-| GET | `/planning` | `planning.index` | `PlanningController@index` | User-scoped collection |
-| GET | `/planning/create` | `planning.create` | `PlanningController@create` | Creation form |
-| POST | `/planning` | `planning.store` | `PlanningController@store` | Authenticated create; current request authorizes broadly |
-| GET | `/planning/{planning}` | `planning.show` | `PlanningController@show` | Public-ULID binding plus `PlanningPolicy::view` |
-| DELETE | `/planning/{planning}` | `planning.destroy` | `PlanningController@destroy` | Public-ULID binding plus `PlanningPolicy::delete` |
-| GET | `/expenses` | `expenses.index` | `ExpensesController@index` | User-scoped Planning projection |
-| GET | `/expenses/{expense}` | `expenses.show` | `ExpensesController@show` | Public-ULID binding plus `PlanningPolicy::view` |
+| GET | `/dashboard` | `dashboard` | `DashboardController@index` | `verified`; `planning.view` through `PlanningPolicy::viewAny`; owner-scoped projection |
+| GET | `/planning` | `planning.index` | `PlanningController@index` | `planning.view` through `PlanningPolicy::viewAny`; owner-scoped collection |
+| GET | `/planning/create` | `planning.create` | `PlanningController@create` | `planning.create` through `PlanningPolicy::create` |
+| POST | `/planning` | `planning.store` | `PlanningController@store` | `planning.create` through `PlanningStoreRequest::authorize` |
+| GET | `/planning/{planning}` | `planning.show` | `PlanningController@show` | Public-ULID binding plus `planning.view` and owner policy |
+| DELETE | `/planning/{planning}` | `planning.destroy` | `PlanningController@destroy` | Public-ULID binding plus `planning.delete` and owner policy |
+| GET | `/expenses` | `expenses.index` | `ExpensesController@index` | `planning.view` through `PlanningPolicy::viewAny`; owner-scoped projection |
+| GET | `/expenses/{expense}` | `expenses.show` | `ExpensesController@show` | Public-ULID binding plus `planning.view` and owner policy |
+
+### Admin routes
+
+| Method | URI | Name | Controller/action | Authorization/result |
+| --- | --- | --- | --- | --- |
+| GET | `/admin` | `admin.index` | `AdminController@index` | `auth`, `verified`, and `can:admin.access`; Inertia `Admin/Index` with capability-filtered navigation metadata only |
+| GET | `/admin/users` | `admin.users.index` | `AdminUserController@index` | `can:admin.access`, `can:users.view`, and Form Request authorization; paginated minimized user directory |
+| PATCH | `/admin/users/{user}/roles` | `admin.users.roles.update` | `AdminUserController@update` | Public-ULID binding; `can:users.manage-roles`; protected-role capability and transactional lifecycle enforcement |
+| GET | `/admin/roles` | `admin.roles.index` | `AdminRoleController@index` | `can:roles.manage`; safe role and code-owned catalog props |
+| POST | `/admin/roles` | `admin.roles.store` | `AdminRoleController@store` | `can:roles.manage`; creates a validated custom role |
+| PATCH | `/admin/roles/{role}` | `admin.roles.update` | `AdminRoleController@update` | `can:roles.manage`; updates custom role name and catalog mappings with stale-form protection |
+| DELETE | `/admin/roles/{role}` | `admin.roles.destroy` | `AdminRoleController@destroy` | `can:roles.manage`; retires only unassigned custom roles |
 
 ## Binding and authorization constraints
 
@@ -110,6 +125,10 @@ Every route in this group also uses `guest`/`RedirectIfAuthenticated`.
 - Expenses uses the same singular route/controller argument name, public-ULID binding, and `PlanningPolicy::view` owner check as Planning detail.
 - Planning, Expenses, and Dashboard serialize Planning through `PlanningData`; direct Eloquent model serialization is not an Inertia contract.
 - Session authentication is not sufficient authorization for a specific Planning record; every new direct-record route must call a policy or use scoped binding.
+- Shared capability booleans are presentation hints only. Direct requests still pass through Laravel Gate, policies, and Form Request authorization.
+- Shared props never include role names, permission lists, package models, pivots, or authorization database identifiers.
+- Admin navigation visibility uses the shared capability boolean, while direct `/admin` requests always pass through Laravel middleware. The page-specific registry resolves only delivered, server-authorized destinations and never serializes role or permission records.
+- Admin user payloads expose only public `user_id`, name, email, verification status, `admin`/`super-admin` membership, and an authorization revision. The role update accepts only those two administrative roles; it cannot remove the base `user` role.
 
 ## Language route contract gap
 
@@ -128,7 +147,7 @@ Do not add speculative JSON behavior to a web route. A public/machine interface 
 
 ## Evidence
 
-- `php artisan route:list --except-vendor --json` (28 routes on 2026-08-16)
+- `php artisan route:list --except-vendor --json` (31 routes on 2026-08-17)
 - `app/Modules/*/routes.php`
 - `app/Modules/*/Controllers/*.php`
 - `app/Http/Middleware/HandleInertiaRequests.php`

@@ -1,7 +1,9 @@
 <?php
 
 use App\Modules\ActivityLog\ActivityLogServiceProvider;
+use App\Modules\Admin\AdminServiceProvider;
 use App\Modules\Auth\AuthServiceProvider;
+use App\Modules\Authorization\AuthorizationServiceProvider;
 use App\Modules\Dashboard\DashboardServiceProvider;
 use App\Modules\Expenses\ExpensesServiceProvider;
 use App\Modules\Landing\LandingServiceProvider;
@@ -16,6 +18,8 @@ return [
 
     // Module Service Providers
     ActivityLogServiceProvider::class,
+    AuthorizationServiceProvider::class,
+    AdminServiceProvider::class,
     AuthServiceProvider::class,
     LandingServiceProvider::class,
     PlanningServiceProvider::class,

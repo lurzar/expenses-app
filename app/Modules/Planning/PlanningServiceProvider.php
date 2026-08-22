@@ -3,7 +3,9 @@
 namespace App\Modules\Planning;
 
 use App\Modules\ActivityLog\Services\ActivityRecorder;
+use App\Modules\Authorization\PermissionCatalog;
 use App\Modules\Planning\Models\Planning;
+use App\Modules\Planning\Permissions\PlanningPermission;
 use App\Modules\Planning\Policies\PlanningPolicy;
 use App\Modules\Planning\Services\PlanningCache;
 use App\Modules\Planning\Services\PlanningService;
@@ -18,6 +20,8 @@ class PlanningServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->make(PermissionCatalog::class)->register(PlanningPermission::class);
+
         $this->app->singleton(PlanningService::class, function ($app) {
             return new PlanningService(
                 new Planning,

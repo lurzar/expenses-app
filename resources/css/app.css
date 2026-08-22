@@ -80,6 +80,9 @@ body {
     .app-nav-link { display: flex; min-height: 2.75rem; align-items: center; gap: .8rem; border-radius: .75rem; padding: .65rem .8rem; color: var(--app-text-secondary); font-weight: 600; }
     .app-nav-link:hover { background: var(--app-surface-raised); color: var(--app-text-primary); }
     .app-nav-link.is-active { background: var(--app-brand-soft); color: var(--app-brand-soft-foreground); box-shadow: inset 3px 0 var(--app-brand-strong); }
+    .app-admin-destination { display: flex; min-height: 5.5rem; flex-direction: column; gap: .35rem; border: 1px solid var(--app-border-quiet); border-radius: 1rem; background: var(--app-surface); padding: 1rem; color: var(--app-text-primary); }
+    .app-admin-destination:hover { border-color: var(--app-border-strong); background: var(--app-surface-raised); }
+    .app-admin-destination[aria-current="page"] { border-left: .35rem solid var(--app-brand-strong); }
     .app-bottom-nav { padding: .4rem max(.4rem, env(safe-area-inset-right)) max(.4rem, env(safe-area-inset-bottom)) max(.4rem, env(safe-area-inset-left)); border-top-width: 1px; }
     .app-bottom-link { display: flex; min-width: 0; flex-direction: column; align-items: center; gap: .2rem; border-radius: .6rem; padding: .4rem .2rem; color: var(--app-text-secondary); font-size: .7rem; font-weight: 600; }
     .app-bottom-link.is-active { background: var(--app-brand-soft); color: var(--app-brand-soft-foreground); }

@@ -16,6 +16,8 @@ composer check
 
 Do not replace `composer install` or `npm ci` with an unlocked update command. Do not use `npm audit fix --force`, suppress an advisory, or regenerate an unrelated lock file merely to obtain a green check.
 
+`spatie/laravel-permission` is security-sensitive runtime infrastructure. Review its Laravel compatibility, migrations, Gate behavior, cache changes, and release notes before updating it; run the focused Authorization and Planning authorization suites in addition to the full gate.
+
 ## Automated update policy
 
 `.github/dependabot.yml` checks Composer and npm weekly on Monday morning in `Asia/Kuala_Lumpur` and targets the active `v2.x` integration line. GitHub activates this file from the default branch, so the same reviewed configuration is installed on `main` through focused companion PR #108 and retained on `v2.x` as the active-line source of truth.

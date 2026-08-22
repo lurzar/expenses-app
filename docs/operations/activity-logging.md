@@ -1,6 +1,6 @@
 # Activity logging operations
 
-This guide helps an authorized operator inspect and manage the durable activity history introduced in version 2.0.8. It describes server-side operations only. The application has no activity-log page, public API, administrator role, alerting integration, or analytics interface.
+This guide helps an authorized operator inspect and manage the durable activity history introduced in version 2.0.8. It describes server-side operations only. The application has no activity-log page, public API, role-authorized viewer, alerting integration, or analytics interface.
 
 ## Purpose and boundaries
 
@@ -27,14 +27,29 @@ The application records these events:
 | `account.deleted` | Successful account soft deletion | Account public ULID | `account` and the same public ULID | None |
 | `planning.created` | Successful Planning creation | Account public ULID | `planning` and the Planning public ULID | None |
 | `planning.deleted` | Successful Planning soft deletion | Account public ULID | `planning` and the Planning public ULID | None |
+| `authorization.catalog_synchronized` | Catalog synchronization transaction | System (`null`) | `authorization_catalog` with no invented identifier | Created permission/role/mapping names and drift identifiers |
+| `authorization.custom_role_created` | Custom-role creation transaction | Operator account public ULID | `authorization_role` with no invented identifier | Stable custom role name and approved permission names |
+| `authorization.custom_role_updated` | Custom-role update transaction | Operator account public ULID | `authorization_role` with no invented identifier | Before/after stable role and permission names |
+| `authorization.custom_role_retired` | Custom-role retirement transaction | Operator account public ULID | `authorization_role` with no invented identifier | Stable custom role name and approved permission names |
+| `authorization.role_assigned` | Role assignment service transaction | Operator account public ULID | Target `account` public ULID | Stable role name |
+| `authorization.role_removed` | Role removal service transaction | Operator account public ULID | Target `account` public ULID | Stable role name |
+| `authorization.super_admin_granted` | Super-admin lifecycle transaction | Operator account public ULID or system (`null`) | Target `account` public ULID | None |
+| `authorization.super_admin_removed` | Super-admin lifecycle transaction | Operator account public ULID or system (`null`) | Target `account` public ULID | None |
+| `authorization.super_admin_rotated` | Atomic super-admin rotation | Operator account public ULID or system (`null`) | Replacement `account` public ULID | Previous account public ULID only |
 
-The current catalog has no system-generated event. The schema permits a null `actor_id` so a future, separately approved system event can identify itself without inventing a user. All five current events have an account actor.
+Catalog synchronization is system-generated and therefore uses a null actor and subject identifier. It does not invent a user or a public ULID. Account and Planning events retain public actor and subject identifiers.
+
+The `authorization:super-admin` command records a null actor because Laravel does not authenticate a browser user for an Artisan process. The event name records what initiated the change; the approved deployment or shell-access audit must identify the human operator. The command never accepts or records an email, password, token, session value, or internal key.
+
+A verified super-admin may become unverified only when another active operator remains; verified or already-unverified super-admin deletion always uses the audited lifecycle. The lifecycle-owned transaction records the existing minimized `account.profile_updated` or `account.deleted` event and rolls back the account and session-revocation changes if capture fails. The user observer rejects direct Eloquent deletion or unverification outside that context. Future administrative account-management paths must reuse the same lifecycle transaction rather than saving or deleting the model directly.
 
 Account deletion produces one `account.deleted` event. The account observer soft-deletes the account's Planning records without emitting a `planning.deleted` event for each record. Activity rows have no foreign keys to accounts or Planning records, so the public actor and subject identifiers remain available after soft deletion.
 
 Each capture runs in the same database transaction as its state change. If enabled capture fails, Laravel rolls back both the mutation and its activity row. Failed validation and a profile update that changes neither name nor email produce no event.
 
-Issue [#13](https://github.com/lurzar/expenses-app/issues/13) tracks a future authorization model. A role-based viewer remains deferred until that model defines who may inspect activity history. Any future viewer needs its own access review, data contract, tests, and issue; this release does not provide one.
+Admin user-role changes record one existing assignment/removal event per changed role. Repeated desired-state submissions that make no change produce no event. Each changed assignment also increments the subject's authorization revision and rotates its remember token so retained sessions cannot continue with stale privileges. Custom-role mapping changes record one allowlisted before/after event and revoke every assigned account's sessions before the updated access can be used.
+
+Issue [#13](https://github.com/lurzar/expenses-app/issues/13) provides the authorization foundation, but it does not add an activity-log viewer. Any future viewer needs its own permission, access review, data contract, tests, and issue.
 
 ## Stored fields and prohibited data
 
@@ -75,11 +90,14 @@ Run the migration before enabling code that can capture an event:
 
 ```sh
 php artisan migrate --force
+php artisan authorization:sync
 php artisan config:cache
 php artisan schedule:list
 ```
 
 Confirm that `schedule:list` contains `activity-log:prune --days=365` with a daily frequency. Replace `php artisan` with `./vendor/bin/sail artisan` when the application runs through Laravel Sail.
+
+Authorization schema rollback permits only the deterministic bootstrap state that can be reconstructed. It stops before dropping tables when non-default role assignments, direct permissions, unknown catalog rows, unexpected mappings, or orphan assignments exist. Back up and explicitly resolve that state before retrying; never bypass the guard by dropping tables manually.
 
 ## Safe inspection
 
@@ -139,10 +157,10 @@ Disable capture when the activity table is unavailable or a suspected data-polic
 1. Set `ACTIVITY_LOG_ENABLED=false` in the target environment.
 2. Refresh the deployed configuration with `php artisan config:cache`.
 3. Confirm the effective value with `php artisan config:show activity-log` on the target server.
-4. Verify that an approved test mutation succeeds without adding an activity row.
+4. Verify that an approved non-authorization test mutation succeeds without adding an activity row.
 5. Record the start and end of the audit gap in the incident or deployment record without including personal or financial data.
 
-While capture is disabled, mutations continue without durable activity events. Re-enable capture only after the migration is present and the recorder path passes its focused tests.
+While capture is disabled, ordinary account and Planning mutations continue without durable activity events. Authorization role changes and protected super-admin lifecycle mutations fail closed because those security-sensitive operations require atomic durable history. Re-enable capture only after the migration is present and the recorder path passes its focused tests.
 
 ## Respond to suspected exposure
 

@@ -3,6 +3,25 @@
 return [
     'releases' => [
         [
+            'version' => '2.2.0',
+            'status' => 'Released',
+            'released_at' => '2026-08-22',
+            'changes' => [
+                [
+                    'category' => 'Added',
+                    'description' => 'Added a secure Admin workspace for managing approved administrator roles and custom role permissions.',
+                ],
+                [
+                    'category' => 'Changed',
+                    'description' => 'Made authorization operations safer with auditable role changes, session revocation, and clear operator recovery guidance.',
+                ],
+                [
+                    'category' => 'Security',
+                    'description' => 'Protected private planning data with explicit capabilities, protected super-admin lifecycle controls, and code-owned permission mappings.',
+                ],
+            ],
+        ],
+        [
             'version' => '2.1.4',
             'status' => 'Released',
             'released_at' => '2026-08-16',

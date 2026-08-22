@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Data\AuthenticatedUserData;
+use App\Modules\Authorization\Permissions\SystemPermission;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -32,6 +33,9 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $user ? AuthenticatedUserData::fromModel($user) : null,
+                'capabilities' => [
+                    'access_admin' => $user?->can(SystemPermission::AccessAdmin->value) ?? false,
+                ],
             ],
             'locale' => app()->getLocale(),
             'translations' => $this->getTranslations(),
