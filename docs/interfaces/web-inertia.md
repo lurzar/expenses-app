@@ -46,13 +46,14 @@ This reference catalogs the current browser interface. It describes Laravel web 
 | `expenses.index` | `Expenses/Index` | `plannings`: authenticated-user Planning records |
 | `expenses.show` | `Expenses/Show` | `planning`: authorized public-ID Planning payload |
 | `profile.edit` | `Profile/Edit` | `mustVerifyEmail`, `status` |
-| `admin.index` | `Admin/Index` | `admin.navigation`: authorized `{key, label, description, href}` entries; initially overview only |
+| `admin.index` | `Admin/Index` | `admin.navigation`: authorized `{key, label, description, href}` entries |
+| `admin.users.index` | `Admin/Users/Index` | paginated minimized `users`; validated `filters`; `role_options`; page-specific `capabilities.manage_super_admin` |
 
-These fifteen TSX pages cover the current rendered route contracts.
+These sixteen TSX pages cover the current rendered route contracts.
 
 ## Route catalog
 
-Verified with `php artisan route:list --except-vendor --json` on 2026-08-17: 29 routes, all in the `web` middleware group.
+Verified with `php artisan route:list --except-vendor --json` on 2026-08-17: 31 routes, all in the `web` middleware group.
 
 ### Public and locale routes
 
@@ -104,11 +105,13 @@ Every route in this group also uses `guest`/`RedirectIfAuthenticated`.
 | GET | `/expenses` | `expenses.index` | `ExpensesController@index` | `planning.view` through `PlanningPolicy::viewAny`; owner-scoped projection |
 | GET | `/expenses/{expense}` | `expenses.show` | `ExpensesController@show` | Public-ULID binding plus `planning.view` and owner policy |
 
-### Admin route
+### Admin routes
 
 | Method | URI | Name | Controller/action | Authorization/result |
 | --- | --- | --- | --- | --- |
 | GET | `/admin` | `admin.index` | `AdminController@index` | `auth`, `verified`, and `can:admin.access`; Inertia `Admin/Index` with capability-filtered navigation metadata only |
+| GET | `/admin/users` | `admin.users.index` | `AdminUserController@index` | `can:admin.access`, `can:users.view`, and Form Request authorization; paginated minimized user directory |
+| PATCH | `/admin/users/{user}/roles` | `admin.users.roles.update` | `AdminUserController@update` | Public-ULID binding; `can:users.manage-roles`; protected-role capability and transactional lifecycle enforcement |
 | GET | `/admin/roles` | `admin.roles.index` | `AdminRoleController@index` | `can:roles.manage`; safe role and code-owned catalog props |
 | POST | `/admin/roles` | `admin.roles.store` | `AdminRoleController@store` | `can:roles.manage`; creates a validated custom role |
 | PATCH | `/admin/roles/{role}` | `admin.roles.update` | `AdminRoleController@update` | `can:roles.manage`; updates custom role name and catalog mappings with stale-form protection |
@@ -125,6 +128,7 @@ Every route in this group also uses `guest`/`RedirectIfAuthenticated`.
 - Shared capability booleans are presentation hints only. Direct requests still pass through Laravel Gate, policies, and Form Request authorization.
 - Shared props never include role names, permission lists, package models, pivots, or authorization database identifiers.
 - Admin navigation visibility uses the shared capability boolean, while direct `/admin` requests always pass through Laravel middleware. The page-specific registry resolves only delivered, server-authorized destinations and never serializes role or permission records.
+- Admin user payloads expose only public `user_id`, name, email, verification status, `admin`/`super-admin` membership, and an authorization revision. The role update accepts only those two administrative roles; it cannot remove the base `user` role.
 
 ## Language route contract gap
 
@@ -143,7 +147,7 @@ Do not add speculative JSON behavior to a web route. A public/machine interface 
 
 ## Evidence
 
-- `php artisan route:list --except-vendor --json` (29 routes on 2026-08-17)
+- `php artisan route:list --except-vendor --json` (31 routes on 2026-08-17)
 - `app/Modules/*/routes.php`
 - `app/Modules/*/Controllers/*.php`
 - `app/Http/Middleware/HandleInertiaRequests.php`

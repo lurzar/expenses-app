@@ -21,6 +21,13 @@ final class AdminServiceProvider extends ServiceProvider
                 ability: SystemPermission::AccessAdmin->value,
             ));
             $registry->register(new AdminNavigationItem(
+                key: 'users',
+                labelKey: 'admin.users',
+                descriptionKey: 'admin.users_description',
+                routeName: 'admin.users.index',
+                ability: SystemPermission::ViewUsers->value,
+            ));
+            $registry->register(new AdminNavigationItem(
                 key: 'roles',
                 labelKey: 'admin.roles',
                 descriptionKey: 'admin.roles_description',

@@ -13,6 +13,20 @@ return [
             'description' => 'Cipta peranan tersuai dan padankan keupayaan yang diluluskan.',
         ],
     ],
+    'users' => [
+        'view' => [
+            'label' => 'Lihat pengguna',
+            'description' => 'Lihat direktori pengguna Pentadbir yang diminimumkan.',
+        ],
+        'manage-roles' => [
+            'label' => 'Urus peranan',
+            'description' => 'Tetapkan atau buang peranan pentadbiran yang diluluskan.',
+        ],
+        'manage-super-admin' => [
+            'label' => 'Urus super pentadbir',
+            'description' => 'Tetapkan atau buang akses super pentadbir yang dilindungi.',
+        ],
+    ],
     'planning' => [
         'view' => [
             'label' => 'Lihat perancangan',
