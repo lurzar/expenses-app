@@ -40,6 +40,7 @@ test('the catalog exposes stable module-owned permissions', function () {
         'planning.create',
         'planning.delete',
         'planning.view',
+        'roles.manage',
     ])->and(PlanningPermission::View->module())->toBe('planning');
 });
 
@@ -49,7 +50,7 @@ test('protected roles have only their reviewed permissions', function () {
         ->and(Role::findByName(RoleName::Admin->value)->permissions->pluck('name')->all())
         ->toBe(['admin.access'])
         ->and(Role::findByName(RoleName::SuperAdmin->value)->permissions->pluck('name')->all())
-        ->toBe(['admin.access']);
+        ->toBe(['admin.access', 'roles.manage']);
 });
 
 test('new accounts receive the base user role and Laravel Gate permissions', function () {
@@ -230,8 +231,10 @@ test('role assignment rolls back when activity capture fails', function () {
 test('authorization schema rollback and recovery preserve account and Planning data', function () {
     $user = User::factory()->create();
     $planning = Planning::factory()->for($user)->create();
+    $roleManagementMigration = require app_path('Modules/Authorization/Database/Migrations/2026_08_18_100000_add_role_management_permission.php');
     $migration = require app_path('Modules/Authorization/Database/Migrations/2026_08_16_100000_create_authorization_tables.php');
 
+    $roleManagementMigration->down();
     $migration->down();
 
     expect(Schema::hasTable('roles'))->toBeFalse()

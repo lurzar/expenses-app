@@ -7,6 +7,12 @@ return [
             'description' => 'Enter the application administration area.',
         ],
     ],
+    'roles' => [
+        'manage' => [
+            'label' => 'Manage roles',
+            'description' => 'Create custom roles and map approved capabilities.',
+        ],
+    ],
     'planning' => [
         'view' => [
             'label' => 'View planning',

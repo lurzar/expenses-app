@@ -7,6 +7,12 @@ return [
             'description' => 'Masuk ke ruang pentadbiran aplikasi.',
         ],
     ],
+    'roles' => [
+        'manage' => [
+            'label' => 'Urus peranan',
+            'description' => 'Cipta peranan tersuai dan padankan keupayaan yang diluluskan.',
+        ],
+    ],
     'planning' => [
         'view' => [
             'label' => 'Lihat perancangan',

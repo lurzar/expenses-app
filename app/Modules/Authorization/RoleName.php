@@ -20,7 +20,11 @@ enum RoleName: string
                 PlanningPermission::Delete->value,
                 PlanningPermission::View->value,
             ],
-            self::Admin, self::SuperAdmin => [SystemPermission::AccessAdmin->value],
+            self::Admin => [SystemPermission::AccessAdmin->value],
+            self::SuperAdmin => [
+                SystemPermission::AccessAdmin->value,
+                SystemPermission::ManageRoles->value,
+            ],
         };
     }
 }

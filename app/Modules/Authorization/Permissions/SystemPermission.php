@@ -8,20 +8,24 @@ use App\Modules\Authorization\PermissionScope;
 enum SystemPermission: string implements PermissionDefinition
 {
     case AccessAdmin = 'admin.access';
+    case ManageRoles = 'roles.manage';
 
     public function module(): string
     {
-        return 'admin';
+        return match ($this) {
+            self::AccessAdmin => 'admin',
+            self::ManageRoles => 'roles',
+        };
     }
 
     public function labelKey(): string
     {
-        return 'authorization::permissions.admin.access.label';
+        return 'authorization::permissions.'.$this->value.'.label';
     }
 
     public function descriptionKey(): string
     {
-        return 'authorization::permissions.admin.access.description';
+        return 'authorization::permissions.'.$this->value.'.description';
     }
 
     public function scope(): PermissionScope

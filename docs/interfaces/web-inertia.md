@@ -109,6 +109,10 @@ Every route in this group also uses `guest`/`RedirectIfAuthenticated`.
 | Method | URI | Name | Controller/action | Authorization/result |
 | --- | --- | --- | --- | --- |
 | GET | `/admin` | `admin.index` | `AdminController@index` | `auth`, `verified`, and `can:admin.access`; Inertia `Admin/Index` with capability-filtered navigation metadata only |
+| GET | `/admin/roles` | `admin.roles.index` | `AdminRoleController@index` | `can:roles.manage`; safe role and code-owned catalog props |
+| POST | `/admin/roles` | `admin.roles.store` | `AdminRoleController@store` | `can:roles.manage`; creates a validated custom role |
+| PATCH | `/admin/roles/{role}` | `admin.roles.update` | `AdminRoleController@update` | `can:roles.manage`; updates custom role name and catalog mappings with stale-form protection |
+| DELETE | `/admin/roles/{role}` | `admin.roles.destroy` | `AdminRoleController@destroy` | `can:roles.manage`; retires only unassigned custom roles |
 
 ## Binding and authorization constraints
 

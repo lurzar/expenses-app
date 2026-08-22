@@ -152,7 +152,9 @@ The Admin shell is one module inside the existing Laravel/Inertia application, n
 
 `AdminNavigationRegistry` is the server-owned extension point for delivered Admin pages. A module that adds a management page registers an `AdminNavigationItem` with a unique stable key, translated label/description keys, named route, and declared Laravel ability. The registry calls `$user->can()` and returns only authorized items as `{key, label, description, href}`. Register the item from the delivering module's provider only after its permission, route, controller, page, tests, and operations contract exist; do not register placeholders for planned billing, tenancy, or management features.
 
-The initial registry contains only `overview`. `Admin/Index` therefore shows an explicit empty management-tools state until #133 or #134 delivers a real tool. The page receives no role names, permission lists, package records, private Planning data, credentials, or internal identifiers. Inertia's existing progress indicator handles page-navigation loading, the shared flash contract handles request errors, and Laravel owns denial responses.
+The registry contains `overview` and the `roles` destination when the operator has `roles.manage`. `Admin/Roles/Index` exposes only names, protected status, assignment counts, permission names, and concurrency timestamps; it never serializes database keys, package models, credentials, sessions, or Planning data. Protected `user`, `admin`, and `super-admin` roles remain code-owned and read-only. Inertia's existing progress indicator handles page-navigation loading, the shared flash contract handles request errors, and Laravel owns denial responses.
+
+`GET /admin/roles`, `POST /admin/roles`, `PATCH /admin/roles/{role}`, and `DELETE /admin/roles/{role}` each require `roles.manage`. Only a verified `super-admin` receives that capability. Custom roles accept only permissions from `PermissionCatalog`; their names are normalized and cannot collide with protected roles. Role updates use the supplied timestamp to reject changed stale forms, revoke sessions of every assigned account, clear permission cache state, and write minimized before/after activity. Retiring a role is blocked while any user remains assigned or when unknown permissions need operator review.
 
 ## Super-admin boundary
 
@@ -218,5 +220,5 @@ A future tenancy design must define which account owns a role assignment and how
 | Super-admin lifecycle | Implemented by #132 through `authorization:super-admin` and `SuperAdminLifecycleService` |
 | Admin shell | Implemented by #40 through `admin.index`, `AdminController`, and `AdminNavigationRegistry` |
 | User-role administration | Planned by #133 |
-| Role-permission administration | Planned by #134 |
+| Role-permission administration | Implemented by #134 through `admin.roles.*` and `RoleManagementService` |
 | Operations guide and integrated readiness | Planned by #135 |
