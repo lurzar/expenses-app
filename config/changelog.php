@@ -3,6 +3,15 @@
 return [
     'releases' => [
         [
+            'version' => '2.2.1',
+            'status' => 'Released',
+            'released_at' => '2026-08-22',
+            'changes' => [[
+                'category' => 'Changed',
+                'description' => 'Updated the application build, test, and icon dependencies after full compatibility validation.',
+            ]],
+        ],
+        [
             'version' => '2.2.0',
             'status' => 'Released',
             'released_at' => '2026-08-22',
