@@ -47,7 +47,7 @@ Account deletion produces one `account.deleted` event. The account observer soft
 
 Each capture runs in the same database transaction as its state change. If enabled capture fails, Laravel rolls back both the mutation and its activity row. Failed validation and a profile update that changes neither name nor email produce no event.
 
-Admin user-role changes record one existing assignment/removal event per changed role. Repeated desired-state submissions that make no change produce no event. Each changed assignment also increments the subject's authorization revision and rotates its remember token so retained sessions cannot continue with stale privileges.
+Admin user-role changes record one existing assignment/removal event per changed role. Repeated desired-state submissions that make no change produce no event. Each changed assignment also increments the subject's authorization revision and rotates its remember token so retained sessions cannot continue with stale privileges. Custom-role mapping changes record one allowlisted before/after event and revoke every assigned account's sessions before the updated access can be used.
 
 Issue [#13](https://github.com/lurzar/expenses-app/issues/13) provides the authorization foundation, but it does not add an activity-log viewer. Any future viewer needs its own permission, access review, data contract, tests, and issue.
 

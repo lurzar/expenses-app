@@ -7,7 +7,7 @@ This reference describes the deterministic test and quality stack established fo
 - Backend framework: Pest 3.8.7 with Pest Laravel plugin 3.2.0 and PHPUnit underneath.
 - Assertions: Pest expectations, PHPUnit assertions, Laravel HTTP/database/session assertions, and Inertia `AssertableInertia`.
 - Mocking: Mockery 1.6.13 through Laravel's container-aware `$this->mock()`.
-- Frontend: Vitest 4.1.1, React Testing Library 16.3.2, and jsdom 27.4.0.
+- Frontend: Vitest 4.1.1, React Testing Library 16.3.2, and jsdom 27.4.0. Focused Admin component tests cover protected-role presentation and guarded user/custom-role mutations; no browser/E2E runner is configured.
 - Database isolation: `RefreshDatabase` applies to every `tests/Feature` test through `tests/Pest.php`.
 - Static/build checks: Pint, Larastan/PHPStan, strict TypeScript, Vite build, and Composer/npm audits.
 - Aggregate local gate: `composer check` runs every configured check after locked dependencies are installed.
@@ -32,6 +32,7 @@ Use PostgreSQL through Sail for database behavior that depends on PostgreSQL typ
 - `tests/Pest.php` binds Laravel's `TestCase` and `RefreshDatabase` to feature tests.
 - `tests/Feature/Auth/` covers session authentication and account security flows.
 - `tests/Feature/Authorization/` covers schema lifecycle, protected roles, Gate/policy matrices, drift-preserving synchronization, capability props, transactional activity, super-admin provisioning/rotation, last-operator protection, and authorization-session revocation.
+- `tests/Feature/Admin/` covers the protected Admin shell, user-role assignment/search/filtering, custom role mapping/retirement, minimized Inertia props, and direct-request denial.
 - `tests/Feature/Planning/` covers cross-user authorization and user-scoped caching.
 - `tests/Feature/System/` covers activity history, locale validation, Telescope, and trusted hosts.
 - `tests/Feature/ProfileTest.php` covers profile updates/deletion.
