@@ -40,16 +40,19 @@ test('the catalog exposes stable module-owned permissions', function () {
         'planning.create',
         'planning.delete',
         'planning.view',
+        'users.manage-roles',
+        'users.manage-super-admin',
+        'users.view',
     ])->and(PlanningPermission::View->module())->toBe('planning');
 });
 
 test('protected roles have only their reviewed permissions', function () {
     expect(Role::findByName(RoleName::User->value)->permissions->pluck('name')->sort()->values()->all())
         ->toBe(['planning.create', 'planning.delete', 'planning.view'])
-        ->and(Role::findByName(RoleName::Admin->value)->permissions->pluck('name')->all())
-        ->toBe(['admin.access'])
-        ->and(Role::findByName(RoleName::SuperAdmin->value)->permissions->pluck('name')->all())
-        ->toBe(['admin.access']);
+        ->and(Role::findByName(RoleName::Admin->value)->permissions->pluck('name')->sort()->values()->all())
+        ->toBe(['admin.access', 'users.manage-roles', 'users.view'])
+        ->and(Role::findByName(RoleName::SuperAdmin->value)->permissions->pluck('name')->sort()->values()->all())
+        ->toBe(['admin.access', 'users.manage-roles', 'users.manage-super-admin', 'users.view']);
 });
 
 test('new accounts receive the base user role and Laravel Gate permissions', function () {
@@ -230,8 +233,10 @@ test('role assignment rolls back when activity capture fails', function () {
 test('authorization schema rollback and recovery preserve account and Planning data', function () {
     $user = User::factory()->create();
     $planning = Planning::factory()->for($user)->create();
+    $userAdministrationMigration = require app_path('Modules/Authorization/Database/Migrations/2026_08_17_100000_add_user_administration_permissions.php');
     $migration = require app_path('Modules/Authorization/Database/Migrations/2026_08_16_100000_create_authorization_tables.php');
 
+    $userAdministrationMigration->down();
     $migration->down();
 
     expect(Schema::hasTable('roles'))->toBeFalse()
@@ -239,6 +244,7 @@ test('authorization schema rollback and recovery preserve account and Planning d
         ->and(Planning::query()->whereKey($planning->getKey())->exists())->toBeTrue();
 
     $migration->up();
+    $userAdministrationMigration->up();
 
     expect($user->fresh()->hasRole(RoleName::User->value))->toBeTrue()
         ->and(Planning::query()->whereKey($planning->getKey())->exists())->toBeTrue();

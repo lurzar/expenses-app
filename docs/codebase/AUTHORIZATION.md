@@ -1,6 +1,6 @@
 # Authorization contract
 
-This reference defines the v2.2.0 authorization contract implemented by issues [#13](https://github.com/lurzar/expenses-app/issues/13) and [#132](https://github.com/lurzar/expenses-app/issues/132). [ADR 0002](../decisions/0002-modular-laravel-authorization.md) records the decision and alternatives. Dependent Admin screens remain separate issue-backed work.
+This reference defines the v2.2.0 authorization contract implemented by issues [#13](https://github.com/lurzar/expenses-app/issues/13), [#132](https://github.com/lurzar/expenses-app/issues/132), [#40](https://github.com/lurzar/expenses-app/issues/40), and [#133](https://github.com/lurzar/expenses-app/issues/133). [ADR 0002](../decisions/0002-modular-laravel-authorization.md) records the decision and alternatives.
 
 ## Trust model
 
@@ -79,7 +79,8 @@ Examples:
 - `planning.delete`
 - `admin.access`
 - `users.view`
-- `users.assign-role`
+- `users.manage-roles`
+- `users.manage-super-admin`
 - `roles.manage`
 
 Use a specific verb when one permission should not grant every mutation. Prefer `roles.view`, `roles.create`, and `roles.assign-permissions` over a broad `roles.manage` when the UI or policy needs those actions independently.
@@ -152,7 +153,11 @@ The Admin shell is one module inside the existing Laravel/Inertia application, n
 
 `AdminNavigationRegistry` is the server-owned extension point for delivered Admin pages. A module that adds a management page registers an `AdminNavigationItem` with a unique stable key, translated label/description keys, named route, and declared Laravel ability. The registry calls `$user->can()` and returns only authorized items as `{key, label, description, href}`. Register the item from the delivering module's provider only after its permission, route, controller, page, tests, and operations contract exist; do not register placeholders for planned billing, tenancy, or management features.
 
-The initial registry contains only `overview`. `Admin/Index` therefore shows an explicit empty management-tools state until #133 or #134 delivers a real tool. The page receives no role names, permission lists, package records, private Planning data, credentials, or internal identifiers. Inertia's existing progress indicator handles page-navigation loading, the shared flash contract handles request errors, and Laravel owns denial responses.
+The registry contains `overview` and the `users` destination when the operator has `users.view`. `Admin/Users/Index` exposes a paginated allowlist containing public `user_id`, name, email, verification status, approved administrative roles, and `authorization_version`; it never serializes internal numeric keys, package records, credentials, sessions, or Planning data.
+
+`GET /admin/users` requires `users.view`. `PATCH /admin/users/{user}/roles` requires `users.manage-roles`, validates only `admin` and `super-admin`, and requires `users.manage-super-admin` when the protected role changes. The base `user` role is mandatory and not editable in Admin. Route model binding uses the public ULID and excludes soft-deleted accounts.
+
+Role updates submit a desired administrative-role set and the displayed authorization revision. The service locks the protected role first, then locks actor and subject accounts in a deterministic order. It rechecks the actor's current abilities inside that transaction, treats an already-applied state as idempotent, and rejects a changed stale revision. This lock order is shared with protected-role lifecycle mutations so a concurrent revocation cannot race one final grant. Operators cannot remove their own administrative access. New administrative access requires a verified, active account; cleanup removal from an unverified account remains allowed when protected lifecycle rules pass. Every changed assignment rotates the remember token, increments `authorization_version`, clears authorization cache state, and records the existing minimized assignment event in the same transaction.
 
 ## Super-admin boundary
 
@@ -217,6 +222,6 @@ A future tenancy design must define which account owns a role assignment and how
 | Shared Admin capability boolean | Implemented by #13 and consumed by the #40 application shell |
 | Super-admin lifecycle | Implemented by #132 through `authorization:super-admin` and `SuperAdminLifecycleService` |
 | Admin shell | Implemented by #40 through `admin.index`, `AdminController`, and `AdminNavigationRegistry` |
-| User-role administration | Planned by #133 |
+| User-role administration | Implemented by #133 through `admin.users.index`, `AdminUserController`, and `RoleAssignmentService::syncAdministrativeRoles()` |
 | Role-permission administration | Planned by #134 |
 | Operations guide and integrated readiness | Planned by #135 |
